@@ -1,23 +1,29 @@
 {
   "name": "protestant-bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "Bot to reply and retweet all about Martin Luther and Protestan Reform in Twitter.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx nodemon index.js"
+    "dev": "npx nodemon index.js",
+    "sonar": "node ./bin/sonar"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "twit": "^2.2.11",
     "twitter": "^1.7.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "sonarqube-scanner": "^2.7.0"
+  },
+  "engines": {
+    "node": "14.x"
   }
 }

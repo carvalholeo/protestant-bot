@@ -9,13 +9,6 @@ const timeout_ms = Number(process.env.TIMEOUT_MS);
 const strict_ssl = Boolean(process.env.STRICT_SSL);
 const bearer_token = process.env.BEARER_TOKEN;
 
-// const client = new Twitter({
-//   consumer_key,
-//   consumer_secret,
-//   access_token_key,
-//   access_token_secret
-// });
-
 const client = new Twitter({
   consumer_key,
   consumer_secret,
