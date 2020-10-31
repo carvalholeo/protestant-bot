@@ -4,7 +4,7 @@ const internal = require('./services/internal');
 const bot_timeout = Number(process.env.BOT_TIMEOUT);
 
 function BotRetweet() {
-  internal.post('/n')
+  internal.post('/')
     .then(function (response) {
       console.log(response.data);
     })
