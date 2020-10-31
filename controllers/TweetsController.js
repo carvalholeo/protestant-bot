@@ -3,8 +3,7 @@ const twitterApi = require('../services/api');
 
 const query = {
   q: 'Martinho Lutero OR Martin Luter OR #ReformaProtestante OR #ProtestantReform OR #95teses OR #5solas OR #Reforma503Anos',
-  result_type: 'recent',
-  count: 500
+  count: 1000
 };
 
 const TweetsController = {
@@ -39,36 +38,41 @@ const TweetsController = {
     }
   },
   comment: tweets => {
-    tweets.map(async (tweet, key) => {
-      if (key > 3) {
-        return;
-      }
-      const user = tweet.user.screen_name
+    try {
+      tweets.map(async (tweet, key) => {
+        const user = tweet.user.screen_name
 
-      const comment = {
-        in_reply_to_status_id: tweet.id_str,
-        status: `Dia de Martinho Lutero, @${user}! #ReformaProtestante #ProtestantReform #95teses #5Solas #Reforma503Anos (Tweet by @BotLutero)`
-      };
-      await twitterApi.post('statuses/update', comment, (error, tweets, response) => {
-        if (error) {
-          throw error
-        }
-      })
-        .catch(error => res.status(500).send(error));
-    });
-
+        const comment = {
+          in_reply_to_status_id: tweet.id_str,
+          status: `Dia de Martinho Lutero, @${user}! #ReformaProtestante #ProtestantReform #95teses #5Solas #Reforma503Anos (Tweet by @BotLutero)`
+        };
+        try {
+          twitterApi.post('statuses/update', comment, (error, tweets, response) => {
+            if (error) {
+              throw error
+            }
+          });
+        } catch (error) { }
+      });
+    } catch (error) {
+      return res.status(500).send(error);
+    }
   },
   retweet: tweets => {
-    tweets.map(async tweet => {
-      const id = tweet.id_str;
-
-      twitterApi.post(`statuses/retweet/${id}`, (error, tweets, response) => {
-        if (error) {
-          throw error
-        }
-      })
-        .catch(error => res.status(500).send(error));
-    });
+    try {
+      tweets.map(async tweet => {
+        const id = tweet.id_str;
+        try {
+          twitterApi.post(`statuses/retweet/${id}`, (error, tweets, response) => {
+            if (error) {
+              throw error
+            }
+          });
+        } catch (error) { }
+      });
+    } catch (error) {
+      return res.status(500).send(error);
+    }
   }
 }
 
