@@ -1,9 +1,10 @@
 'use strict';
+require('dotenv').config();
 const internal = require('./services/internal');
-const bot_timeout = process.env.BOT_TIMEOUT;
+const bot_timeout = Number(process.env.BOT_TIMEOUT);
 
 function BotRetweet() {
-  internal('/')
+  internal.post('/n')
     .then(function (response) {
       console.log(response.data);
     })
