@@ -49,9 +49,6 @@ const TweetsController = {
         };
         try {
           twitterApi.post('statuses/update', comment, (error, tweets, response) => {
-            if (error) {
-              throw error
-            }
           });
         } catch (error) { }
       });
@@ -65,9 +62,6 @@ const TweetsController = {
         const id = tweet.id_str;
         try {
           twitterApi.post(`statuses/retweet/${id}`, (error, tweets, response) => {
-            if (error) {
-              throw error
-            }
           });
         } catch (error) { }
       });
