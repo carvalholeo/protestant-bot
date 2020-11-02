@@ -2,7 +2,7 @@
 const twitterApi = require('../services/api');
 
 const query = {
-  q: 'Martinho Lutero OR Martin Luter OR #ReformaProtestante OR #ProtestantReform OR #95teses OR #5solas OR #Reforma503Anos from:_carvalho_leo',
+  q: 'Martinho Lutero OR Martin Luter OR #ReformaProtestante OR #ProtestantReform OR #95teses OR #5solas OR #Reforma503Anos',
   result_type: 'recent',
   count: 1000
 };
