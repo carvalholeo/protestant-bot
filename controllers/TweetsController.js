@@ -2,7 +2,7 @@
 const twitterApi = require('../services/api');
 
 const query = {
-  q: 'Martinho Lutero OR Martin Luter OR #ReformaProtestante OR #ProtestantReform OR #95teses OR #5solas OR #Reforma503Anos',
+  q: 'Martinho Lutero OR Martin Luter OR #ReformaProtestante OR #ProtestantReform OR #95teses OR #5solas OR #Reforma503Anos from:_carvalho_leo',
   result_type: 'recent',
   count: 1000
 };
@@ -27,31 +27,9 @@ const TweetsController = {
           if (unique.length > 0) {
             TweetsController.retweet(unique);
           }
-
-          if (repeated.length > 0) {
-            TweetsController.comment(unique);
-          }
           return res.json({ repeated, unique });
         });
 
-    } catch (error) {
-      return res.status(500).send(error);
-    }
-  },
-  comment: tweets => {
-    try {
-      tweets.map(async (tweet, key) => {
-        const user = tweet.user.screen_name
-
-        const comment = {
-          in_reply_to_status_id: tweet.id_str,
-          status: `Dia de Martinho Lutero, @${user}! #ReformaProtestante #ProtestantReform #95teses #5Solas #Reforma503Anos (Tweet by @BotLutero)`
-        };
-        try {
-          twitterApi.post('statuses/update', comment, (error, tweets, response) => {
-          });
-        } catch (error) { }
-      });
     } catch (error) {
       return res.status(500).send(error);
     }
