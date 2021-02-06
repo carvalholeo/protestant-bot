@@ -1,7 +1,7 @@
 {
   "name": "protestant-bot",
   "version": "1.0.0",
-  "description": "Bot to reply and retweet all about Martin Luther and Protestan Reform in Twitter.",
+  "description": "Bot to reply and retweet all about Martin Luther and Protestant Reform in Twitter.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
