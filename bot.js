@@ -4,14 +4,13 @@ const internal = require('./services/internal');
 const client = require('./services/client');
 const fs = require('fs');
 const path = require('path');
-const TweetsController = require('./controllers/TweetsController');
 const bot_timeout = Number(process.env.BOT_TIMEOUT);
 
 async function BotRetweet() {
     internal.post('/')
       .then(response => {
         try {
-          //const tweets = await client.get("statuses/home_timeline");
+          const tweets = await client.get("statuses/home_timeline");
           console.log(`Rate: ${tweets._headers.get('x-rate-limit-remaining')} / ${tweets._headers.get('x-rate-limit-limit')}`);
           const delta = (tweets._headers.get('x-rate-limit-reset') * 1000) - Date.now()
           console.log(`Reset: ${Math.ceil(delta / 1000 / 60)} minutes`);
@@ -35,17 +34,7 @@ async function BotRetweet() {
       });
 }
 
-// const exitApp = () => {
-//   setTimeout(() => {
-//     const shutdownTime = new Date().toLocaleString("pt-BR");
-//     fs.appendFileSync(path.join(__dirname, 'logs', 'shutdown.txt'), `App shutdown at ${shutdownTime}\n`, { encoding: 'utf-8', flag: 'a' });
-
-//     clearInterval(initializeBot);
-//     process.exit(1);
-//   }, 0);
-// }
-
-const initializeBot = setInterval(BotRetweet, 1000);
+const initializeBot = setInterval(BotRetweet, bot_timeout);
 
 
 module.exports = BotRetweet;
