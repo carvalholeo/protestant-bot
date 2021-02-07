@@ -1,64 +1,75 @@
 'use strict';
-const twitterApi = require('../services/api');
+const client = require('../services/client');
 
 const query = {
-  q: 'Martinho Lutero OR Martin Luter OR #ReformaProtestante OR #ProtestantReform OR #95teses OR #5solas OR #Reforma503Anos',
-  result_type: 'recent',
-  count: 1000
+  track: 'Martinho Lutero,#ReformaProtestante,#ProtestantReform,#95teses,#5solas,#Reforma504Anos,-is:retweet',
 };
+class TweetsController {
+  static stream;
+  static counter = 0;
 
-const TweetsController = {
-  getTweets: (req, res) => {
-    try {
-      return twitterApi.get('search/tweets', query)
-        .then(response => response.data)
-        .then(({ statuses }) => {
-          const repeated = [];
-          const unique = [];
-
-          statuses.map(tweet => {
-            if (isReply(tweet)) {
-              repeated.push(tweet);
-              return;
-            }
-            unique.push(tweet);
-          });
-
-          if (unique.length > 0) {
-            TweetsController.retweet(unique);
-          }
-          return res.json({ repeated, unique });
-        });
-
-    } catch (error) {
-      return res.status(500).send(error);
+  getTweets(req, res) {
+    TweetsController.counter++;
+    if(TweetsController.counter > 1) {
+      return res.status(420).send('Not permitted: there is another instance doing the same thing');
     }
-  },
-  retweet: tweets => {
+
+    TweetsController.stream = client.stream('statuses/filter', query)
+    TweetsController.stream
+        .on("start", response => {
+          console.log("start")
+          res.status(200).json({message: "Inicializado corretamente", response})
+        })
+        .on("data", tweet => {
+          const isReply = TweetsController.isReply(tweet);
+
+          if(!isReply) {
+            console.log(`Tweet de @${tweet.user.screen_name}: "${tweet.text}".`)
+            TweetsController.retweet(tweet);
+          }
+        })
+        .on("ping", ping => console.log("ping"))
+        .on("end", response => {
+          TweetsController.produceError(response, res)
+        })
+        .on("error", error => {
+          TweetsController.produceError(error, res);
+        })
+  }
+
+  static produceError(error, response) {
+    process.nextTick(() => TweetsController.stream.destroy());
+    console.error(error);
+    response.status(500).json(error);
+    process.exit(1);
+  }
+
+  static async retweet(tweet) {
     try {
-      tweets.map(async tweet => {
-        const id = tweet.id_str;
-        try {
-          twitterApi.post(`statuses/retweet/${id}`, (error, tweets, response) => {
-          });
-        } catch (error) { }
+      await client.post(`statuses/retweet/${tweet.id_str}`, (error, tweets, response) => {
+        if(error) {
+          throw new Error(error)
+        }
       });
     } catch (error) {
-      return res.status(500).send(error);
-    }
+      console.error(error)
+      //throw new Error(error)
+     }
   }
-}
 
-function isReply(tweet) {
-  if (tweet.retweeted_status
-    || tweet.in_reply_to_status_id
-    || tweet.in_reply_to_status_id_str
-    || tweet.in_reply_to_user_id
-    || tweet.in_reply_to_user_id_str
-    || tweet.in_reply_to_screen_name) {
-      return true
-    }
-  return false
+  static isReply(tweet) {
+    if (tweet.retweeted_status
+      || tweet.in_reply_to_status_id
+      || tweet.in_reply_to_status_id_str
+      || tweet.in_reply_to_user_id
+      || tweet.in_reply_to_user_id_str
+      || tweet.in_reply_to_screen_name
+      || tweet.retweeted_status
+      || tweet.delete) {
+        return true
+      }
+    return false
+  }
 }
 
 module.exports = TweetsController;
