@@ -2,12 +2,15 @@
 const { Router } = require('express');
 
 const TweetsController = require('../controllers/TweetsController');
+const logger = require('../logs/logger');
 
 const routes = Router();
 const tweetsController = new TweetsController();
 
 routes.use((req, res, next) => {
-  console.log(`Uma chamada para a URL ${req.url}, no método ${req.method}, foi efetuada.`)
+  const message = `Uma chamada para a URL ${req.url}, no método ${req.method}, foi efetuada.`;
+  logger('access', message);
+
   next();
 });
 
