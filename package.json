@@ -16,8 +16,11 @@
     "axios": "^0.21.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "knex": "^0.21.17",
+    "luxon": "^1.25.0",
     "morgan": "^1.10.0",
     "rotating-file-stream": "^2.1.4",
+    "sqlite3": "^5.0.1",
     "twit": "^2.2.11",
     "twitter": "^1.7.1",
     "twitter-lite": "^0.14.0"
