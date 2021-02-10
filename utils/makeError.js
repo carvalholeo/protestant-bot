@@ -1,12 +1,12 @@
 'use strict';
 
-const TweetStreams = require('../singletons/TweetStreams');
+const Stream = require('../services/Twitter/Stream');
 const logger = require('../logs/logger');
 
-const tweetStreams = new TweetStreams();
+const stream = new Stream();
 
 function makeError(error, origin) {
-  process.nextTick(() => tweetStreams.killInstance());
+  process.nextTick(() => stream.killInstance());
   const message = `An error was produced by ${origin}. The message emitted was '${error}'.`;
 
   logger('error', message);
