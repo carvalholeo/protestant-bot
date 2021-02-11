@@ -12,15 +12,15 @@ const port = Number(process.env.PORT);
 
 const accessLogStream = rfs.createStream('access.log', {
   interval: '1d', // rotate daily
-  path: path.join(__dirname, 'logs')
+  path: path.join(__dirname, 'logs'),
 });
 
-app.use(morgan('combined', { stream: accessLogStream }));
+app.use(morgan('combined', {stream: accessLogStream}));
 
 app.use(routes);
 app.listen(port);
 
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.send(err.message);
 });

@@ -1,3 +1,5 @@
+'use strict';
+
 const path = require('path');
 
 const poolMin = 1;
@@ -9,20 +11,20 @@ module.exports = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: path.join(__dirname, 'database', 'database.sqlite')
+      filename: path.join(__dirname, 'database', 'database.sqlite'),
     },
     migrations: {
       directory: path.resolve(__dirname, 'database', 'migrations'),
       extension: 'js',
-      tableName: 'knex_migrations'
+      tableName: 'knex_migrations',
     },
     seeds: {
       directory: path.resolve(__dirname, 'database', 'seeds'),
-      extension: 'js'
+      extension: 'js',
     },
     pool: {
       min: poolMin,
-      max: poolMax
+      max: poolMax,
     },
     useNullAsDefault,
     acquireConnectionTimeout,
@@ -31,23 +33,23 @@ module.exports = {
   production: {
     client: 'sqlite3',
     connection: {
-      filename: path.join(__dirname, 'database', 'database.sqlite')
+      filename: path.join(__dirname, 'database', 'database.sqlite'),
     },
     migrations: {
       directory: path.resolve(__dirname, 'database', 'migrations'),
       extension: 'js',
-      tableName: 'knex_migrations'
+      tableName: 'knex_migrations',
     },
     seeds: {
       directory: path.resolve(__dirname, 'database', 'seeds'),
-      extension: 'js'
+      extension: 'js',
     },
     pool: {
       min: poolMin,
-      max: poolMax
+      max: poolMax,
     },
     useNullAsDefault,
     acquireConnectionTimeout,
-  }
+  },
 
 };
