@@ -1,12 +1,12 @@
 'use strict';
-const axios = require("axios");
+const axios = require('axios');
 
-const base_url = process.env.BASE_URL;
+const baseUrl = process.env.BASE_URL;
 const port = process.env.PORT;
-const url = `${base_url}:${port}`;
+const url = `${baseUrl}:${port}`;
 
 const internal = axios.create({
-  baseURL: url
+  baseURL: url,
 });
 
 module.exports = internal;
