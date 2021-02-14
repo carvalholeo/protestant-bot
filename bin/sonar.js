@@ -12,7 +12,7 @@ scanner(
       serverUrl,
       token: loginToken,
       options: {
-        'sonar.projectName': 'Protestan Bot',
+        'sonar.projectName': 'Protestant Bot',
         'sonar.projectKey': projectKey,
         'sonar.projectVersion': '1.0',
         'sonar.sourceEncoding': 'UTF-8',

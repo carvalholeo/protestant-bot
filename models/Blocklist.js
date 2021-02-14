@@ -56,11 +56,9 @@ class Blocklist extends BaseModel {
    */
   async getAllAcitveBlocks() {
     try {
-      const blocklist = await this._connection
+      return await this._connection
           .where({is_blocked_now: true})
           .select('*');
-
-      return blocklist;
     } catch (error) {
       const message = `Error from Blocklist class, method getAllAcitveBlocks.
       Message catched: ${error.message}.
@@ -76,10 +74,8 @@ class Blocklist extends BaseModel {
    */
   async getAllBlocks() {
     try {
-      const blocklist = await this._connection
+      return await this._connection
           .select('*');
-
-      return blocklist;
     } catch (error) {
       const message = `Error from Blocklist class, method getAllBlocks.
       Message catched: ${error.message}.

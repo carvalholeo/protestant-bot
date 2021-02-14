@@ -45,10 +45,8 @@ class BaseLog extends Base {
    */
   async getAllMessagesFromLog() {
     try {
-      const log = await this._connection
+      return await this._connection
           .select('*');
-
-      return log;
     } catch (error) {
       this.emergencyLog(error.message);
     }
@@ -68,12 +66,10 @@ class BaseLog extends Base {
       if (typeof(id) === 'undefined') {
         throw new ReferenceError('You must to provide a id to get log.');
       }
-      const message = await this._connection
+      return await this._connection
           .where({id: id})
           .select('*')
           .first();
-
-      return message;
     } catch (error) {
       this.emergencyLog(error.message);
     }
