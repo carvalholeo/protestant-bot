@@ -1,5 +1,3 @@
-'use strict';
-
 const AccessLog = require('./AccessLog');
 const ErrorLog = require('./ErrorLog');
 const KernelPanicLog = require('./KernelPanicLog');
@@ -15,5 +13,5 @@ module.exports = {
   RetweetLog,
   TweetQueue,
   RateLimit,
-  Blocklist
-}
+  Blocklist,
+};
