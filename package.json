@@ -7,7 +7,9 @@
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx nodemon index.js",
-    "sonar": "node ./bin/sonar"
+    "sonar": "node ./bin/sonar",
+    "lint": "npx eslint . --output-file ./reports/eslintreport.json --format json-with-metadata",
+    "lint-fix": "npx eslint . --fix"
   },
   "keywords": [],
   "author": "",
@@ -31,6 +33,7 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.3.1",
+    "eslint-plugin-sonarjs": "^0.5.0",
     "nodemon": "^2.0.7",
     "sonarqube-scanner": "^2.8.0"
   },

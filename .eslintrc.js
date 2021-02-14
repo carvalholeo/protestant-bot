@@ -6,10 +6,12 @@ module.exports = {
   },
   extends: [
     'google',
+    'plugin:sonarjs/recommended',
   ],
   parserOptions: {
     ecmaVersion: 12,
   },
   rules: {
   },
+  plugins: ['sonarjs'],
 };
