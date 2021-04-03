@@ -1,10 +1,10 @@
 'use strict';
 
 const Stream = require('../services/Twitter/Stream');
+const {ErrorLog} = require('../models');
 const logger = require('../logs/logger');
 
 const stream = new Stream();
-
 
 /**
  * Function called when some point needs to stop stream.
@@ -12,12 +12,11 @@ const stream = new Stream();
  * @param {string} error Error message emitted from the origin.
  * @param {string} origin Original source of the error.
  */
-function makeError(error, origin) {
+async function makeError(error, origin) {
   process.nextTick(() => stream.killInstance());
   const message = `An error was produced by ${origin}.
   The message emitted was '${error}'.`;
-
-  logger('error', message);
+  await logger('error', message, new ErrorLog());
 }
 
 module.exports = makeError;

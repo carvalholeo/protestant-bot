@@ -11,9 +11,9 @@ exports.up = function(knex) {
         .notNullable()
         .defaultTo('statuses/retweet');
 
-    table.datetime('next_reset')
+    table.bigInteger('next_reset')
         .notNullable()
-        .defaultTo(knex.fn.now());
+        .defaultTo(15);
 
     table.timestamps();
   });

@@ -1,5 +1,6 @@
 const BaseModel = require('./Base');
-const {ErrorLog} = require('./index');
+const ErrorLog = require('./ErrorLog');
+const logger = require('../logs/logger');
 /**
  * Handle with the users block list, that don't want to have their
  * tweets retweet by the bot.
@@ -33,7 +34,6 @@ class Blocklist extends BaseModel {
       };
 
       cosnt [blocked] = await this._connection
-          .returning('id')
           .onConflict('is_blocked_now')
           .insert(data);
 
@@ -63,8 +63,7 @@ class Blocklist extends BaseModel {
       const message = `Error from Blocklist class, method getAllAcitveBlocks.
       Message catched: ${error.message}.
       Complete Error object: ${error}`;
-      const errorLog = new ErrorLog();
-      errorLog.create(message);
+      await logger('error', message, new ErrorLog());
     }
   }
 
@@ -80,8 +79,7 @@ class Blocklist extends BaseModel {
       const message = `Error from Blocklist class, method getAllBlocks.
       Message catched: ${error.message}.
       Complete Error object: ${error}`;
-      const errorLog = new ErrorLog();
-      errorLog.create(message);
+      await logger('error', message, new ErrorLog());
     }
   }
 
@@ -112,8 +110,7 @@ class Blocklist extends BaseModel {
       const message = `Error from Blocklist class, method unblock.
       Message catched: ${error.message}.
       Complete Error object: ${error}`;
-      const errorLog = new ErrorLog();
-      errorLog.create(message);
+      await logger('error', message, new ErrorLog());
     }
   }
 }

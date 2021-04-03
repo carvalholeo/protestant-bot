@@ -1,6 +1,8 @@
 'use strict';
 const BaseModel = require('./Base');
-const {ErrorLog} = require('./index');
+const AccessLog = require('./AccessLog');
+const ErrorLog = require('./ErrorLog');
+const logger = require('../logs/logger');
 /**
  * Handle with rate limit of Twitter on database.
  * @class RateLimit
@@ -19,7 +21,7 @@ class RateLimit extends BaseModel {
    * @param {JSON} information Literal object, with three properties:
    * - resource: API resource of the limit
    * - limit: integer number, with the limit to call API
-   * - nextReset: Date and time of next rate limit reset.
+   * - nextReset: Integer number, time, in minutes to the next reset.
    */
   async create(information) {
     try {
@@ -46,19 +48,20 @@ class RateLimit extends BaseModel {
       if (!create >= 1) {
         throw new Error('There was an error on insert the rate limit.');
       }
+      await logger('access', 'Tweet enqueued', new AccessLog());
     } catch (error) {
       const message = `Error from RateLimit class, method create.
       Message catched: ${error.message}.
       Complete Error object: ${error}`;
-      const errorLog = new ErrorLog();
-      errorLog.create(message);
+      await logger('error', message, new ErrorLog());
     }
   }
 
   /**
    * Method to get the rate limit, using a Twitter API resource as an argument.
    * @param {string} resource Resource to be retrieved and to know its limit.
-   * @return {Object} Literal object data from database with the data asked for.
+   * @return {JSON | string} Literal object data from database with
+   * the data asked.
    */
   async getOneRateLimit(resource) {
     try {
@@ -81,8 +84,8 @@ class RateLimit extends BaseModel {
       const message = `Error from RateLimit class, method getOneRateLimit.
       Message catched: ${error.message}.
       Complete Error object: ${error}`;
-      const errorLog = new ErrorLog();
-      errorLog.create(message);
+      await logger('error', message, new ErrorLog());
+      return message;
     }
   }
 
@@ -91,7 +94,7 @@ class RateLimit extends BaseModel {
    * @param {JSON} information Literal object, with three properties:
    * - resource: API resource of the limit to be updated
    * - limit: integer number, with the limit to call API
-   * - nextReset: Date and time of next rate limit reset.
+   * - nextReset: Integer number, time, in minutes to the next reset.
    */
   async update(information) {
     try {
@@ -122,8 +125,7 @@ class RateLimit extends BaseModel {
       const message = `Error from RateLimit class, method update.
       Message catched: ${error.message}.
       Complete Error object: ${error}`;
-      const errorLog = new ErrorLog();
-      errorLog.create(message);
+      await logger('error', message, new ErrorLog());
     }
   }
 }

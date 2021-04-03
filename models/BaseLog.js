@@ -24,7 +24,6 @@ class BaseLog extends Base {
       }
       const date = new Date();
       const [insert] = await this._connection
-          .returning('id')
           .insert({message, created_at: date, updated_at: date});
 
       if (!insert >= 1) {

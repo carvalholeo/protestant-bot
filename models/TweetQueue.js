@@ -1,4 +1,7 @@
 const BaseModel = require('./Base');
+const ErrorLog = require('./ErrorLog');
+const logger = require('../logs/logger');
+
 /**
  * Class to create and handle with a queue of tweets. Used when the rate limit
  * did reach, to store those tweets and so retweet them when that limit were
@@ -25,15 +28,17 @@ class TweetQueue extends BaseModel {
         the tweet to be stored and enqueued.`);
       }
       const data ={
-        tweet: tweet,
+        tweet: JSON.stringify(tweet),
         already_retweeted: false,
         created_at: this.dateTime,
         updated_at: this.updated_at,
       };
 
       const [newEnqueue] = await this._connection
-          .returning('id')
           .insert(data);
+
+      const rateLimit = new RateLimit();
+      await rateLimit.recalibrate('statuses/retweet');
 
       if (!newEnqueue >= 1) {
         throw new RangeError(`Something is broken and more than one tweet
@@ -43,8 +48,7 @@ class TweetQueue extends BaseModel {
       const message = `Error from TweetQueue class, method enqueue.
       Message catched: ${error.message}.
       Complete Error object: ${error}`;
-      const errorLog = new ErrorLog();
-      errorLog.create(message);
+      logger('error', message, new ErrorLog());
     }
   }
 
@@ -57,7 +61,7 @@ class TweetQueue extends BaseModel {
       const tweetsEnqueued = await this._connection
           .where({already_retweeted: false})
           .orderBy('created_at', 'asc')
-          .limit(300)
+          .limit(75)
           .select('*');
 
       if (tweetsEnqueued.length < 1) {
@@ -66,11 +70,10 @@ class TweetQueue extends BaseModel {
 
       return tweetsEnqueued;
     } catch (error) {
-      const message = `Error from TweetQueue class, method enqueue.
+      const message = `Error from TweetQueue class, method queue.
       Message catched: ${error.message}.
       Complete Error object: ${error}`;
-      const errorLog = new ErrorLog();
-      errorLog.create(message);
+      logger('error', message, new ErrorLog());
 
       return error.message;
     }
@@ -88,17 +91,20 @@ class TweetQueue extends BaseModel {
         objects to be iterated.`);
       }
 
+      const idsToDelete = [];
+
       for (const tweet of tweets) {
-        await this._connection
-            .where({id: tweet.id})
-            .delete();
+        idsToDelete.push(tweet.id);
       }
+
+      await this._connection
+          .whereIn('id', idsToDelete)
+          .delete();
     } catch (error) {
-      const message = `Error from TweetQueue class, method enqueue.
+      const message = `Error from TweetQueue class, method dequeue.
       Message catched: ${error.message}.
       Complete Error object: ${error}`;
-      const errorLog = new ErrorLog();
-      errorLog.create(message);
+      logger('error', message, new ErrorLog());
     }
   }
 }

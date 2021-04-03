@@ -1,30 +1,21 @@
 'use strict';
 const path = require('path');
 const fs = require('fs');
-const models = require('../models');
-
-const logModelAssociation = {
-  'kernel_panic': models.KernelPanicLog,
-  'access': models.AccessLog,
-  'error': models.ErrorLog,
-  'retweet': models.RetweetLog,
-};
 
 /**
  * Function to log message from some point of the system.
  *
  * @param {string} logName Name of the log where you gonna store informations.
  * @param {string} message Message that will be stored in the log.
- * @param {boolean} database Indicate if the log will be stored at the database.
+ * @param {string | Object} destination Indicate destination of the log.
  */
-async function logger(logName, message, database = true) {
+async function logger(logName, message, destination = 'file') {
   const dateTime = new Date()
       .toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'});
   try {
-    if (database) {
-      const LogModel = logModelAssociation[logName];
-      const log = new LogModel();
-      await log.create({message});
+    if (typeof(destination) === 'object' &&
+        destination !== 'file') {
+      await destination.create(message);
     } else {
       const logFile = path.resolve(__dirname, `${logName}.log`);
       const additionalMessage = `${dateTime}: ${message}\n`;

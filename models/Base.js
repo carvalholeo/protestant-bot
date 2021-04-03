@@ -15,8 +15,7 @@ class Base {
       if (typeof(nameOfModel) === 'undefined' || nameOfModel === null) {
         throw new ReferenceError('You must to provide a table to be handled.');
       }
-      this.dateTime = new Date()
-          .toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'});
+      this.dateTime = new Date();
       this._connection = connection(nameOfModel);
     } catch (error) {
       this.emergencyLog('kernel_panic', error.message);
@@ -27,7 +26,7 @@ class Base {
    * @param {string} message Message to be stored at Kernel Panic log.
    */
   emergencyLog(message) {
-    logger('kernel_panic', message, false);
+    logger('kernel_panic', message);
   }
 }
 

@@ -1,4 +1,5 @@
 const Twitter = require('twitter-lite');
+require('dotenv').config({path: '../.env'});
 
 const consumerKey = process.env.CONSUMER_KEY;
 const consumerSecret = process.env.CONSUMER_SECRET;
@@ -10,10 +11,9 @@ const extension = true;
 const client = new Twitter({
   version: version,
   extension: extension,
-  consumer_key: consumerKey,
-  consumer_secret: consumerSecret,
   access_token_key: accessTokenKey,
   access_token_secret: accessTokenSecret,
+  consumer_key: consumerKey,
+  consumer_secret: consumerSecret,
 });
-
 module.exports = client;
