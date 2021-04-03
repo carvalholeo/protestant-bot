@@ -10,9 +10,9 @@ const logger = require('../logs/logger');
  * @return {Promise<any>} Returns a response about rate limit
  * on database.
  */
-async function rateLimit() {
+function rateLimit() {
   const limit = new RateLimit();
-  return await limit.getLimitFromDatabase(resource)
+  return limit.getLimitFromDatabase(resource)
       .then(async (response) => {
         if (typeof (response) === 'string') {
           const resource = 'statuses/retweet';

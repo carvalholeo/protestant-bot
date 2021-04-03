@@ -45,6 +45,7 @@ class Stream {
       const message = `There was an error on during attempt of shut down app.
       Reason: ${error}.`;
       logger('error', message, new ErrorLog());
+      return Stream._instance;
     }
   }
 

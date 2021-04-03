@@ -64,6 +64,7 @@ class Blocklist extends BaseModel {
       Message catched: ${error.message}.
       Complete Error object: ${error}`;
       await logger('error', message, new ErrorLog());
+      return {message: error.message};
     }
   }
 
@@ -80,6 +81,7 @@ class Blocklist extends BaseModel {
       Message catched: ${error.message}.
       Complete Error object: ${error}`;
       await logger('error', message, new ErrorLog());
+      return {message: error.message};
     }
   }
 

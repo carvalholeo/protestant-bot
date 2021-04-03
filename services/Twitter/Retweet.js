@@ -143,6 +143,7 @@ class Retweet {
       Reason: User blocked the bot.
       Stack: ${error}.`;
       await logger('error', message, new ErrorLog());
+      return true;
     }
   }
 }

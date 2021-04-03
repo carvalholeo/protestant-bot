@@ -48,6 +48,7 @@ class BaseLog extends Base {
           .select('*');
     } catch (error) {
       this.emergencyLog(error.message);
+      return {message: error.message};
     }
   }
 
@@ -71,6 +72,7 @@ class BaseLog extends Base {
           .first();
     } catch (error) {
       this.emergencyLog(error.message);
+      return {message: error.message};
     }
   }
 }
