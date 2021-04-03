@@ -2,11 +2,20 @@
 require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
+const helmet = require('helmet');
+const cors = require('cors');
 const rfs = require('rotating-file-stream');
 const path = require('path');
 const routes = require('./routes');
 
 const app = express();
+
+app.use(helmet());
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  preflightContinue: true,
+  optionsSuccessStatus: 200,
+}));
 
 const port = Number(process.env.PORT);
 
