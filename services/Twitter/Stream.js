@@ -4,7 +4,6 @@ const {ErrorLog, AccessLog} = require('../../models');
 const logger = require('../../logs/logger');
 const client = require('../client');
 const isReply = require('../../utils/isReply');
-const makeError = require('../../utils/makeError');
 
 const {QUERY} = process.env;
 
@@ -20,8 +19,8 @@ class Stream {
    */
   constructor(retweetClass) {
     const query = {
-      // track: QUERY,
-      follow: '1338363022402875397',
+      track: QUERY,
+      // follow: '1338363022402875397',
     };
     if (typeof(Stream._instance) === 'undefined') {
       Stream._instance = client.stream('statuses/filter', query);
