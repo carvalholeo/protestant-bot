@@ -18,7 +18,10 @@ const connectionString = `${client}://${username}:${password}@${host}:${port}/${
 module.exports = {
   development: {
     client: client,
-    connection: connectionString,
+    client: 'sqlite3',
+    connection: {
+      filename: path.join(__dirname, 'database', 'database.sqlite'),
+    },
     migrations: {
       directory: path.resolve(__dirname, 'database', 'migrations'),
       extension: 'js',
@@ -38,7 +41,10 @@ module.exports = {
 
   production: {
     client: client,
-    connection: connectionString,
+    connection: {
+      filename: path.join(__dirname, 'database', 'database.sqlite'),
+    },
+    // connection: connectionString,
     migrations: {
       directory: path.resolve(__dirname, 'database', 'migrations'),
       extension: 'js',
