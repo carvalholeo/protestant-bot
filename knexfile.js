@@ -37,10 +37,8 @@ module.exports = {
   },
 
   production: {
-    client: 'sqlite3',
-    connection: {
-      filename: path.join(__dirname, 'database', 'database.sqlite'),
-    },
+    client: client,
+    connection: connectionString,
     migrations: {
       directory: path.resolve(__dirname, 'database', 'migrations'),
       extension: 'js',
