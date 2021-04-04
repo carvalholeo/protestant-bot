@@ -33,8 +33,7 @@ class Blocklist extends BaseModel {
         updated_at: this.dateTime,
       };
 
-      cosnt [blocked] = await this._connection
-          .onConflict('is_blocked_now')
+      const [blocked] = await this._connection
           .insert(data);
 
       if (!blocked > 0) {
@@ -100,14 +99,9 @@ class Blocklist extends BaseModel {
         updated_at: this.dateTime,
       };
 
-      cosnt [unblocked] = await this._connection
+      await this._connection
           .where({screen_name: username})
-          .update(data);
-
-      if (unblocked !== 1) {
-        throw new RangeError(`Something is broken and anyone or
-        more than one registers were update. Please check this.`);
-      }
+          .delete();
     } catch (error) {
       const message = `Error from Blocklist class, method unblock.
       Message catched: ${error.message}.

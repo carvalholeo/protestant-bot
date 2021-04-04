@@ -16,6 +16,8 @@ app.use(cors({
   preflightContinue: true,
   optionsSuccessStatus: 200,
 }));
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 
 const port = Number(process.env.PORT);
 
@@ -26,7 +28,7 @@ const accessLogStream = rfs.createStream('access.log', {
 
 app.use(morgan('combined', {stream: accessLogStream}));
 
-app.use(routes);
+app.use('/api', routes);
 app.listen(port);
 
 app.use((err, req, res, next) => {
