@@ -4,8 +4,7 @@ exports.up = function(knex) {
         .primary();
 
     table.json('tweet')
-        .notNullable()
-        .unique();
+        .notNullable();
 
     table.boolean('already_retweeted')
         .notNullable()
