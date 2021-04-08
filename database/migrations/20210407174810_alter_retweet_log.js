@@ -21,11 +21,20 @@ exports.up = function(knex) {
         .nullable()
         .defaultTo('Sem razão específica')
         .after('tweet');
+
+    table.boolean('was_undone')
+        .nullable()
+        .defaultTo(false)
+        .after('comment');
   });
 };
 
 exports.down = function(knex) {
   return knex.schema.table('retweet_log', (table) => {
-    table.dropColumns('tweet_id', 'screen_name', 'tweet', 'comment');
+    table.dropColumns('tweet_id',
+        'screen_name',
+        'tweet',
+        'comment',
+        'was_undone');
   });
 };
