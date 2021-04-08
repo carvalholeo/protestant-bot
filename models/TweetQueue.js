@@ -29,6 +29,7 @@ class TweetQueue extends BaseModel {
       }
       const data ={
         tweet: JSON.stringify(tweet),
+        tweet_id: tweet.id_str,
         already_retweeted: false,
         created_at: this.dateTime,
         updated_at: this.updated_at,
