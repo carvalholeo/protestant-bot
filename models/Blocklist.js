@@ -19,16 +19,21 @@ class Blocklist extends BaseModel {
   /**
    * Method to block the user and prevent retweet them posts.
    * @param {string} username Screen name (@) of the user
+   * @param {boolean} blockedByAdmin Flag to indicate if this user were
+   * blocked by an administrator of the system.
+   * @param {string} comment Comment from administrator on block some user.
    */
-  async block(username) {
+  async block(username, blockedByAdmin = false, comment = null) {
     try {
-      if (typeof(username) === 'undefined') {
+      if (typeof (username) === 'undefined') {
         throw new ReferenceError(`You must to provide the username to be
         blocked.`);
       }
       const data = {
         screen_name: username,
         is_blocked_now: true,
+        blocked_by_admin: blockedByAdmin,
+        comment: comment,
         created_at: this.dateTime,
         updated_at: this.dateTime,
       };
@@ -52,6 +57,8 @@ class Blocklist extends BaseModel {
   /**
    * Method to retrieve the list of users that asked for block they
    * and are now enforced.
+   * @return {Array<JSON> | JSON} Return all users currently
+   * blocked in the system.
    */
   async getAllAcitveBlocks() {
     try {
@@ -70,6 +77,8 @@ class Blocklist extends BaseModel {
   /**
    * Method to retrieve the list of users that asked for block they
    * all the time.
+   * @return {Array<JSON> | JSON} Return all users
+   * blocked in the system all the time.
    */
   async getAllBlocks() {
     try {
@@ -85,12 +94,34 @@ class Blocklist extends BaseModel {
   }
 
   /**
+   * Method to retrieve one user from the list of blocked users.
+   * @param {string} username Screen name (@) to be retrivied from DB.
+   * @return {JSON} Return a JSON within an response from database or an error.
+   */
+  async getOneBlock(username) {
+    try {
+      return await this._connection
+          .where({
+            is_blocked_now: true,
+            screen_name: username,
+          })
+          .select('*');
+    } catch (error) {
+      const message = `Error from Blocklist class, method getOneBlock.
+      Message catched: ${error.message}.
+      Complete Error object: ${error}`;
+      await logger('error', message, new ErrorLog());
+      return {message: error.message};
+    }
+  }
+
+  /**
    * Method to unblock users and be able again to retweet their posts.
    * @param {string} username Screen name (@) to be unblocked
    */
   async unblock(username) {
     try {
-      if (typeof(username) === 'undefined') {
+      if (typeof (username) === 'undefined') {
         throw new ReferenceError(`You must to provide the username to be
         blocked.`);
       }
@@ -101,7 +132,8 @@ class Blocklist extends BaseModel {
 
       await this._connection
           .where({screen_name: username})
-          .delete();
+          .andWhereNot({blocked_by_admin: true})
+          .update(data);
     } catch (error) {
       const message = `Error from Blocklist class, method unblock.
       Message catched: ${error.message}.
