@@ -13,14 +13,16 @@ const poolMin = Number(process.env.DB_POOL_MIN) || 0;
 const poolMax = Number(process.env.DB_POOL_MAX) || 5;
 const useNullAsDefault = process.env.DB_USE_NULL_AS_DEFAULT || true;
 const acquireConnectionTimeout = 60000;
-const connectionString = `${client}://${username}:${password}@${host}:${port}/${database}`;
 
 module.exports = {
   development: {
     client: client,
-    client: 'sqlite3',
     connection: {
-      filename: path.join(__dirname, 'database', 'database.sqlite'),
+      host: host,
+      port: port,
+      user: username,
+      password: password,
+      database: database,
     },
     migrations: {
       directory: path.resolve(__dirname, 'database', 'migrations'),
@@ -42,9 +44,12 @@ module.exports = {
   production: {
     client: client,
     connection: {
-      filename: path.join(__dirname, 'database', 'database.sqlite'),
+      host: host,
+      port: port,
+      user: username,
+      password: password,
+      database: database,
     },
-    // connection: connectionString,
     migrations: {
       directory: path.resolve(__dirname, 'database', 'migrations'),
       extension: 'js',
