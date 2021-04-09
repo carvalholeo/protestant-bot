@@ -8,7 +8,7 @@ const logger = require('../logs/logger');
 const regex = /@/gi;
 
 const BlocklistController = {
-  async block(request, response) {
+  block: async (request, response) => {
     try {
       const {user} = request.body;
       const userClean = user.replace(regex, '');
