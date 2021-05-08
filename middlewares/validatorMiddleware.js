@@ -15,7 +15,7 @@ function validatorMiddleware(req, res, next) {
 
   if (!errors.isEmpty()) {
     return res
-        .status(400)
+        .status(406)
         .json({
           message: 'Your request is invalid. Here are the errors',
           errors: errors.array(),
