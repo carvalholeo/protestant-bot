@@ -1,4 +1,6 @@
 'use strict';
+// @ts-check
+
 const ENV = process.env.NODE_ENV ?? 'development';
 const envFile = ENV === 'development' ? '.env.local' : '.env';
 

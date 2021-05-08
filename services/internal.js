@@ -1,4 +1,6 @@
 'use strict';
+// @ts-check
+
 const axios = require('axios');
 
 const baseUrl = process.env.BASE_URL;

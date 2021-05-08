@@ -1,3 +1,6 @@
+'use strict';
+// @ts-check
+
 const Twitter = require('twitter-lite');
 require('dotenv').config({path: '../.env'});
 

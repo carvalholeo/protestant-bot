@@ -1,4 +1,6 @@
 'use strict';
+// @ts-check
+
 const connection = require('../database/connection');
 const logger = require('../logs/logger');
 

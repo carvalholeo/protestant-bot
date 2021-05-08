@@ -1,4 +1,5 @@
 'use strict';
+// @ts-check
 
 const Stream = require('../services/Twitter/Stream');
 const {ErrorLog} = require('../models');

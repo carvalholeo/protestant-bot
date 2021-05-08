@@ -1,4 +1,5 @@
 'use strict';
+// @ts-check
 
 const {ErrorLog} = require('../models');
 const logger = require('../logs/logger');

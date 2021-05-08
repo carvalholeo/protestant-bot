@@ -1,4 +1,6 @@
 'use strict';
+// @ts-check
+
 const Base = require('./Base');
 
 /**

@@ -1,4 +1,6 @@
 'use strict';
+// @ts-check
+
 const BaseLogModel = require('./BaseLog');
 
 /**

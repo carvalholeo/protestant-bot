@@ -1,4 +1,6 @@
 'use strict';
+// @ts-check
+
 const BaseModel = require('./Base');
 const AccessLog = require('./AccessLog');
 const ErrorLog = require('./ErrorLog');

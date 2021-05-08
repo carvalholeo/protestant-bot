@@ -1,4 +1,5 @@
 'use strict';
+// @ts-check
 
 /**
  * Function to verify if the tweet it's a reply, deleted or a retweet.

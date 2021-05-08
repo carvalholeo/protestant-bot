@@ -1,4 +1,6 @@
 'use strict';
+// @ts-check
+
 const RateLimit = require('../services/Twitter/RateLimit');
 const {ErrorLog} = require('../models');
 const logger = require('../logs/logger');

@@ -1,3 +1,6 @@
+'use strict';
+// @ts-check
+
 const AccessLog = require('./AccessLog');
 const ErrorLog = require('./ErrorLog');
 const KernelPanicLog = require('./KernelPanicLog');
