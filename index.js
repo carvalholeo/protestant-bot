@@ -1,11 +1,19 @@
 'use strict';
-require('dotenv').config();
+const ENV = process.env.NODE_ENV ?? 'development';
+const envFile = ENV === 'development' ? '.env.local' : '.env';
+
+require('dotenv').config({path: envFile});
 const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
 const rfs = require('rotating-file-stream');
 const path = require('path');
+
+const generateSecretToJWT = require('./utils/generateSecretToJWT');
+
+process.env.JWT_SECRET = generateSecretToJWT();
+
 const routes = require('./routes');
 
 const app = express();
@@ -35,7 +43,3 @@ app.use(morgan('combined', {stream: accessLogStream}));
 app.use('/api', routes);
 app.listen(port);
 
-app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.send(err.message);
-});
