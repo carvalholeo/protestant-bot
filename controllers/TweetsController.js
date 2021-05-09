@@ -1,56 +1,66 @@
 'use strict';
-const client = require('../services/client');
-const isReply = require('../utils/isReply');
+// @ts-check
 
-const query = {
-  track: 'Martinho Lutero,#ReformaProtestante,#ProtestantReform,#95teses,#5solas,#Reforma504Anos,-is:retweet',
-};
-class TweetsController {
-  static stream;
+const {
+  RetweetLog,
+  ErrorLog,
+  AccessLog,
+} = require('../models');
+const logger = require('../logs/logger');
 
-  getTweets(req, res) {
-    TweetsController.stream = client.stream('statuses/filter', query)
-    TweetsController.stream
-        .on("start", response => {
-          console.log("start")
-          res.status(200).json({message: "Inicializado corretamente", response})
-        })
-        .on("data", tweet => {
-          const isTweetReply = isReply(tweet);
-
-          if(!isTweetReply) {
-            console.log(`Tweet de @${tweet.user.screen_name}: "${tweet.text}".`)
-            TweetsController.retweet(tweet);
-          }
-        })
-        .on("ping", ping => console.log("ping"))
-        .on("end", response => {
-          TweetsController.produceError(response, res)
-        })
-        .on("error", error => {
-          TweetsController.produceError(error, res);
-        })
-  }
-
-  static produceError(error, response) {
-    process.nextTick(() => TweetsController.stream.destroy());
-    console.error(error);
-    response.status(500).json(error);
-    process.exit(1);
-  }
-
-  static async retweet(tweet) {
+const RetweetController = {
+  listRetweets: async (request, response) => {
     try {
-      await client.post(`statuses/retweet/${tweet.id_str}`, (error, tweets, response) => {
-        if(error) {
-          throw new Error(error)
-        }
-      });
-    } catch (error) {
-      console.error(error)
-      //throw new Error(error)
-     }
-  }
-}
+      const {page = 1} = request.query;
 
-module.exports = TweetsController;
+      const retweetLog = new RetweetLog();
+      const list = await retweetLog.getAllRetweets(page);
+      const retweetsTotal = await retweetLog.countRetweets();
+      const totalPages = retweetsTotal / 100;
+
+      const message = `List of all retweets sent to client.`;
+      logger('access', message, new AccessLog());
+
+      return response.status(200)
+          .json({
+            current_page: page,
+            total_of_pages: totalPages,
+            result: list,
+          });
+    } catch (error) {
+      const message = `There was an error on try list retweets.
+      Reason: ${error}`;
+      logger('error', message, new ErrorLog());
+
+      return response.status(500)
+          .json({message});
+    }
+  },
+
+  undoRetweets: async (request, response) => {
+    try {
+      const {tweetId} = request.params;
+      const {comment} = request.body;
+
+      await client.post(`statuses/unretweet/${tweetId}`);
+
+      const retweetLog = new RetweetLog();
+      await retweetLog.undoRetweet(tweetId, comment);
+
+      const message = `Retweet ${tweetId} was undone.
+      Reason: ${comment}`;
+      logger('access', message, new AccessLog());
+
+      return response.status(204)
+          .json({message: message});
+    } catch (error) {
+      const message = `Thre qas an error on trying undo retweet.
+      Reason: ${error}`;
+
+      return response.status(500)
+          .json({message: message});
+    }
+  },
+};
+
+module.exports = RetweetController;
