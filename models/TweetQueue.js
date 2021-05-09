@@ -1,9 +1,9 @@
-'use strict';
 // @ts-check
 
 const BaseModel = require('./Base');
 const ErrorLog = require('./ErrorLog');
 const logger = require('../logs/logger');
+const RateLimit = require('../services/Twitter/RateLimit');
 
 /**
  * Class to create and handle with a queue of tweets. Used when the rate limit
@@ -35,7 +35,7 @@ class TweetQueue extends BaseModel {
         tweet_id: tweet.id_str,
         already_retweeted: false,
         created_at: this.dateTime,
-        updated_at: this.updated_at,
+        updated_at: this.dateTime,
       };
 
       const [newEnqueue] = await this._connection
@@ -44,6 +44,7 @@ class TweetQueue extends BaseModel {
       const rateLimit = new RateLimit();
       await rateLimit.recalibrate('statuses/retweet');
 
+      // @ts-ignore
       if (!newEnqueue >= 1) {
         throw new RangeError(`Something is broken and more than one tweet
         were enqueued. Check this and fix it.`);
@@ -58,7 +59,7 @@ class TweetQueue extends BaseModel {
 
   /**
    * Method to get queue of tweets, ready to be retweeted.
-   * @return {Array<JSON> | string} Return an array of literal objects.
+   * @return {Promise<string | JSON[]>} Return an array of literal objects.
    */
   async getQueue() {
     try {
@@ -98,6 +99,7 @@ class TweetQueue extends BaseModel {
       const idsToDelete = [];
 
       for (const tweet of tweets) {
+        // @ts-ignore
         idsToDelete.push(tweet.id);
       }
 
