@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "prestart": "npx knex migrate:latest && npx knex seed:run",
-    "start": "node index.js",
+    "start": "node index.js --use-strict",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx nodemon index.js",
+    "dev": "npx nodemon index.js --use-strict",
     "sonar": "node ./bin/sonar",
     "lint": "npx eslint . --output-file ./reports/eslintreport.json --format json-with-metadata",
     "lint-fix": "npx eslint . --fix"
