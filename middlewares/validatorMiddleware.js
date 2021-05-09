@@ -18,7 +18,7 @@ function validatorMiddleware(req, res, next) {
         .status(406)
         .json({
           message: 'Your request is invalid. Here are the errors',
-          errors: errors.array(),
+          errors: errors.mapped(),
         });
   }
 
