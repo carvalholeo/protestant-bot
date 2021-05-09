@@ -1,4 +1,3 @@
-'use strict';
 // @ts-check
 
 const connection = require('../database/connection');
@@ -20,7 +19,7 @@ class Base {
       this.dateTime = new Date();
       this._connection = connection(nameOfModel);
     } catch (error) {
-      this.emergencyLog('kernel_panic', error.message);
+      this.emergencyLog(error.message);
     }
   }
   /**
