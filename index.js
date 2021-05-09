@@ -1,4 +1,6 @@
 'use strict';
+// @ts-check
+
 const ENV = process.env.NODE_ENV ?? 'development';
 const envFile = ENV === 'development' ? '.env.local' : '.env';
 
@@ -9,6 +11,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const rfs = require('rotating-file-stream');
 const path = require('path');
+const hpp = require('hpp');
 
 const generateSecretToJWT = require('./utils/generateSecretToJWT');
 
@@ -30,6 +33,8 @@ app.use(cors(corsOptions));
 app.options('*', cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
+
+app.use(hpp());
 
 const port = Number(process.env.PORT);
 
