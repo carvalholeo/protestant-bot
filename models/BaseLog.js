@@ -1,4 +1,3 @@
-'use strict';
 // @ts-check
 
 const Base = require('./Base');
@@ -28,6 +27,7 @@ class BaseLog extends Base {
       const [insert] = await this._connection
           .insert({message, created_at: date, updated_at: date});
 
+      // @ts-ignore
       if (!insert >= 1) {
         throw new Error('Message cannot be logged');
       }
@@ -38,7 +38,8 @@ class BaseLog extends Base {
 
   /**
    * Method to retrieve all log from the selected model.
-   * @return {Array<Object>} Returns an array of literal objects, within:
+   * @return {Promise<JSON[] | Object>} Returns an array of literal objects,
+   * within:
    * - ID of the message
    * - Message
    * - Date and time of creation
@@ -57,7 +58,7 @@ class BaseLog extends Base {
   /**
    * Method to retrieve only one message from the log in the database.
    * @param {number} id ID of the message to be retrieved from the database.
-   * @return {JSON} Returns a literal object, with
+   * @return {Promise<JSON | Object>} Returns a literal object, with
    * - ID of the message
    * - Message
    * - Date and time of creation
