@@ -1,3 +1,6 @@
+'use strict';
+// @ts-check
+
 const BaseModel = require('./Base');
 const ErrorLog = require('./ErrorLog');
 const logger = require('../logs/logger');
@@ -39,16 +42,22 @@ class Blocklist extends BaseModel {
       };
 
       const [blocked] = await this._connection
-          .insert(data);
+          .insert(data)
+          .onConflict('username')
+          .merge({
+            comment: data.comment,
+            is_blocked_now: data.is_blocked_now,
+            updated_at: data.updated_at,
+          });
 
-      if (!blocked > 0) {
+      if (blocked <= 0) {
         throw new Error(`There was an erro on trying to block this user.
         Probally, this @ already it's blocked.`);
       }
     } catch (error) {
+      const errorParsed = JSON.stringify(error);
       const message = `Error from Blocklist class, method block.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
+      Message catched: '${errorParsed}'.`;
       const errorLog = new ErrorLog();
       errorLog.create(message);
     }
@@ -57,27 +66,27 @@ class Blocklist extends BaseModel {
   /**
    * Method to retrieve the list of users that asked for block they
    * and are now enforced.
-   * @return {Array<JSON> | JSON} Return all users currently
+   * @return {Promise<JSON | JSON[]>} Return all users currently
    * blocked in the system.
    */
-  async getAllAcitveBlocks() {
+  async getAllActiveBlocks() {
     try {
       return await this._connection
           .where({is_blocked_now: true})
           .select('*');
     } catch (error) {
+      const errorParsed = JSON.stringify(error);
       const message = `Error from Blocklist class, method getAllAcitveBlocks.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
+      Message catched: ${errorParsed}.`;
       await logger('error', message, new ErrorLog());
-      return {message: error.message};
+      return JSON.parse(JSON.stringify({message: errorParsed}));
     }
   }
 
   /**
    * Method to retrieve the list of users that asked for block they
    * all the time.
-   * @return {Array<JSON> | JSON} Return all users
+   * @return {Promise<JSON | JSON[]>} Return all users
    * blocked in the system all the time.
    */
   async getAllBlocks() {
@@ -85,18 +94,19 @@ class Blocklist extends BaseModel {
       return await this._connection
           .select('*');
     } catch (error) {
+      const errorParsed = JSON.stringify(error);
       const message = `Error from Blocklist class, method getAllBlocks.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
+      Message catched: ${errorParsed}.`;
       await logger('error', message, new ErrorLog());
-      return {message: error.message};
+      return JSON.parse(JSON.stringify({message: errorParsed}));
     }
   }
 
   /**
    * Method to retrieve one user from the list of blocked users.
    * @param {string} username Screen name (@) to be retrivied from DB.
-   * @return {JSON} Return a JSON within an response from database or an error.
+   * @return {Promise<JSON>} Return a JSON within an
+   * response from database or an error.
    */
   async getOneBlock(username) {
     try {
@@ -107,11 +117,11 @@ class Blocklist extends BaseModel {
           })
           .select('*');
     } catch (error) {
+      const errorParsed = JSON.stringify(error);
       const message = `Error from Blocklist class, method getOneBlock.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
+      Message catched: ${errorParsed}.`;
       await logger('error', message, new ErrorLog());
-      return {message: error.message};
+      return JSON.parse(JSON.stringify({message: errorParsed}));
     }
   }
 
@@ -135,9 +145,9 @@ class Blocklist extends BaseModel {
           .andWhereNot({blocked_by_admin: true})
           .update(data);
     } catch (error) {
+      const errorParsed = JSON.stringify(error);
       const message = `Error from Blocklist class, method unblock.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
+      Message catched: '${errorParsed}'.`;
       await logger('error', message, new ErrorLog());
     }
   }
