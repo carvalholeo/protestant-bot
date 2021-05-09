@@ -1,3 +1,5 @@
+// @ts-check
+
 const BaseLogModel = require('./BaseLog');
 const ErrorLog = require('./ErrorLog');
 const logger = require('../logs/logger');
@@ -22,7 +24,8 @@ class RetweetLog extends BaseLogModel {
   /**
    * Method to retrieve all rewteets done on bot.
    * @param {number} page Page number of data to be retrivied.
-   * @return {Array<JSON> | JSON} Return an array on success by retrieving.
+   * @return {Promise<JSON | JSON[]>} Return an array on success by
+   * retrieving.
    */
   async getAllRetweets(page = 1) {
     try {
@@ -42,9 +45,27 @@ class RetweetLog extends BaseLogModel {
   }
 
   /**
+   * Method to count retweets that were not undone.
+   * @param {Boolean} wasUndone Indicate if tweets undone must be counted.
+   * @return {Promise<Number>} Number of retweets.
+   */
+  async countRetweets(wasUndone = false) {
+    try {
+      return await this._connection
+          .where({was_undone: wasUndone})
+          .count({tweets: 'tweet_id'});
+    } catch (error) {
+      const message = `An error occurred on retrivieing rewteets.
+      Message generated: ${error}`;
+      logger('error', message, new ErrorLog());
+    }
+  }
+
+  /**
    * Method to retrieve all rewteets undone on bot.
    * @param {number} page Page number of data to be retrivied.
-   * @return {Array<JSON> | JSON} Return an array on success by retrieving.
+   * @return {Promise<JSON | JSON[]>} Return an array on success by
+   * retrieving.
    */
   async getAllRetweetsUndone(page = 1) {
     try {
