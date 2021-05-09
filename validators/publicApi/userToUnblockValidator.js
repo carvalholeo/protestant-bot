@@ -6,9 +6,9 @@ const {body} = require('express-validator');
 const userToBlockValidator = [
   body('user')
       .exists()
+      .trim()
       .notEmpty()
       .isString()
-      .trim()
       .escape()
       .isLength({max: 15}),
 ];
