@@ -3,7 +3,6 @@
 const BaseModel = require('./Base');
 const ErrorLog = require('./ErrorLog');
 const logger = require('../logs/logger');
-const RateLimit = require('../services/Twitter/RateLimit');
 
 /**
  * Class to create and handle with a queue of tweets. Used when the rate limit
@@ -40,9 +39,6 @@ class TweetQueue extends BaseModel {
 
       const [newEnqueue] = await this._connection
           .insert(data);
-
-      const rateLimit = new RateLimit();
-      await rateLimit.recalibrate('statuses/retweet');
 
       // @ts-ignore
       if (!newEnqueue >= 1) {
