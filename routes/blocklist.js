@@ -1,4 +1,5 @@
 'use strict';
+// @ts-check
 
 const {Router} = require('express');
 
@@ -18,7 +19,7 @@ blocklist.post('/block',
     validatorMiddleware,
     BlocklistController.block);
 
-blocklist.post('/unblock',
+blocklist.put('/unblock',
     userToUnblockValidator,
     validatorMiddleware,
     BlocklistController.unblock);
