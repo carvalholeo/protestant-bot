@@ -7,7 +7,6 @@ const listRetweets = [
   body('comment')
       .trim()
       .escape()
-      .toString()
       .isString()
       .notEmpty()
       .isLength({max: 250}),
@@ -15,7 +14,6 @@ const listRetweets = [
   param('tweetId')
       .trim()
       .escape()
-      .toString()
       .isString()
       .notEmpty()
       .isLength({min: 19, max: 30}),
