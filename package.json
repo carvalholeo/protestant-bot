@@ -30,6 +30,7 @@
     "luxon": "^1.26.0",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
+    "otplib": "^12.0.1",
     "rotating-file-stream": "^2.1.5",
     "sqlite3": "^5.0.2",
     "twit": "^2.2.11",
