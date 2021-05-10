@@ -3,7 +3,8 @@
 const bcrypt = require('bcrypt');
 exports.seed = function(knex) {
   const now = new Date();
-  const password = bcrypt.hashSync('initialPassword', 12);
+  const saltRounds = process.env.SALT_ROUNDS ?? 12;
+  const password = bcrypt.hashSync('initialPassword', saltRounds);
   // Deletes ALL existing entries
   return knex('users').del()
       .then(function() {
