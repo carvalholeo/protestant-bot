@@ -1,4 +1,3 @@
-'use strict';
 // @ts-check
 
 const {
@@ -6,6 +5,7 @@ const {
   ErrorLog,
   AccessLog,
 } = require('../models');
+const client = require('../services/client');
 const logger = require('../logs/logger');
 
 const RetweetController = {
