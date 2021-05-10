@@ -1,4 +1,3 @@
-'use strict';
 // @ts-check
 
 const AccessLog = require('./AccessLog');
@@ -8,6 +7,7 @@ const RetweetLog = require('./RetweetLog');
 const TweetQueue = require('./TweetQueue');
 const RateLimit = require('./RateLimit');
 const Blocklist = require('./Blocklist');
+const User = require('./User');
 
 module.exports = {
   AccessLog,
@@ -17,4 +17,5 @@ module.exports = {
   TweetQueue,
   RateLimit,
   Blocklist,
+  User,
 };
