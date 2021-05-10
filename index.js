@@ -15,6 +15,8 @@ const hpp = require('hpp');
 
 const generateSecretToJWT = require('./utils/generateSecretToJWT');
 
+const tooBusyMiddleware = require('./middlewares/tooBusyMiddleware');
+
 process.env.JWT_SECRET = generateSecretToJWT();
 
 const routes = require('./routes');
@@ -22,6 +24,7 @@ const routes = require('./routes');
 const app = express();
 
 const origin = process.env.FRONTEND_URL ?? 'http://localhost:3000';
+const port = Number(process.env.PORT) ?? 3000;
 const corsOptions = {
   origin: origin,
   preflightContinue: true,
@@ -36,14 +39,14 @@ app.use(express.urlencoded({extended: false}));
 
 app.use(hpp());
 
-const port = Number(process.env.PORT);
-
 const accessLogStream = rfs.createStream('access.log', {
   interval: '1d', // rotate daily
   path: path.join(__dirname, 'logs'),
 });
 
 app.use(morgan('combined', {stream: accessLogStream}));
+
+app.use(tooBusyMiddleware);
 
 app.use('/api', routes);
 app.listen(port);
