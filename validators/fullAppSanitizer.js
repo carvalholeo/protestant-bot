@@ -1,21 +1,29 @@
 // @ts-check
 
-const {body, param, query, header} = require('express-validator');
+const {body, param, query, cookie} = require('express-validator');
+
+const fields = [
+  'user',
+  'username',
+  'comment',
+  'session',
+  'token',
+];
 
 const fullAppSanitizer = [
-  body()
+  body(fields)
       .trim()
       .escape(),
 
-  param()
+  param(fields)
       .trim()
       .escape(),
 
-  query()
+  query(fields)
       .trim()
       .escape(),
 
-  header()
+  cookie(fields)
       .trim()
       .escape(),
 ];
