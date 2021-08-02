@@ -34,6 +34,11 @@ app.use(express.urlencoded({extended: false}));
 app.use(httpLogger);
 app.use(hpp());
 
+if (process.env.NODE_ENV !== 'test') {
+  const bouncerLimiter = require('./middlewares/bouncerLimiter');
+  app.use(bouncerLimiter.block);
+}
+
 app.options('*', cors());
 app.use('/api', routes);
 app.listen(port);
