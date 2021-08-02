@@ -3,8 +3,12 @@
 const expressBouncer = require('express-bouncer');
 const bouncerLimiter = expressBouncer(1000, 900000, 5);
 
-bouncerLimiter.whitelist.push('127.0.0.1');
-bouncerLimiter.whitelist.push('localhost');
+bouncerLimiter.whitelist.push(
+    '127.0.0.1',
+    'localhost',
+    '::1',
+    '::ffff:127.0.0.1',
+);
 
 /**
  * Function to handle with rate limiting and API throttling in the app.
@@ -20,7 +24,8 @@ bouncerLimiter.blocked = function(req, res, next, remaining) {
       // @ts-ignore
       .status(429)
       .json({message: `Too many requests have been made.
-      Please wait ${remaining/1000} seconds.`});
+Please wait ${remaining / 1000} seconds.`,
+      });
 };
 
 module.exports = bouncerLimiter;
