@@ -32,7 +32,6 @@
     "morgan": "^1.10.0",
     "morgan-json": "^1.1.0",
     "mysql": "^2.18.1",
-    "rotating-file-stream": "^2.1.5",
     "sqlite3": "^5.0.2",
     "twit": "^2.2.11",
     "twitter": "^1.7.1",
