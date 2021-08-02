@@ -6,7 +6,6 @@ const {Router} = require('express');
 const validatorMiddleware = require('../middlewares/validatorMiddleware');
 const authorizationMiddleware =
   require('../middlewares/authorizarionMiddleware');
-const bouncer = require('../middlewares/bouncerLimiter');
 
 const tokenValidator = require('../validators/privateApi/tokenValidator');
 const fullAppSanitizer = require('../validators/fullAppSanitizer');
@@ -16,8 +15,6 @@ const tweets = require('./tweets');
 
 // eslint-disable-next-line new-cap
 const routes = Router();
-
-routes.use(bouncer.block);
 
 routes.use(fullAppSanitizer);
 
