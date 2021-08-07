@@ -4,6 +4,7 @@
 const {Router} = require('express');
 
 const validatorMiddleware = require('../middlewares/validatorMiddleware');
+const verifyLogoutMiddleware = require('../middlewares/verifyLogoutMiddleware');
 const authorizationMiddleware =
   require('../middlewares/authorizarionMiddleware');
 
@@ -24,6 +25,7 @@ routes.use(tokenValidator);
 routes.use(validatorMiddleware);
 
 routes.use(authorizationMiddleware);
+routes.use(verifyLogoutMiddleware);
 
 routes.use('/tweets', tweets);
 
