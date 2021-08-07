@@ -19,6 +19,8 @@ const httpLogger = require('./lib/log');
 
 process.env.JWT_SECRET = generateSecretToJWT();
 
+const map = new Map();
+
 const origin = process.env.FRONTEND_URL ?? 'http://localhost:3000';
 const port = Number(process.env.PORT) ?? 3000;
 const corsOptions = {
@@ -44,6 +46,10 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 app.options('*', cors());
+app.use((req, res, next) => {
+  req.map = map;
+  next();
+});
 app.use('/api', routes);
 
 app.use((req, res, next) => {
