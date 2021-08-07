@@ -7,6 +7,11 @@ const validatorMiddleware = require('../middlewares/validatorMiddleware');
 const TweetsController = require('../controllers/TweetsController');
 const DefaultController = require('../controllers/DefaultController');
 
+const verifyLogoutMiddleware = require('../middlewares/verifyLogoutMiddleware');
+const authorizationMiddleware =
+  require('../middlewares/authorizarionMiddleware');
+const tokenValidator = require('../validators/privateApi/tokenValidator');
+
 const listRetweets =
     require('../validators/privateApi/retweets/listRetweets');
 const undoRetweets =
@@ -14,6 +19,11 @@ const undoRetweets =
 
 // eslint-disable-next-line new-cap
 const tweets = Router();
+
+tweets.use(tokenValidator);
+tweets.use(validatorMiddleware);
+tweets.use(authorizationMiddleware);
+tweets.use(verifyLogoutMiddleware);
 
 tweets
     .post('/retweets', DefaultController.methodNotAllowed)

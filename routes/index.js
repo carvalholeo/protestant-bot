@@ -2,13 +2,6 @@
 // @ts-check
 
 const {Router} = require('express');
-
-const validatorMiddleware = require('../middlewares/validatorMiddleware');
-const verifyLogoutMiddleware = require('../middlewares/verifyLogoutMiddleware');
-const authorizationMiddleware =
-  require('../middlewares/authorizarionMiddleware');
-
-const tokenValidator = require('../validators/privateApi/tokenValidator');
 const fullAppSanitizer = require('../validators/fullAppSanitizer');
 
 const blocklist = require('./blocklist');
@@ -20,13 +13,6 @@ const routes = Router();
 routes.use(fullAppSanitizer);
 
 routes.use('/blocklist', blocklist);
-
-routes.use(tokenValidator);
-routes.use(validatorMiddleware);
-
-routes.use(authorizationMiddleware);
-routes.use(verifyLogoutMiddleware);
-
 routes.use('/tweets', tweets);
 
 module.exports = routes;
