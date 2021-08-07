@@ -13,15 +13,15 @@ function verifyLogoutMiddleware(req, res, next) {
   const {authorization} = req.headers;
   // @ts-ignore
   const {map} = req;
-  const {isValid} = map.get(authorization);
+  const token = map.get(authorization);
 
-  if (isValid) {
-    return next();
+  if (token) {
+    // @ts-ignore
+    return res.status(401)
+        .json({error: 'Token invalid: User made logout previously'});
   }
 
-  // @ts-ignore
-  return res.status(401)
-      .json({error: 'Token invalid: User made logout previously'});
+  return next();
 }
 
 module.exports = verifyLogoutMiddleware;
