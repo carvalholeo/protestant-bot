@@ -8,13 +8,24 @@ const validatorMiddleware = require('../middlewares/validatorMiddleware');
 const verifyLogoutMiddleware = require('../middlewares/verifyLogoutMiddleware');
 const authorizationMiddleware =
   require('../middlewares/authorizarionMiddleware');
+
 const tokenValidator = require('../validators/privateApi/tokenValidator');
+const loginValidator = require('../validators/privateApi/users/loginValidator');
+const userCreateValidator =
+  require('../validators/privateApi/users/userCreateValidator');
 
 // eslint-disable-next-line new-cap
 const users = Router();
 
-users.post('/', usersController.create);
-users.post('/login', usersController.login);
+users.post('/',
+    userCreateValidator,
+    validatorMiddleware,
+    usersController.create);
+
+users.post('/login',
+    loginValidator,
+    validatorMiddleware,
+    usersController.login);
 
 users.use(tokenValidator);
 // @ts-ignore
