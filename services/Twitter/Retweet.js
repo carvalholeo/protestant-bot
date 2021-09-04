@@ -1,4 +1,6 @@
+// @ts-check
 'use strict';
+
 const client = require('../client');
 const makeError = require('../../utils/makeError');
 const {
@@ -40,7 +42,7 @@ class Retweet {
         return;
       }
 
-      const rateLimitResponse = await rateLimit.getLimitFromDatabase(endpoint)
+      const rateLimitResponse = rateLimit.getLimitFromDatabase(endpoint)
           .then(async (response) => {
             if (typeof (response) === 'string') {
               const {resources} = await rateLimit
@@ -123,21 +125,28 @@ class Retweet {
   /**
    * Method to confirm if post's owner blocked or not the bot, to prevent
    * retweet from the bot.
-   * @return {boolean} Return true if is actually blocked.
+   * @return {Promise<Boolean>} Return true if is actually blocked.
    */
   async isBlocked() {
     try {
       const screenName = this.tweet.user.screen_name;
       const blocklist = new Blocklist();
-      const list = await blocklist.getAllAcitveBlocks();
+      const tweetOriginal = await blocklist
+          .getOneBlock(screenName);
+      let quotedTweet = undefined;
 
-      const index = list.indexOf((user) => user.screen_name === screenName);
+      logger('objeto_tweet', JSON.stringify(this.tweet));
+      logger('objeto_blocklist', JSON.stringify(tweetOriginal));
 
-      if (index >= 0) {
-        return true;
+      if (this.tweet.quoted_status) {
+        quotedTweet = await blocklist
+            .getOneBlock(screenName);
+        logger('objeto_blocklist', JSON.stringify(quotedTweet));
       }
 
-      return false;
+      console.log(tweetOriginal, quotedTweet);
+      // @ts-ignore
+      return tweetOriginal || quotedTweet;
     } catch (error) {
       const message = `Error on try to retweet.
       Reason: User blocked the bot.
