@@ -66,12 +66,12 @@ class TweetQueue extends BaseModel {
           .select('*');
 
       if (tweetsEnqueued.length < 1) {
-        throw new RangeError('There isn\'t any tweets on the queue');
+        return [];
       }
 
       return tweetsEnqueued;
     } catch (error) {
-      const message = `Error from TweetQueue class, method queue.
+      const message = `Error from TweetQueue class, method getQueue.
       Message catched: ${error.message}.
       Complete Error object: ${error}`;
       logger('error', message, new ErrorLog());
