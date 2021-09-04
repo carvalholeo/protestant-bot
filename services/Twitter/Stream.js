@@ -1,12 +1,17 @@
 'use strict';
+// @ts-check
 
 const {ErrorLog, AccessLog} = require('../../models');
 const logger = require('../../logs/logger');
 const client = require('../client');
 const isReply = require('../../utils/isReply');
 
-const {QUERY} = process.env;
+const {QUERY, WORD_BLOCKLIST} = process.env;
 
+const QUERY_STRING = {
+  track: `${QUERY},${WORD_BLOCKLIST}`,
+  // follow: '85838972',
+};
 /**
  * Class to handle with incoming stream of tweet with configured parameters.
  * It follows the singleton pattern.
@@ -14,16 +19,12 @@ const {QUERY} = process.env;
  */
 class Stream {
   /**
-   * Verify if there's a instance running and, if not, instanciate a new.
+   * Verify if there's a instance running and, if not, instantiate a new.
    * @param {function} retweetClass Class to handle with retweets.
    */
   constructor(retweetClass) {
-    const query = {
-      track: QUERY,
-      // follow: '1338363022402875397',
-    };
     if (typeof(Stream._instance) === 'undefined') {
-      Stream._instance = client.stream('statuses/filter', query);
+      Stream._instance = client.stream('statuses/filter', QUERY_STRING);
     }
 
     this.RetweetClass = retweetClass;
@@ -36,8 +37,8 @@ class Stream {
    */
   getInstance() {
     try {
-      if (typeof(Stream._instance) === 'undefined' ||
-          Stream._instance === null) {
+      if (typeof (Stream._instance) === 'undefined' ||
+        Stream._instance === null) {
         throw new ReferenceError('There isn\'t an instance running.');
       }
       return Stream._instance;
@@ -45,6 +46,7 @@ class Stream {
       const message = `There was an error on during attempt of shut down app.
       Reason: ${error}.`;
       logger('error', message, new ErrorLog());
+      Stream._instance = client.stream('tweets/search/stream', QUERY_STRING);
       return Stream._instance;
     }
   }
@@ -54,13 +56,14 @@ class Stream {
    */
   killInstance() {
     try {
-      if (typeof(Stream._instance) !== 'undefined' ||
-          Stream._instance !== null) {
-        const message = `App shut down. Reason: Killer method was invoked.`;
-        logger('access', message, new AccessLog());
-      } else {
+      if (typeof (Stream._instance) === 'undefined' ||
+        Stream._instance === null) {
         throw new ReferenceError('There isn\'t an instance running.');
       }
+      const message = `App shut down. Reason: Killer method was invoked.`;
+      logger('access', message, new AccessLog());
+
+      Stream._instance.close();
     } catch (error) {
       const message = `There was an error on during attempt of shut down app.
       Reason: ${error.message}.`;
@@ -75,20 +78,18 @@ class Stream {
     try {
       const stream = this.getInstance();
 
-      stream.setMaxListeners(32);
-
       stream
           .on('start', async () => {
             const message = `Stream was initialized`;
             await logger('access', message, new AccessLog());
             console.info(message);
           })
-          .on('data', (tweet) => {
+          .on('data', async (tweet) => {
             const isTweetReply = isReply(tweet);
             const retweet = new this.RetweetClass(tweet);
 
             if (!isTweetReply) {
-              retweet.retweet(tweet);
+              await retweet.retweet(tweet);
             }
           })
           .on('ping', async () => {
