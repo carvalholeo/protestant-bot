@@ -22,7 +22,7 @@ process.env.JWT_SECRET = generateSecretToJWT();
 const map = new Map();
 
 const origin = process.env.FRONTEND_URL ?? 'http://localhost:3000';
-const port = Number(process.env.PORT) ?? 3000;
+
 const corsOptions = {
   origin: origin,
   preflightContinue: true,
@@ -65,8 +65,5 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.json({message: err.message});
 });
-
-
-app.listen(port);
 
 module.exports = app;
