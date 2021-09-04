@@ -11,7 +11,7 @@ const logger = require('../logs/logger');
  */
 class RateLimit extends BaseModel {
   /**
-   * On instanciate, calls base class and pass to its constructor
+   * On instantiate, calls base class and pass to its constructor
    * the name of the table.
    */
   constructor() {
@@ -71,17 +71,10 @@ class RateLimit extends BaseModel {
         throw new ReferenceError('You must to provide a resource to retrieve.');
       }
 
-      const rateFromDatabase = await this._connection
+      return await this._connection
           .where({resource: resource})
           .first()
           .select('*');
-
-      if (typeof(rateFromDatabase.resource) === 'undefined') {
-        throw new RangeError(`Doesn't exist a resource on database with
-        parameter provided.`);
-      }
-
-      return rateFromDatabase;
     } catch (error) {
       const message = `Error from RateLimit class, method getOneRateLimit.
       Message catched: ${error.message}.
