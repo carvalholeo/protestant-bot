@@ -1,5 +1,5 @@
-'use strict';
 // @ts-check
+'use strict';
 
 const client = require('../client');
 const {
@@ -28,8 +28,8 @@ class RateLimit {
   /**
    * Method to retrieve API rate limit to the resource passed to contructor.
    * @param {string} resource Resource from Twitter API to be checked.
-   * @return {JSON | string} Returns a JSON with rate limit. If fails, returns
-   * an error message.
+   * @return {Promise<string | JSON>} Returns a JSON with rate limit.
+   * If fails, returns an error message.
    */
   async getLimitFromTwitter(resource) {
     try {
@@ -51,19 +51,19 @@ class RateLimit {
   /**
    * Method to query rate limit on database.
    * @param {string} endpoint API endpoint stored on database to be queried.
-   * @return {JSON | string} If success, returns an object within data. If
-   * fails, return the string with error message.
+   * @return {Promise<JSON | string>} If success, returns an object within data.
+   * If fails, return the string with error message.
    */
   async getLimitFromDatabase(endpoint) {
     try {
       if (typeof(endpoint) === 'undefined') {
-        throw new ReferenceError('You must to provide a resouce to query.');
+        throw new ReferenceError('You must to provide a resource to query.');
       }
       const rateLimitModel = new RateLimitModel();
 
       const getLimit = await rateLimitModel.getOneRateLimit(endpoint);
 
-      await await logger('access',
+      await logger('access',
           'API rate limit asked for database', new AccessLog());
 
       if (typeof(getLimit) === 'string') {
@@ -93,7 +93,7 @@ class RateLimit {
           typeof(limit) === 'undefined' ||
           typeof(nextReset) === 'undefined') {
         throw new ReferenceError(`You must to provide a object with 3
-        properties: resoruce (string), limit (number) and nextReset (number).`);
+        properties: resource (string), limit (number) and nextReset (number).`);
       }
       const rateLimitModel = new RateLimitModel();
       const isAlreadyOnDatabase = rateLimitModel.getOneRateLimit(endpoint);
