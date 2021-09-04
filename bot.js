@@ -1,5 +1,10 @@
 'use strict';
-require('dotenv').config();
+// @ts-check
+
+const ENV = process.env.NODE_ENV ?? 'development';
+const envFile = ENV === 'development' ? '.env.local' : '.env';
+
+require('dotenv').config({path: envFile});
 
 const Retweet = require('./services/Twitter/Retweet');
 const RateLimit = require('./services/Twitter/RateLimit');
@@ -36,10 +41,6 @@ async function BotRetweet() {
 
     const stream = new Stream(Retweet);
     stream.handleStream();
-
-    setInterval(async () => {
-      await rateLimit.recalibrate(rateLimitEndpoint);
-    }, 7000);
   } catch (error) {
     appError(error, initializeBot);
   }
