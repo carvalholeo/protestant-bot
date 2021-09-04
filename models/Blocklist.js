@@ -1,5 +1,5 @@
-'use strict';
 // @ts-check
+'use strict';
 
 const BaseModel = require('./Base');
 const ErrorLog = require('./ErrorLog');
@@ -66,7 +66,7 @@ class Blocklist extends BaseModel {
   /**
    * Method to retrieve the list of users that asked for block they
    * and are now enforced.
-   * @return {Promise<JSON | JSON[]>} Return all users currently
+   * @return {Promise<JSON[]>} Return all users currently
    * blocked in the system.
    */
   async getAllActiveBlocks() {
@@ -115,6 +115,7 @@ class Blocklist extends BaseModel {
             is_blocked_now: true,
             screen_name: username,
           })
+          .first()
           .select('*');
     } catch (error) {
       const errorParsed = JSON.stringify(error);
