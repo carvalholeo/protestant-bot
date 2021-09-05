@@ -4,7 +4,7 @@ const path = require('path');
 const options = {
   file: {
     level: 'verbose',
-    filename: path.resolve(__dirname, '..', 'logs', 'app.log'),
+    filename: path.resolve(__dirname, '..', '..', 'logs', 'app.log'),
     handleExceptions: true,
     json: true,
     maxsize: 5242880, // 5MB
