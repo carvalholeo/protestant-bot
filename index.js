@@ -15,7 +15,7 @@ const createError = require('http-errors');
 const generateSecretToJWT = require('./utils/generateSecretToJWT');
 const routes = require('./routes');
 
-const httpLogger = require('./lib/log');
+const httpLogger = require('./services/logs/log');
 
 process.env.JWT_SECRET = generateSecretToJWT();
 
@@ -63,7 +63,7 @@ app.use((err, req, res, next) => {
 
   // render the error page
   res.status(err.status || 500);
-  res.json({message: err.message});
+  res.json({'message': err.message});
 });
 
 module.exports = app;
