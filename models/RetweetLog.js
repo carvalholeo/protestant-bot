@@ -13,7 +13,7 @@ const initialOffset = 100;
  */
 class RetweetLog extends BaseLogModel {
   /**
-   * On instanciate Retweet Log class, it's necessary to provide the table to
+   * On instantiate Retweet Log class, it's necessary to provide the table to
    * handle. This table name is passed as an argument here to the constructor
    * of base class.
    */
@@ -22,8 +22,8 @@ class RetweetLog extends BaseLogModel {
   }
 
   /**
-   * Method to retrieve all rewteets done on bot.
-   * @param {number} page Page number of data to be retrivied.
+   * Method to retrieve all retweets done on bot.
+   * @param {number} page Page number of data to be retrieved.
    * @return {Promise<JSON | JSON[]>} Return an array on success by
    * retrieving.
    */
@@ -38,7 +38,7 @@ class RetweetLog extends BaseLogModel {
           .offset(offset)
           .select('*');
     } catch (error) {
-      const message = `An error occurred on retrivieing rewteets.
+      const message = `An error occurred on retrieving retweets.
       Message generated: ${error}`;
       logger('error', message, new ErrorLog());
     }
@@ -55,15 +55,15 @@ class RetweetLog extends BaseLogModel {
           .where({was_undone: wasUndone})
           .count({tweets: 'tweet_id'});
     } catch (error) {
-      const message = `An error occurred on retrivieing rewteets.
+      const message = `An error occurred on counting retweets.
       Message generated: ${error}`;
       logger('error', message, new ErrorLog());
     }
   }
 
   /**
-   * Method to retrieve all rewteets undone on bot.
-   * @param {number} page Page number of data to be retrivied.
+   * Method to retrieve all retweets undone on bot.
+   * @param {number} page Page number of data to be retrieved.
    * @return {Promise<JSON | JSON[]>} Return an array on success by
    * retrieving.
    */
@@ -78,7 +78,7 @@ class RetweetLog extends BaseLogModel {
           .offset(offset)
           .select('*');
     } catch (error) {
-      const message = `An error occurred on retrivieing rewteets undone.
+      const message = `An error occurred on retrieving retweets undone.
       Message generated: ${error}`;
       logger('error', message, new ErrorLog());
     }
@@ -86,7 +86,7 @@ class RetweetLog extends BaseLogModel {
   /**
    * Undo retweets and add a comment about this decision.
    * @param {string} tweetId Tweet to be undone on Twitter
-   * @param {string} comment Comment about decison of retweet undone
+   * @param {string} comment Comment about decision of retweet undone
    */
   async undoRetweet(tweetId, comment = '') {
     try {
@@ -98,7 +98,38 @@ class RetweetLog extends BaseLogModel {
             updated_at: this.dateTime,
           });
     } catch (error) {
-      const message = `An error occurred on retrivieing rewteets undone.
+      const message = `An error occurred on trying undo a retweet.
+      Message generated: ${error}`;
+      logger('error', message, new ErrorLog());
+    }
+  }
+
+  /**
+   * Method to insert into retweet log a specific message, contains author,
+   * id for original tweet and if was undone or not, with a comment about this.
+   * @param {JSON} tweetObject Object with all tweet properties
+   */
+  registerRetweet(tweetObject) {
+    try {
+      // @ts-ignore
+      const tweetId = tweetObject.id_str;
+      // @ts-ignore
+      const screenName = tweetObject.user.screen_name;
+      // @ts-ignore
+      const tweet = tweetObject.text;
+      const message = `Tweet de @${screenName}: ${tweet}`;
+
+      this._connection
+          .insert({
+            tweet_id: tweetId,
+            screen_name: screenName,
+            tweet,
+            message,
+            created_at: this.dateTime,
+            updated_at: this.dateTime,
+          });
+    } catch (error) {
+      const message = `An error occurred on logging a retweet.
       Message generated: ${error}`;
       logger('error', message, new ErrorLog());
     }
