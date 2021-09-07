@@ -100,8 +100,9 @@ class Retweet {
 
             const message = `Tweet de @${this.tweet.user.screen_name}:
             "${this.tweet.text}".`;
-            await logger('retweet', message, new RetweetLog());
-            await logger('access',
+            const retweet = new RetweetLog();
+            retweet.registerRetweet(this.tweet);
+            logger('access',
                 `A tweet post was retweeted.`,
                 new AccessLog());
 
