@@ -6,14 +6,14 @@ const {body} = require('express-validator');
 const contactFormValidator = [
   body('name')
       .trim()
-      .isString()
       .escape()
+      .isString()
       .isLength({max: 50}),
 
   body('email')
       .trim()
       .escape()
-      .isEmail({allow_display_name: true})
+      .isString()
       .isLength({max: 100}),
 
   body('twitter')
