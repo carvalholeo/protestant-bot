@@ -14,6 +14,9 @@ const routes = Router();
 
 routes.use(fullAppSanitizer);
 
+routes.get('/', (req, res) =>
+  res.status(200).json({message: 'API it\'s working!'}));
+
 routes.use('/blocklist', blocklist);
 routes.use('/tweets', tweets);
 routes.use('/users', users);
