@@ -33,7 +33,7 @@ created at database.`;
           .status(500)
           .json({message});
     }
-  }
-}
+  },
+};
 
 module.exports = ContactController;
