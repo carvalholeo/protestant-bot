@@ -5,7 +5,6 @@ module.exports = {
     args: 'use-strict',
     instances: 4,
     cron_restart: '0 0 * * *',
-    watch: true,
     increment_var: 'PORT',
     exec_mode: 'cluster',
     env: {
