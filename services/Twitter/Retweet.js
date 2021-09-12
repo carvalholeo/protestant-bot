@@ -1,7 +1,7 @@
 // @ts-check
 'use strict';
 
-const client = require('../client');
+const client = require('../api/client');
 const makeError = require('../../utils/makeError');
 const {
   ErrorLog,

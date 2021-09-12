@@ -5,7 +5,7 @@ const {
   ErrorLog,
   AccessLog,
 } = require('../models');
-const client = require('../services/client');
+const client = require('../services/api/client');
 const logger = require('../logs/logger');
 
 const RetweetController = {

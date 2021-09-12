@@ -1,9 +1,9 @@
-'use strict';
 // @ts-check
+'use strict';
 
 const {ErrorLog, AccessLog} = require('../../models');
 const logger = require('../../logs/logger');
-const client = require('../client');
+const client = require('../api/client');
 const isReply = require('../../utils/isReply');
 
 const {QUERY, WORD_BLOCKLIST} = process.env;
