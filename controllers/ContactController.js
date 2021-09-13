@@ -7,6 +7,7 @@ const {
   AccessLog,
 } = require('../models');
 const logger = require('../logs/logger');
+const {sendMail} = require('../services/emails');
 
 const ContactController = {
   create: async (request, response) => {
@@ -21,12 +22,15 @@ const ContactController = {
 created at database.`;
 
       await logger('access', messageToUser, new AccessLog());
-      return response
+      response
           .status(201)
           .json({messageToUser});
+
+      // @ts-ignore
+      await sendMail({name, email, twitter, message});
     } catch (error) {
       console.error(error);
-      const message = `Error on block user.
+      const message = `Error on register contact at database.
       Reason: ${error}`;
       await logger('error', message, new ErrorLog());
       return response
