@@ -11,7 +11,7 @@ const crypto = require('crypto');
  * @return {String} Returns the token to be used in JWT.
  */
 function generateSecretToJWT(regenerate = false) {
-  const filePath = path.resolve(__dirname, '..', 'SECRET_TOKEN');
+  const filePath = path.resolve(__dirname, '..', '..', 'SECRET_TOKEN');
   const token = crypto.randomBytes(512).toString('hex');
   try {
     if (regenerate) {

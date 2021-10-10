@@ -31,12 +31,12 @@ module.exports = {
       database: database,
     },
     migrations: {
-      directory: path.resolve(__dirname, 'database', 'migrations'),
+      directory: path.resolve(__dirname, 'dist', 'database', 'migrations'),
       extension: 'js',
       tableName: 'knex_migrations',
     },
     seeds: {
-      directory: path.resolve(__dirname, 'database', 'seeds'),
+      directory: path.resolve(__dirname, 'dist', 'database', 'seeds'),
       extension: 'js',
     },
     pool: {
@@ -57,12 +57,12 @@ module.exports = {
       database: database,
     },
     migrations: {
-      directory: path.resolve(__dirname, 'database', 'migrations'),
+      directory: path.resolve(__dirname, 'dist', 'database', 'migrations'),
       extension: 'js',
       tableName: 'knex_migrations',
     },
     seeds: {
-      directory: path.resolve(__dirname, 'database', 'seeds'),
+      directory: path.resolve(__dirname, 'dist', 'database', 'seeds'),
       extension: 'js',
     },
     pool: {
