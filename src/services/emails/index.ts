@@ -1,4 +1,4 @@
-import nodemailer, {createTransport} from 'nodemailer';
+import {createTransport} from 'nodemailer';
 import {renderFile} from 'ejs';
 import {resolve} from 'path';
 
@@ -23,7 +23,7 @@ const {
  * @return {nodemailer.Transporter} Returns an object with email transporter
  * configured.
  */
-function transporter(): nodemailer.Transporter {
+function transporter() {
   return createTransport({
     host: String(EMAIL_SERVER),
     port: Number(EMAIL_PORT),
