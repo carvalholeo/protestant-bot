@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'protestant-bot-api',
-      script: './dist/server.js',
+      script: './dist/src/server.js',
       args: '--use-strict',
       instances: 4,
       cron_restart: '0 0 * * *',
@@ -15,7 +15,7 @@ module.exports = {
     },
     {
       name: 'protestant-bot-bot',
-      script: './dist/bot.js',
+      script: './dist/src/bot.js',
       args: '--use-strict',
       instances: 1,
       exec_mode: 'fork',

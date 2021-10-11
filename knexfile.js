@@ -1,10 +1,9 @@
 const ENV = process.env.NODE_ENV ?? 'development';
 const envFile = ENV === 'development' ? '.env.local' : '.env';
 
-import dotenv from 'dotenv';
-dotenv.config({ path: envFile });
+require('dotenv').config({path: envFile});
 
-import { resolve } from 'path';
+const {resolve} = require('path');
 
 const database = process.env.DB_DATABASE ?? 'protestant_bot';
 const username = process.env.DB_USER ?? 'root';
@@ -18,7 +17,7 @@ const useNullAsDefault = Boolean(process.env.DB_USE_NULL_AS_DEFAULT) ?? true;
 const acquireConnectionTimeout =
   Number(process.env.DB_ACQUIRE_CONNECTION_TIMEOUT) ?? 60000;
 
-const configuration: any = {
+const configuration = {
   development: {
     client: client,
     connection: {
@@ -29,13 +28,13 @@ const configuration: any = {
       database: database,
     },
     migrations: {
-      directory: resolve(__dirname, 'dist', 'database', 'migrations'),
-      extension: 'ts',
+      directory: resolve(__dirname, 'dist', 'src', 'database', 'migrations'),
+      extension: 'js',
       tableName: 'knex_migrations',
     },
     seeds: {
-      directory: resolve(__dirname, 'dist', 'database', 'seeds'),
-      extension: 'ts',
+      directory: resolve(__dirname, 'dist', 'src', 'database', 'seeds'),
+      extension: 'js',
     },
     pool: {
       min: poolMin,
@@ -54,13 +53,13 @@ const configuration: any = {
       database: database,
     },
     migrations: {
-      directory: resolve(__dirname, 'dist', 'database', 'migrations'),
-      extension: 'ts',
+      directory: resolve(__dirname, 'dist', 'src', 'database', 'migrations'),
+      extension: 'js',
       tableName: 'knex_migrations',
     },
     seeds: {
-      directory: resolve(__dirname, 'dist', 'database', 'seeds'),
-      extension: 'ts',
+      directory: resolve(__dirname, 'dist', 'src', 'database', 'seeds'),
+      extension: 'js',
     },
     pool: {
       min: poolMin,
@@ -68,8 +67,7 @@ const configuration: any = {
     },
     useNullAsDefault,
     acquireConnectionTimeout,
-  }
-}
+  },
+};
 
-export default configuration;
-
+module.exports= configuration;
