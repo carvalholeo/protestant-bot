@@ -1,17 +1,20 @@
 module.exports = {
-  env: {
-    commonjs: true,
-    es2021: true,
-    node: true,
+  'env': {
+    'es2021': true,
+    'node': true,
   },
-  extends: [
+  'extends': [
     'google',
-    'plugin:sonarjs/recommended',
   ],
-  parserOptions: {
-    ecmaVersion: 12,
+  'parser': '@typescript-eslint/parser',
+  'parserOptions': {
+    'ecmaVersion': 12,
+    'sourceType': 'module',
   },
-  rules: {
+  'plugins': [
+    '@typescript-eslint',
+    'sonarjs',
+  ],
+  'rules': {
   },
-  plugins: ['sonarjs'],
 };

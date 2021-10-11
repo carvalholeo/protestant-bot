@@ -8,10 +8,10 @@
     "build": "npx knex migrate:latest --env production",
     "start": "node ./dist/server.js --use-strict",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx nodemon ./src/server.js --use-strict",
+    "dev": "tsnd ./src/server.ts --rs",
     "sonar": "node ./bin/sonar",
-    "lint": "npx eslint . --output-file ./reports/eslintreport.json --format json-with-metadata",
-    "lint-fix": "npx eslint . --fix"
+    "lint": "eslint . --output-file ./reports/eslintreport.json --format json-with-metadata",
+    "lint-fix": "eslint . --fix"
   },
   "keywords": [],
   "author": "",
@@ -55,8 +55,11 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
+    "@types/node": "^16.10.3",
     "@types/nodemailer": "^6.4.4",
-    "eslint": "^7.32.0",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^8.0.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-node": "^11.1.0",
