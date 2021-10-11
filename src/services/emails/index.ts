@@ -1,8 +1,8 @@
-import { createTransport } from 'nodemailer';
-import { renderFile } from 'ejs';
-import { resolve } from 'path';
+import nodemailer, {createTransport} from 'nodemailer';
+import {renderFile} from 'ejs';
+import {resolve} from 'path';
 
-import { ErrorLog, AccessLog } from '../../models';
+import {ErrorLog, AccessLog} from '../../models';
 import logger from '../../logs/logger';
 
 import Contact from '../../interfaces/typeDefinitions/Contact';
@@ -23,7 +23,7 @@ const {
  * @return {nodemailer.Transporter} Returns an object with email transporter
  * configured.
  */
-function transporter() {
+function transporter(): nodemailer.Transporter {
   return createTransport({
     host: String(EMAIL_SERVER),
     port: Number(EMAIL_PORT),
@@ -50,7 +50,7 @@ async function sendMail(data: Contact) {
     to: '',
     subject: '',
     text: '',
-    html: ''
+    html: '',
   };
 
   try {
@@ -72,17 +72,17 @@ Log is ${error}`;
   }
 
   transporter().sendMail(config)
-    .then(async (success) => {
-      const message = `Message ${data.message} sent to contact email.
+      .then(async (success: any) => {
+        const message = `Message ${data.message} sent to contact email.
 Log from Nodemailer is ${success}`;
-      await logger('access', message, new AccessLog());
-    })
-    .catch(async (error) => {
-      console.log(error)
-      const message = `Error on try to send email to contact email.
+        await logger('access', message, new AccessLog());
+      })
+      .catch(async (error: any) => {
+        console.log(error);
+        const message = `Error on try to send email to contact email.
 Log from Nodemailer is ${error.toString()}`;
-      await logger('error', message, new ErrorLog());
-    });
+        await logger('error', message, new ErrorLog());
+      });
 }
 
 /**
@@ -94,9 +94,9 @@ Log from Nodemailer is ${error.toString()}`;
  * - message (required)
  * @return {Promise<string>} Returns the email formatted to HTML
  */
-async function renderMail(data: Contact) {
+async function renderMail(data: Contact): Promise<string> {
   return await renderFile(
-    resolve(__dirname, '..', '..', 'views', 'email.ejs'), { data });
+      resolve(__dirname, '..', '..', 'views', 'email.ejs'), {data});
 }
 
 export default {
