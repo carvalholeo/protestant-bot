@@ -2,10 +2,10 @@ const ENV = process.env.NODE_ENV ?? 'development';
 const envFile = ENV === 'development' ? '.env.local' : '.env';
 
 import dotenv from 'dotenv';
-dotenv.config({ path: envFile });
+dotenv.config({path: envFile});
 
-import express, { json, urlencoded } from 'express';
-import { Request, Response, NextFunction } from 'express';
+import express, {json, urlencoded} from 'express';
+import {Request, Response, NextFunction} from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import hpp from 'hpp';
@@ -32,13 +32,14 @@ const app = express();
 app.use(httpLogger);
 app.use(helmet());
 app.use(json());
-app.use(urlencoded({ extended: false }));
+app.use(urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(hpp());
 
 app.use(cors(corsOptions));
 
-app.options('*', cors);
+// @ts-expect-error
+app.options('*', cors());
 app.use('/api', routes);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -57,7 +58,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 
   // render the error page
   res.status(err.status || 500);
-  res.json({ 'message': err.message });
+  res.json({'message': err.message});
 });
 
 export default app;
