@@ -107,9 +107,9 @@ class RetweetLog extends BaseLogModel {
   /**
    * Method to insert into retweet log a specific message, contains author,
    * id for original tweet and if was undone or not, with a comment about this.
-   * @param tweetObject Object with all tweet properties
+   * @param {Tweet} tweetObject Object with all tweet properties
    */
-  registerRetweet(tweetObject: Tweet): void {
+  async registerRetweet(tweetObject: Tweet): Promise<void> {
     try {
       const tweetId = tweetObject.id_str;
       const screenName = tweetObject.user.screen_name;
