@@ -45,8 +45,7 @@ async function BotRetweet() {
     appError(error, initializeBot);
   }
 }
-setTimeout(BotRetweet, 0);
 
-const initializeBot = setInterval(BotRetweet, botTimeout);
+const initializeBot = setTimeout(BotRetweet, botTimeout);
 
 export default BotRetweet;
