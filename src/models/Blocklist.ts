@@ -50,8 +50,8 @@ class Blocklist extends BaseModel {
           });
 
       if (blocked <= 0) {
-        throw new Error(`There was an erro on trying to block this user.
-        Probally, this @ already it's blocked.`);
+        throw new Error(`There was an error on trying to block this user.
+        Probably, this @ already it's blocked.`);
       }
     } catch (error: any) {
       const errorParsed = JSON.stringify(error);
@@ -75,7 +75,7 @@ class Blocklist extends BaseModel {
           .select('*');
     } catch (error: any) {
       const errorParsed = JSON.stringify(error);
-      const message = `Error from Blocklist class, method getAllAcitveBlocks.
+      const message = `Error from Blocklist class, method getAllActiveBlocks.
       Message catched: ${errorParsed}.`;
       await logger('error', message, new ErrorLog());
       return JSON.parse(JSON.stringify({message: errorParsed}));
@@ -103,18 +103,18 @@ class Blocklist extends BaseModel {
 
   /**
    * Method to retrieve one user from the list of blocked users.
-   * @param username Screen name (@) to be retrivied from DB.
-   * @return Return a JSON within an
+   * @param {string} username Screen name (@) to be retrieved from DB.
+   * @return {Promise<BlocklistInterface[] | undefined>} Return a JSON within an
    * response from database or an error.
    */
-  async getOneBlock(username: string): Promise<BlocklistInterface | undefined> {
+  async getOneBlock(username: string):
+  Promise<BlocklistInterface[] | undefined> {
     try {
       return await this._connection
           .where({
             is_blocked_now: true,
             screen_name: username,
           })
-          .first()
           .select('*');
     } catch (error: any) {
       const errorParsed = JSON.stringify(error);

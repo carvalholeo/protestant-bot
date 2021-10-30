@@ -116,7 +116,7 @@ class RetweetLog extends BaseLogModel {
       const tweet = tweetObject.text;
       const message = `Tweet de @${screenName}: ${tweet}`;
 
-      this._connection
+      await this._connection
           .insert({
             tweet_id: tweetId,
             screen_name: screenName,

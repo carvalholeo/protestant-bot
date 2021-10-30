@@ -1,7 +1,7 @@
 import client from '../api/client';
 import makeError from '../../utils/makeError';
 import {
-  ErrorLog, AccessLog, RetweetLog, TweetQueue, Blocklist
+  ErrorLog, AccessLog, RetweetLog, TweetQueue, Blocklist,
 } from '../../models';
 import logger from '../../logs/logger';
 import RateLimit from './RateLimit';
@@ -114,9 +114,6 @@ class Retweet {
             const message = `There was an error on try to retweet.
             Reason: ${error}`;
             await logger('error', message, new ErrorLog());
-
-            this.stream.killInstance();
-            await makeError(message, `${Retweet.name} on retweet method`);
           });
     } catch (error) {
       const message = `There was an error on try to retweet.
@@ -134,7 +131,8 @@ class Retweet {
     try {
       const screenName = this.tweet.user.screen_name;
       const blocklist = new Blocklist();
-      const tweetOriginal = await blocklist
+      // @ts-expect-error
+      const [tweetOriginal] = await blocklist
           .getOneBlock(screenName);
       let quotedTweet = undefined;
 
@@ -142,12 +140,11 @@ class Retweet {
       logger('objeto_blocklist', JSON.stringify(tweetOriginal));
 
       if (this.tweet.is_quote_status) {
-        quotedTweet = await blocklist
+        // @ts-expect-error
+        [quotedTweet] = await blocklist
             .getOneBlock(this.tweet.quoted_status.user.screen_name);
         logger('objeto_blocklist', JSON.stringify(quotedTweet));
       }
-
-      console.log(tweetOriginal, quotedTweet);
 
       return (tweetOriginal || quotedTweet) ? true : false;
     } catch (error) {
