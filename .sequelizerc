@@ -1,3 +1,7 @@
+const ENV = process.env.NODE_ENV ?? 'development';
+const envFile = ENV === 'development' ? '.env.local' : '.env';
+
+require('dotenv').config({path: envFile});
 const path = require('path');
 
 module.exports = {
