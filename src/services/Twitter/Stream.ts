@@ -1,4 +1,4 @@
-import { ErrorLog, AccessLog } from '../../models';
+import { ErrorLog, AccessLog } from '../models';
 import logger from '../../logs/logger';
 import client from '../api/client';
 import isReply from '../../utils/isReply';

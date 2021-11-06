@@ -1,8 +1,8 @@
 import BaseModel from './Base';
 import ErrorLog from './ErrorLog';
-import logger from '../logs/logger';
+import logger from '../../logs/logger';
 
-import ContactInterface from '../interfaces/typeDefinitions/Contact';
+import ContactInterface from '../../interfaces/typeDefinitions/Contact';
 
 /**
  * Class to handle with contacts received from the front-end.

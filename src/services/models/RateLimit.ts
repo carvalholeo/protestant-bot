@@ -1,9 +1,9 @@
 import BaseModel from './Base';
 import AccessLog from './AccessLog';
 import ErrorLog from './ErrorLog';
-import logger from '../logs/logger';
+import logger from '../../logs/logger';
 
-import RateLimitInterface from '../interfaces/typeDefinitions/RateLimitInterface';
+import RateLimitInterface from '../../interfaces/typeDefinitions/RateLimitInterface';
 
 /**
  * Handle with rate limit of Twitter on database.

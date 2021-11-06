@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import models from '../models';
+import models from '../services/models';
 const {
   Contact, ErrorLog, AccessLog,
 } = models;

@@ -2,7 +2,7 @@ import {createTransport} from 'nodemailer';
 import {renderFile} from 'ejs';
 import {resolve} from 'path';
 
-import {ErrorLog, AccessLog} from '../../models';
+import {ErrorLog, AccessLog} from '../models';
 import logger from '../../logs/logger';
 
 import Contact from '../../interfaces/typeDefinitions/Contact';

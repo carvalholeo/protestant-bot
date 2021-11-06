@@ -2,7 +2,7 @@
 import { hashSync, compareSync } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { Request, Response } from 'express';
-import models from '../models';
+import models from '../services/models';
 const {
   AccessLog, ErrorLog, User,
 } = models;
