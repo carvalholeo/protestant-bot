@@ -1,8 +1,8 @@
 import BaseModel from './Base';
 import ErrorLog from './ErrorLog';
-import logger from '../logs/logger';
+import logger from '../../logs/logger';
 
-import BlocklistInterface from '../interfaces/typeDefinitions/BlocklistInterface';
+import BlocklistInterface from '../../interfaces/typeDefinitions/BlocklistInterface';
 /**
  * Handle with the users block list, that don't want to have their
  * tweets retweet by the bot.

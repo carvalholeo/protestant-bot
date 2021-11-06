@@ -2,7 +2,7 @@ import client from '../api/client';
 import makeError from '../../utils/makeError';
 import {
   ErrorLog, AccessLog, RetweetLog, TweetQueue, Blocklist,
-} from '../../models';
+} from '../models';
 import logger from '../../logs/logger';
 import RateLimit from './RateLimit';
 import Stream from './Stream';

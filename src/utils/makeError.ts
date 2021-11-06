@@ -1,5 +1,5 @@
 import StreamTwitter from '../services/Twitter/Stream';
-import { ErrorLog } from '../models';
+import { ErrorLog } from '../services/models';
 import logger from '../logs/logger';
 
 const stream = new StreamTwitter();

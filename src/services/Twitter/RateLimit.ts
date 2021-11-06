@@ -1,5 +1,5 @@
 import client from '../api/client';
-import { RateLimit as RateLimitModel, ErrorLog, AccessLog } from '../../models';
+import { RateLimit as RateLimitModel, ErrorLog, AccessLog } from '../models';
 import logger from '../../logs/logger';
 
 import RateLimitInterface from '../../interfaces/typeDefinitions/RateLimitInterface';

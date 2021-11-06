@@ -1,9 +1,9 @@
 import BaseModel from './Base';
 import ErrorLog from './ErrorLog';
-import logger from '../logs/logger';
+import logger from '../../logs/logger';
 
-import Tweet from '../interfaces/typeDefinitions/Tweet';
-import TweetQueueInterface from '../interfaces/typeDefinitions/TweetQueueInterface';
+import Tweet from '../../interfaces/typeDefinitions/Tweet';
+import TweetQueueInterface from '../../interfaces/typeDefinitions/TweetQueueInterface';
 
 /**
  * Class to create and handle with a queue of tweets. Used when the rate limit

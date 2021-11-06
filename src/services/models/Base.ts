@@ -1,6 +1,6 @@
 import { Knex, knex } from 'knex';
-import connection from '../database/connection';
-import logger from '../logs/logger';
+import connection from '../../database/connection';
+import logger from '../../logs/logger';
 
 /**
  * Class to emulate interface at Javascript.

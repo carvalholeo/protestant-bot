@@ -2,9 +2,9 @@ import BaseModel from './Base';
 
 import ErrorLog from './ErrorLog';
 import AccessLog from './AccessLog';
-import logger from '../logs/logger';
+import logger from '../../logs/logger';
 
-import UserInterface from '../interfaces/typeDefinitions/UserInterface';
+import UserInterface from '../../interfaces/typeDefinitions/UserInterface';
 
 /**
  * Class to handle with Users in database. Used for create, update, block and

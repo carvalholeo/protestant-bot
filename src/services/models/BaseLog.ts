@@ -1,6 +1,6 @@
 import Base from './Base';
-import BaseLogInterface from '../interfaces/typeDefinitions/LogDatabase';
-import ErrorObject from '../interfaces/typeDefinitions/ErrorObject';
+import BaseLogInterface from '../../interfaces/typeDefinitions/LogDatabase';
+import ErrorObject from '../../interfaces/typeDefinitions/ErrorObject';
 import { Knex } from 'knex';
 
 /**

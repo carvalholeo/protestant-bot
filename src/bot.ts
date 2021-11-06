@@ -6,7 +6,7 @@ dotenv.config({ path: envFile });
 
 import Retweet from './services/Twitter/Retweet';
 import RateLimit from './services/Twitter/RateLimit';
-import { TweetQueue } from './models';
+import { TweetQueue } from './services/models';
 import StreamTwitter from './services/Twitter/Stream';
 import appError from './utils/appError';
 

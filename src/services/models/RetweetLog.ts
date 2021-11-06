@@ -1,9 +1,9 @@
 import BaseLogModel from './BaseLog';
 import ErrorLog from './ErrorLog';
-import logger from '../logs/logger';
+import logger from '../../logs/logger';
 
-import RetweetLogInterface from '../interfaces/typeDefinitions/RetweetLogInterface';
-import Tweet from '../interfaces/typeDefinitions/Tweet';
+import RetweetLogInterface from '../../interfaces/typeDefinitions/RetweetLogInterface';
+import Tweet from '../../interfaces/typeDefinitions/Tweet';
 
 const initialLimit = 100;
 const initialOffset = 100;

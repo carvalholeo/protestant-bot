@@ -1,9 +1,9 @@
 import BaseModel from './Base';
 import ErrorLog from './ErrorLog';
 import AccessLog from './AccessLog';
-import logger from '../logs/logger';
+import logger from '../../logs/logger';
 
-import ConfigurationModel from '../interfaces/typeDefinitions/ConfigurationModel';
+import ConfigurationModel from '../../interfaces/typeDefinitions/ConfigurationModel';
 
 /**
  * Handle with app configurations
