@@ -1,4 +1,4 @@
-import BaseModel from './Base';
+import models from '../../db/models';
 import ErrorLog from './ErrorLog';
 import logger from '../../logs/logger';
 
@@ -7,16 +7,8 @@ import ContactInterface from '../../interfaces/typeDefinitions/Contact';
 /**
  * Class to handle with contacts received from the front-end.
  * @class Contact
- * @extends BaseModel
  */
-class Contact extends BaseModel {
-  /**
-   * Pass to the base class constructor the name of the table.
-   */
-  constructor() {
-    super('contact');
-  }
-
+class Contact {
   /**
    * Method to save a contact on database.
    * @param {ContactInterface} contact Object with these properties:
@@ -36,12 +28,9 @@ class Contact extends BaseModel {
         email: contact.email,
         twitter: contact.twitter,
         message: contact.message,
-        created_at: this.dateTime,
-        updated_at: this.dateTime,
       };
 
-      await this._connection
-          .insert(data);
+      await models.Contact.create(data);
     } catch (error: any) {
       const message = `Error from Contact class, method createContact.
       Message catched: ${error.message}.
