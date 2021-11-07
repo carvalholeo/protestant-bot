@@ -3,8 +3,8 @@ interface BlocklistInterface {
   is_blocked_now: boolean;
   blocked_by_admin: boolean;
   comment: string;
-  created_at: Date;
-  updated_at: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export default BlocklistInterface;
