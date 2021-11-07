@@ -140,7 +140,6 @@ class Retweet {
       logger('objeto_blocklist', JSON.stringify(tweetOriginal));
 
       if (this.tweet.is_quote_status) {
-        // @ts-expect-error
         [quotedTweet] = await blocklist
             .getOneBlock(this.tweet.quoted_status.user.screen_name);
         logger('objeto_blocklist', JSON.stringify(quotedTweet));
