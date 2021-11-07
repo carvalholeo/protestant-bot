@@ -18,6 +18,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'KernelPanicLog',
+    tableName: 'kernelpaniclog',
+    freezeTableName: true,
   });
   return KernelPanicLog;
 };
