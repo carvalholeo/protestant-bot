@@ -20,6 +20,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'RateLimit',
+    tableName: 'ratelimit',
+    freezeTableName: true,
   });
   return RateLimit;
 };
