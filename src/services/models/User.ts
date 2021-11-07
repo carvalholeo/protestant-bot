@@ -1,5 +1,4 @@
-import BaseModel from './Base';
-
+import models from '../../db/models';
 import ErrorLog from './ErrorLog';
 import AccessLog from './AccessLog';
 import logger from '../../logs/logger';
@@ -10,9 +9,8 @@ import UserInterface from '../../interfaces/typeDefinitions/UserInterface';
  * Class to handle with Users in database. Used for create, update, block and
  * unblock users on database.
  * @class User
- * @extends BaseModel
  */
-class User extends BaseModel {
+class User {
   private username = '';
   /**
    * Pass to the base class the name of table to be used. Also, receive
@@ -20,13 +18,12 @@ class User extends BaseModel {
    * @param {string} username Username to be created on the system.
    */
   constructor(username: string) {
-    super('users');
     this.username = username;
   }
 
   /**
    * Class to create a new user on database.
-   * @param password Password to be linked with the user.
+   * @param {string} password Password to be linked with the user.
    */
   async createUser(password: string): Promise<void> {
     try {
@@ -34,17 +31,9 @@ class User extends BaseModel {
         username: this.username,
         password: password,
         is_active: true,
-        created_at: this.dateTime,
-        updated_at: this.dateTime,
       };
 
-      const [newUser] = await this._connection
-          .insert(data);
-
-      if (!(newUser >= 1)) {
-        throw new RangeError(`Something is broken and more than one user were
-        created.Check this and fix it.`);
-      }
+      await models.User.create(data);
 
       const message = `User ${this.username} created successfully.`;
       logger('access', message, new AccessLog());
@@ -64,12 +53,13 @@ class User extends BaseModel {
     try {
       const data = {
         is_active: false,
-        updated_at: this.dateTime,
       };
 
-      await this._connection
-          .where({username: this.username})
-          .update(data);
+      await models.User.update(data, {
+        where: {
+          username: this.username,
+        },
+      });
 
       const message = `User ${this.username} blocked successfully.`;
       logger('access', message, new AccessLog());
@@ -89,12 +79,13 @@ class User extends BaseModel {
     try {
       const data = {
         is_active: true,
-        updated_at: this.dateTime,
       };
 
-      await this._connection
-          .where({username: this.username})
-          .update(data);
+      await models.User.update(data, {
+        where: {
+          username: this.username,
+        },
+      });
 
       const message = `User ${this.username} unblock successfully.`;
       logger('access', message, new AccessLog());
@@ -108,18 +99,19 @@ class User extends BaseModel {
 
   /**
    * Method to user change their own password.
-   * @param password New password to be updated.
+   * @param {string} password New password to be updated.
    */
   async changeMyPassword(password: string): Promise<void> {
     try {
       const data = {
         password: password,
-        updated_at: this.dateTime,
       };
 
-      await this._connection
-          .where({username: this.username})
-          .update(data);
+      await models.User.update(data, {
+        where: {
+          username: this.username,
+        },
+      });
 
       const message = `User ${this.username} have their password updated
       successfully.`;
@@ -134,19 +126,22 @@ class User extends BaseModel {
 
   /**
    * Method to user change password of another user.
-   * @param username User to have their password updated.
-   * @param password New password to be updated.
+   * @param {string} username User to have their password updated.
+   * @param {string} password New password to be updated.
    */
-  async changeThirdPartyPassword(username: string, password: string): Promise<void> {
+  async changeThirdPartyPassword(
+      username: string,
+      password: string): Promise<void> {
     try {
       const data = {
         password: password,
-        updated_at: this.dateTime,
       };
 
-      await this._connection
-          .where({username: username})
-          .update(data);
+      await models.User.update(data, {
+        where: {
+          username,
+        },
+      });
 
       const message = `User ${username} have their password updated
       successfully.`;
@@ -161,19 +156,20 @@ class User extends BaseModel {
 
   /**
    * Method to register Two Factor Authentication for user.
-   * @param secret String to be used as seed on the 2FA lib.
+   * @param {string} secret String to be used as seed on the 2FA lib.
    */
   async activateMultifactorAuth(secret: string): Promise<void> {
     try {
       const data = {
         has_mfa: true,
         secret_mfa: secret,
-        updated_at: this.dateTime,
       };
 
-      await this._connection
-          .where({username: this.username})
-          .update(data);
+      await models.User.update(data, {
+        where: {
+          username: this.username,
+        },
+      });
 
       const message = `User ${this.username} have created Two factor auth
       successfully.`;
@@ -188,15 +184,17 @@ class User extends BaseModel {
 
   /**
    * Retrieve user information of active user.
-   * @return Return an only information data.
+   * @return {Promise<UserInterface | undefined>} Return an
+   * only information data.
    */
   async getUser(): Promise<UserInterface | undefined> {
     try {
-      const information = await this._connection
-          .where({username: this.username})
-          .andWhereNot({is_active: true})
-          .select('*')
-          .first();
+      const information = await models.User.findOne({
+        where: {
+          username: this.username,
+          is_active: true,
+        },
+      });
 
       const message = `User ${this.username} retrieved successfully.`;
       logger('access', message, new AccessLog());
