@@ -3,8 +3,8 @@ interface UserInterface {
   username: string;
   password?: string;
   is_active: boolean;
-  created_at: Date;
-  updated_at: Date;
+  created_at?: Date;
+  updated_at?: Date;
 }
 
 export default UserInterface;
