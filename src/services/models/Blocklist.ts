@@ -1,31 +1,24 @@
-import BaseModel from './Base';
 import ErrorLog from './ErrorLog';
 import logger from '../../logs/logger';
+import models from '../../db/models';
 
 import BlocklistInterface from '../../interfaces/typeDefinitions/BlocklistInterface';
 /**
  * Handle with the users block list, that don't want to have their
  * tweets retweet by the bot.
  * @class Blocklist
- * @extends BaseModel
  */
-class Blocklist extends BaseModel {
-  /**
-   * On instantiate, pass to the construtor of the base class
-   * the name of the table.
-   */
-  constructor() {
-    super('blocklist');
-  }
-
+class Blocklist {
   /**
    * Method to block the user and prevent retweet them posts.
-   * @param username Screen name (@) of the user
-   * @param blockedByAdmin Flag to indicate if this user were
+   * @param {string} username Screen name (@) of the user
+   * @param {boolean} blockedByAdmin Flag to indicate if this user were
    * blocked by an administrator of the system.
-   * @param comment Comment from administrator on block some user.
+   * @param {string} comment Comment from administrator on block some user.
    */
-  async block(username: string, blockedByAdmin: boolean = false, comment: string = ''): Promise<void> {
+  async block(username: string,
+      blockedByAdmin: boolean = false,
+      comment: string = ''): Promise<void> {
     try {
       if (typeof (username) === 'undefined') {
         throw new ReferenceError(`You must to provide the username to be
@@ -36,27 +29,27 @@ class Blocklist extends BaseModel {
         is_blocked_now: true,
         blocked_by_admin: blockedByAdmin,
         comment: comment,
-        created_at: this.dateTime,
-        updated_at: this.dateTime,
       };
 
-      const [blocked] = await this._connection
-          .insert(data)
-          .onConflict('username')
-          .merge({
-            comment: data.comment,
-            is_blocked_now: data.is_blocked_now,
-            updated_at: data.updated_at,
-          });
+      const [user, created] = await models.Blocklist.findOrCreate({
+        where: {screen_name: username},
+        defaults: {
+          ...data,
+        },
+      });
 
-      if (blocked <= 0) {
-        throw new Error(`There was an error on trying to block this user.
-        Probably, this @ already it's blocked.`);
+      if (created) {
+        return;
       }
+
+      user.is_blocked_now = data.is_blocked_now;
+      user.blocked_by_admin = data.blocked_by_admin;
+      user.comment = data.comment;
+
+      await user.save();
     } catch (error: any) {
-      const errorParsed = JSON.stringify(error);
       const message = `Error from Blocklist class, method block.
-      Message catched: '${errorParsed}'.`;
+      Message catched: '${error}'.`;
       const errorLog = new ErrorLog();
       errorLog.create(message);
     }
@@ -65,14 +58,14 @@ class Blocklist extends BaseModel {
   /**
    * Method to retrieve the list of users that asked for block they
    * and are now enforced.
-   * @return Return all users currently
-   * blocked in the system.
+   * @return {Promise<BlocklistInterface[] | undefined>}
+   * Return all users currently blocked in the system.
    */
   async getAllActiveBlocks(): Promise<BlocklistInterface[] | undefined> {
     try {
-      return await this._connection
-          .where({is_blocked_now: true})
-          .select('*');
+      return await models.Blocklist.findAll({where: {
+        is_blocked_now: true,
+      }}).toJSON();
     } catch (error: any) {
       const errorParsed = JSON.stringify(error);
       const message = `Error from Blocklist class, method getAllActiveBlocks.
@@ -85,13 +78,12 @@ class Blocklist extends BaseModel {
   /**
    * Method to retrieve the list of users that asked for block they
    * all the time.
-   * @return Return all users
+   * @return {Promise<BlocklistInterface[] | undefined>} Return all users
    * blocked in the system all the time.
    */
   async getAllBlocks(): Promise<BlocklistInterface[] | undefined> {
     try {
-      return await this._connection
-          .select('*');
+      return await models.Blocklist.findAll().toJSON();
     } catch (error: any) {
       const errorParsed = JSON.stringify(error);
       const message = `Error from Blocklist class, method getAllBlocks.
@@ -110,12 +102,10 @@ class Blocklist extends BaseModel {
   async getOneBlock(username: string):
   Promise<BlocklistInterface[] | undefined> {
     try {
-      return await this._connection
-          .where({
-            is_blocked_now: true,
-            screen_name: username,
-          })
-          .select('*');
+      return await models.Blocklist.findOne({where: {
+        is_blocked_now: true,
+        screen_name: username,
+      }});
     } catch (error: any) {
       const errorParsed = JSON.stringify(error);
       const message = `Error from Blocklist class, method getOneBlock.
@@ -127,7 +117,7 @@ class Blocklist extends BaseModel {
 
   /**
    * Method to unblock users and be able again to retweet their posts.
-   * @param username Screen name (@) to be unblocked
+   * @param {string} username Screen name (@) to be unblocked
    */
   async unblock(username: string): Promise<void> {
     try {
@@ -137,13 +127,18 @@ class Blocklist extends BaseModel {
       }
       const data = {
         is_blocked_now: false,
-        updated_at: this.dateTime,
       };
+      const user = await models.Blocklist.findOne({where: {
+        screen_name: username,
+        blocked_by_admin: false,
+      }});
 
-      await this._connection
-          .where({screen_name: username})
-          .andWhereNot({blocked_by_admin: true})
-          .update(data);
+      if (user === null) {
+        return;
+      }
+
+      user.is_blocked_now = data.is_blocked_now;
+      await user.save();
     } catch (error: any) {
       const errorParsed = JSON.stringify(error);
       const message = `Error from Blocklist class, method unblock.
