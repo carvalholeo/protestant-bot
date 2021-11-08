@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'RetweetLog',
-    tableName: 'retweetlog',
+    tableName: 'RetweetLog',
     freezeTableName: true,
   });
   return RetweetLog;

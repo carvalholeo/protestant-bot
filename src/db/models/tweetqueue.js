@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'TweetQueue',
-    tableName: 'tweetqueue',
+    tableName: 'TweetQueue',
     freezeTableName: true,
   });
   return TweetQueue;
