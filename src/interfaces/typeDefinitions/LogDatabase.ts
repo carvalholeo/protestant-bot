@@ -1,8 +1,9 @@
 interface LogDatabase {
-  id: number;
+  level: string;
+  emmiter: string;
   message: string;
-  created_at: Date;
-  updated_at: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export default LogDatabase;
