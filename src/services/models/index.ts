@@ -4,6 +4,7 @@ import Configuration from './Configuration';
 import Contact from './Contact';
 import ErrorLog from './ErrorLog';
 import KernelPanicLog from './KernelPanicLog';
+import LogService from './LogService';
 import RateLimit from './RateLimit';
 import RetweetLog from './RetweetLog';
 import TweetQueue from './TweetQueue';
@@ -16,6 +17,7 @@ export {
   Contact,
   ErrorLog,
   KernelPanicLog,
+  LogService,
   RateLimit,
   RetweetLog,
   TweetQueue,
@@ -30,6 +32,7 @@ export default {
   Contact,
   ErrorLog,
   KernelPanicLog,
+  LogService,
   RateLimit,
   RetweetLog,
   TweetQueue,
