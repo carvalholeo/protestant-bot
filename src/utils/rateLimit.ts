@@ -36,9 +36,7 @@ async function rateLimit(): Promise<string | void | RateLimitInterface> {
         // @ts-ignore @ts-nocheck
         if (Date.now() > response.next_reset ) {
           // @ts-ignore @ts-nocheck
-          const {
-            resources: resources_1,
-          } = await limit.getLimitFromTwitter('statuses');
+          const {resources: resources_1} = await limit.getLimitFromTwitter('statuses');
           const {
             limit: apiLimit_1,
             reset: reset_1,
