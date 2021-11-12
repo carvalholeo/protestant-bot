@@ -1,5 +1,5 @@
 import logger from '../../logs/logger';
-import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase'
+import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
 
 /**
  * Class to emulate interface at Javascript.
@@ -10,13 +10,13 @@ abstract class Base {
    * Use this method only when database logging is unavailable.
    * @param {string} message Message to be stored at Kernel Panic log.
    */
-  emergencyLog(message: string) {
+  async emergencyLog(message: string) {
     const logObject: LogDatabase = {
       emmiter: 'Service.emergencyLog',
       level: 'kernel_panic',
       message: message,
     };
-    logger(logObject);
+    await logger(logObject);
   }
 }
 
