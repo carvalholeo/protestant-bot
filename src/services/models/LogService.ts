@@ -23,7 +23,7 @@ class Log extends Base {
       }
       await models.Log.create(logObject);
     } catch (error: any) {
-      this.emergencyLog(error.message);
+      await this.emergencyLog(error.message);
     }
   }
 
@@ -42,7 +42,7 @@ class Log extends Base {
     try {
       return await models.Log.findAll();
     } catch (error: any) {
-      this.emergencyLog(error.message);
+      await this.emergencyLog(error.message);
       return {message: error.message};
     }
   }
@@ -71,7 +71,7 @@ class Log extends Base {
         },
       });
     } catch (error: any) {
-      this.emergencyLog(error.message);
+      await this.emergencyLog(error.message);
       return {message: error.message};
     }
   }
