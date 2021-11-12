@@ -1,9 +1,9 @@
-import ErrorLog from './ErrorLog';
 import logger from '../../logs/logger';
 import models from '../../db/models';
 
 import RetweetLogInterface from '../../interfaces/typeDefinitions/RetweetLogInterface';
 import Tweet from '../../interfaces/typeDefinitions/Tweet';
+import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
 
 const initialLimit = 100;
 const initialOffset = 100;
@@ -31,10 +31,14 @@ class RetweetLog {
         limit,
         offset,
       });
-    } catch (error) {
-      const message = `An error occurred on retrieving retweets.
-      Message generated: ${error}`;
-      logger('error', message, new ErrorLog());
+    } catch (error: any) {
+      const logObject: LogDatabase = {
+        emmiter: 'RetweetLogService.getAllRetweets.catch',
+        level: 'error',
+        message: error.message,
+      };
+
+      await logger(logObject);
     }
   }
 
@@ -52,10 +56,14 @@ class RetweetLog {
         distinct: true,
         col: 'tweet_id',
       });
-    } catch (error) {
-      const message = `An error occurred on counting retweets.
-      Message generated: ${error}`;
-      logger('error', message, new ErrorLog());
+    } catch (error: any) {
+      const logObject: LogDatabase = {
+        emmiter: 'RetweetLogService.countRetweets.catch',
+        level: 'error',
+        message: error.message,
+      };
+
+      await logger(logObject);
     }
   }
 
@@ -80,10 +88,14 @@ class RetweetLog {
       });
 
       return count;
-    } catch (error) {
-      const message = `An error occurred on retrieving retweets undone.
-      Message generated: ${error}`;
-      logger('error', message, new ErrorLog());
+    } catch (error: any) {
+      const logObject: LogDatabase = {
+        emmiter: 'RetweetLogService.getAllRetweetsUndone.catch',
+        level: 'error',
+        message: error.message,
+      };
+
+      await logger(logObject);
     }
   }
   /**
@@ -102,9 +114,13 @@ class RetweetLog {
 
       await tweet.save();
     } catch (error: any) {
-      const message = `An error occurred on trying undo a retweet.
-      Message generated: ${error}`;
-      logger('error', message, new ErrorLog());
+      const logObject: LogDatabase = {
+        emmiter: 'RetweetLogService.undoRetweet.catch',
+        level: 'error',
+        message: error.message,
+      };
+
+      await logger(logObject);
     }
   }
 
@@ -126,10 +142,14 @@ class RetweetLog {
         tweet,
         message,
       });
-    } catch (error) {
-      const message = `An error occurred on logging a retweet.
-      Message generated: ${error}`;
-      logger('error', message, new ErrorLog());
+    } catch (error: any) {
+      const logObject: LogDatabase = {
+        emmiter: 'RetweetLogService.registerRetweet.catch',
+        level: 'error',
+        message: error.message,
+      };
+
+      await logger(logObject);
     }
   }
 }

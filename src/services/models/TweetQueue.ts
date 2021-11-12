@@ -1,10 +1,10 @@
 import models from '../../db/models';
 import {Op} from 'sequelize';
-import ErrorLog from './ErrorLog';
 import logger from '../../logs/logger';
 
 import Tweet from '../../interfaces/typeDefinitions/Tweet';
 import TweetQueueInterface from '../../interfaces/typeDefinitions/TweetQueueInterface';
+import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
 
 const {in: opIn} = Op;
 
@@ -33,10 +33,13 @@ class TweetQueue {
 
       await models.TweetQueue.create(data);
     } catch (error: any) {
-      const message = `Error from TweetQueue class, method enqueue.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
-      logger('error', message, new ErrorLog());
+      const logObject: LogDatabase = {
+        emmiter: 'TweetQueueService.enqueue.catch',
+        level: 'error',
+        message: error.message,
+      };
+
+      await logger(logObject);
     }
   }
 
@@ -62,10 +65,13 @@ class TweetQueue {
 
       return tweetsEnqueued;
     } catch (error: any) {
-      const message = `Error from TweetQueue class, method getQueue.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
-      logger('error', message, new ErrorLog());
+      const logObject: LogDatabase = {
+        emmiter: 'TweetQueueService.getQueue.catch',
+        level: 'error',
+        message: error.message,
+      };
+
+      await logger(logObject);
 
       return error.message;
     }
@@ -98,10 +104,13 @@ class TweetQueue {
         },
       });
     } catch (error: any) {
-      const message = `Error from TweetQueue class, method dequeue.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
-      logger('error', message, new ErrorLog());
+      const logObject: LogDatabase = {
+        emmiter: 'TweetQueueService.dequeue.catch',
+        level: 'error',
+        message: error.message,
+      };
+
+      await logger(logObject);
     }
   }
 }

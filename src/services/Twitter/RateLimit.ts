@@ -1,15 +1,16 @@
 import client from '../api/client';
-import { RateLimit as RateLimitModel, ErrorLog, AccessLog } from '../models';
+import {RateLimit as RateLimitModel} from '../models';
 import logger from '../../logs/logger';
 
 import RateLimitInterface from '../../interfaces/typeDefinitions/RateLimitInterface';
+import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
 
 /**
  * Handle with rate limit from Twitter App.
  */
 class RateLimit {
   public dateTime: string;
-  private static limit = 0
+  private static limit = 0;
   /**
    * Initialize the class with the resource to be checked for
    * use across the app.
@@ -24,24 +25,37 @@ class RateLimit {
 
   /**
    * Method to retrieve API rate limit to the resource passed to constructor.
-   * @param resource Resource from Twitter API to be checked.
-   * @return Returns a JSON with rate limit.
-   * If fails, returns an error message.
+   * @param {string} resource Resource from Twitter API to be checked.
+   * @return {Promise<RateLimitInterface | string>}
+   * Returns a JSON with rate limit. If fails, returns an error message.
    */
-  async getLimitFromTwitter(resource: string): Promise<RateLimitInterface | string> {
+  async getLimitFromTwitter(resource: string):
+      Promise<RateLimitInterface | string> {
     try {
       const getApiLimit = await client.get(`application/rate_limit_status`, {
         resources: resource,
       });
 
-      await logger('access',
-          'API rate limit asked for Twitter', new AccessLog());
+      const message: LogDatabase = {
+        emmiter: 'RateLimit.getLimitFromTwitter.try',
+        level: 'info',
+        message: 'API rate limit asked for Twitter',
+      };
+
+      await logger(message);
       return getApiLimit;
     } catch (error: any) {
-      const message = `There was an error on get rate limit from Twitter.
+      const text = `There was an error on get rate limit from Twitter.
       Reason: ${error.errors[0].message}.`;
-      await logger('error', message, new ErrorLog());
-      return message;
+
+      const message: LogDatabase = {
+        emmiter: 'RateLimit.getLimitFromTwitter.catch',
+        level: 'error',
+        message: error.errors[0].message,
+      };
+      await logger(message);
+
+      return text;
     }
   }
 
@@ -57,11 +71,15 @@ class RateLimit {
         throw new ReferenceError('You must to provide a resource to query.');
       }
       const rateLimitModel = new RateLimitModel();
+      const message: LogDatabase = {
+        emmiter: 'RateLimit.getLimitFromDatabase.try',
+        level: 'info',
+        message: 'API rate limit asked for database',
+      };
 
       const getLimit = await rateLimitModel.getOneRateLimit(endpoint);
 
-      await logger('access',
-          'API rate limit asked for database', new AccessLog());
+      await logger(message);
 
       if (typeof(getLimit) === 'string') {
         throw new Error(`There is no rate limit registered on database
@@ -70,11 +88,17 @@ class RateLimit {
 
       return getLimit;
     } catch (error: any) {
-      const message = `There was an error on get rate limit from database.
+      const text = `There was an error on get rate limit from database.
       Reason: ${error.message}.`;
-      await logger('error', message, new ErrorLog());
 
-      return message;
+      const message: LogDatabase = {
+        emmiter: 'RateLimit.getLimitFromDatabase.catch',
+        level: 'error',
+        message: error.message,
+      };
+      await logger(message);
+
+      return text;
     }
   }
 
@@ -84,7 +108,10 @@ class RateLimit {
    * @param {number} limit Integer number, with the limit of the API
    * @param {number} nextReset Integer number, time in minutes to the next reset
    */
-  async setLimit(endpoint: string, limit: number, nextReset: number): Promise<void> {
+  async setLimit(
+      endpoint: string,
+      limit: number,
+      nextReset: number): Promise<void> {
     try {
       if (typeof(endpoint) === 'undefined' ||
           typeof(limit) === 'undefined' ||
@@ -94,6 +121,11 @@ class RateLimit {
       }
       const rateLimitModel = new RateLimitModel();
       const isAlreadyOnDatabase = rateLimitModel.getOneRateLimit(endpoint);
+      const message: LogDatabase = {
+        emmiter: 'RateLimit.setLimit.try',
+        level: 'info',
+        message: '',
+      };
 
       if (typeof(isAlreadyOnDatabase) !== 'string') {
         await rateLimitModel.update({
@@ -101,14 +133,16 @@ class RateLimit {
           limit: limit,
           nextReset,
         });
-        await logger('access',
-            'API rate limit updated on database',
-            new AccessLog());
+
+        message.message = 'API rate limit updated on database';
+        await logger(message);
+
         return;
       }
 
-      await logger('access',
-          'API rate limit created on database', new AccessLog());
+      message.message = 'API rate limit created on database';
+      await logger(message);
+
       await rateLimitModel.create({
         resource: endpoint,
         limit: limit,
@@ -116,16 +150,20 @@ class RateLimit {
       });
       return;
     } catch (error: any) {
-      const message = `There was an error on try handle incoming streaming.
-      Reason: ${error.message}.`;
-      await logger('error', message, new ErrorLog());
+      const message: LogDatabase = {
+        emmiter: 'RateLimit.setLimit.catch',
+        level: 'error',
+        message: error.message,
+      };
+      await logger(message);
+
       return;
     }
   }
 
   /**
    * Method to query Twitter API. Using after make many retweets from queue.
-   * @param endpoint Endpoint to query and verify current rate limit
+   * @param {string} endpoint Endpoint to query and verify current rate limit
    */
   async recalibrate(endpoint: string): Promise<void> {
     try {
@@ -137,10 +175,13 @@ class RateLimit {
       } = resources.statuses['/statuses/retweets/:id'];
 
       await this.setLimit(endpoint, remaining, reset * 1000);
-    } catch (error) {
-      const message = `There was an error on try recalibrate rate limit.
-      Reason: ${error}.`;
-      await logger('error', message, new ErrorLog());
+    } catch (error: any) {
+      const message: LogDatabase = {
+        emmiter: 'RateLimit.setLimit.catch',
+        level: 'error',
+        message: error.message,
+      };
+      await logger(message);
     }
   }
 }

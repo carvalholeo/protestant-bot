@@ -1,13 +1,13 @@
 import client from '../api/client';
-import makeError from '../../utils/makeError';
 import {
-  ErrorLog, AccessLog, RetweetLog, TweetQueue, Blocklist,
+  RetweetLog, TweetQueue, Blocklist,
 } from '../models';
 import logger from '../../logs/logger';
 import RateLimit from './RateLimit';
 import Stream from './Stream';
 
 import Tweet from '../../interfaces/typeDefinitions/Tweet';
+import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
 
 const rateLimit = new RateLimit();
 const endpoint = 'statuses/retweet';
@@ -79,11 +79,17 @@ class Retweet {
             return response;
           })
           .catch(async (error) => {
-            const message = `Error on handle with rate limit.
-              Reason: ${error}.
+            const text = `Error on handle with rate limit.
+              Reason: ${error.message}.
               Stack: ${error}`;
 
-            await logger('error', message, new ErrorLog());
+            const message: LogDatabase = {
+              emmiter: 'RetweetService.retweet.try.rateLimitResponse.catch',
+              level: 'error',
+              message: text,
+            };
+
+            await logger(message);
           });
       // @ts-ignore @ts-nocheck
       if (rateLimitResponse.nextAction === 'enqueue') {
@@ -101,24 +107,34 @@ class Retweet {
                 rateLimitResponse.next_reset);
 
             const message = `Tweet de @${this.tweet.user.screen_name}:
-            "${this.tweet.text}".`;
+"${this.tweet.text}".`;
             const retweet = new RetweetLog();
             await retweet.registerRetweet(this.tweet);
-            logger('access',
-                `A tweet post was retweeted.`,
-                new AccessLog());
+
+            const logObject: LogDatabase = {
+              emmiter: 'RetweetService.retweet.try.post.then',
+              level: 'info',
+              message: 'A tweet post was retweeted.',
+            };
+            await logger(logObject);
 
             console.log(message);
           })
           .catch(async (error) => {
-            const message = `There was an error on try to retweet.
-            Reason: ${error}`;
-            await logger('error', message, new ErrorLog());
+            const logObject: LogDatabase = {
+              emmiter: 'RetweetService.retweet.try.post.catch',
+              level: 'error',
+              message: error.message,
+            };
+            await logger(logObject);
           });
-    } catch (error) {
-      const message = `There was an error on try to retweet.
-      Reason: ${error}`;
-      await logger('error', message, new ErrorLog());
+    } catch (error: any) {
+      const logObject: LogDatabase = {
+        emmiter: 'RetweetService.retweet.catch',
+        level: 'error',
+        message: error.message,
+      };
+      await logger(logObject);
     }
   }
 
@@ -135,22 +151,42 @@ class Retweet {
       const [tweetOriginal] = await blocklist
           .getOneBlock(screenName);
       let quotedTweet = undefined;
+      const message: LogDatabase = {
+        level: 'debug',
+        emmiter: '',
+        message: '',
+      };
 
-      logger('objeto_tweet', JSON.stringify(this.tweet));
-      logger('objeto_blocklist', JSON.stringify(tweetOriginal));
+      await logger({
+        ...message,
+        emmiter: 'Retweet.isBlocked.tweet_object.try',
+        message: JSON.stringify(this.tweet),
+      });
+      await logger({
+        ...message,
+        emmiter: 'Retweet.isBlocked.blocklist_object.original.try',
+        message: JSON.stringify(tweetOriginal),
+      });
 
       if (this.tweet.is_quote_status) {
         [quotedTweet] = await blocklist
             .getOneBlock(this.tweet.quoted_status.user.screen_name);
-        logger('objeto_blocklist', JSON.stringify(quotedTweet));
+
+        await logger({
+          ...message,
+          emmiter: 'Retweet.isBlocked.blocklist_object.quoted.try',
+          message: JSON.stringify(quotedTweet),
+        });
       }
 
       return (tweetOriginal || quotedTweet) ? true : false;
-    } catch (error) {
-      const message = `Error on try to retweet.
-      Reason: User blocked the bot.
-      Stack: ${error}.`;
-      await logger('error', message, new ErrorLog());
+    } catch (error: any) {
+      const logObject: LogDatabase = {
+        level: 'debug',
+        emmiter: 'Retweet.isBlocked.catch',
+        message: error.message,
+      };
+      await logger(logObject);
       return true;
     }
   }
