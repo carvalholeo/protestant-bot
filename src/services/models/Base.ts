@@ -1,4 +1,5 @@
 import logger from '../../logs/logger';
+import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase'
 
 /**
  * Class to emulate interface at Javascript.
@@ -10,7 +11,12 @@ abstract class Base {
    * @param {string} message Message to be stored at Kernel Panic log.
    */
   emergencyLog(message: string) {
-    logger('kernel_panic', message);
+    const logObject: LogDatabase = {
+      emmiter: 'Service.emergencyLog',
+      level: 'kernel_panic',
+      message: message,
+    };
+    logger(logObject);
   }
 }
 
