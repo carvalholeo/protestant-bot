@@ -1,9 +1,8 @@
 import models from '../../db/models';
-import AccessLog from './AccessLog';
-import ErrorLog from './ErrorLog';
 import logger from '../../logs/logger';
 
 import RateLimitInterface from '../../interfaces/typeDefinitions/RateLimitInterface';
+import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
 
 /**
  * Handle with rate limit of Twitter on database.
@@ -36,12 +35,21 @@ class RateLimit {
 
       await models.RateLimit.create(dataToInsert);
 
-      await logger('access', 'Rate limit to resource created', new AccessLog());
+      const logObject: LogDatabase = {
+        emmiter: 'RateLimitService.create.try',
+        level: 'info',
+        message: 'Rate limit to resource created',
+      };
+
+      await logger(logObject);
     } catch (error: any) {
-      const message = `Error from RateLimit class, method create.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
-      await logger('error', message, new ErrorLog());
+      const logObject: LogDatabase = {
+        emmiter: 'RateLimitService.create.catch',
+        level: 'error',
+        message: error.message,
+      };
+
+      await logger(logObject);
     }
   }
 
@@ -64,7 +72,14 @@ class RateLimit {
       const message = `Error from RateLimit class, method getOneRateLimit.
       Message catched: ${error.message}.
       Complete Error object: ${error}`;
-      await logger('error', message, new ErrorLog());
+
+      const logObject: LogDatabase = {
+        emmiter: 'RateLimitService.getOneRateLimit.catch',
+        level: 'error',
+        message: error.message,
+      };
+
+      await logger(logObject);
       return message;
     }
   }
@@ -85,7 +100,7 @@ class RateLimit {
           typeof(limit) === 'undefined' ||
           typeof(nextReset) === 'undefined') {
         throw new ReferenceError(`You must to provide a object with
-        3 properties: resoruce (string), limit (number) and nextReset (date).`);
+        3 properties: resource (string), limit (number) and nextReset (date).`);
       }
 
       const dataToUpdate = {
@@ -99,10 +114,13 @@ class RateLimit {
         },
       });
     } catch (error: any) {
-      const message = `Error from RateLimit class, method update.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
-      await logger('error', message, new ErrorLog());
+      const logObject: LogDatabase = {
+        emmiter: 'RateLimitService.update.catch',
+        level: 'error',
+        message: error.message,
+      };
+
+      await logger(logObject);
     }
   }
 }

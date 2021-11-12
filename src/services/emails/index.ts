@@ -2,11 +2,11 @@ import {createTransport} from 'nodemailer';
 import {renderFile} from 'ejs';
 import {resolve} from 'path';
 
-import {ErrorLog, AccessLog} from '../models';
 import logger from '../../logs/logger';
 
 import Contact from '../../interfaces/typeDefinitions/Contact';
 import ConfigEmail from '../../interfaces/typeDefinitions/ConfigEmail';
+import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
 
 const {
   EMAIL_SERVER,
@@ -65,23 +65,37 @@ Contato de ${String(data.name)}, email ${data.email} e Twitter ${data.twitter}.
 Mensagem: ${data.message}`;
 
     config.html = html;
-  } catch (error) {
-    const message = `Error on try to render email on EJS.
-Log is ${error}`;
-    await logger('error', message, new ErrorLog());
+  } catch (error: any) {
+    const logObject: LogDatabase = {
+      emmiter: 'EmailService.sendMail.renderEJS.catch',
+      level: 'error',
+      message: error.message,
+    };
+    await logger(logObject);
   }
 
   transporter().sendMail(config)
       .then(async (success: any) => {
         const message = `Message ${data.message} sent to contact email.
 Log from Nodemailer is ${success}`;
-        await logger('access', message, new AccessLog());
+        const logObject: LogDatabase = {
+          emmiter: 'EmailService.sendMail.sendMail.then',
+          level: 'info',
+          message: message,
+        };
+        await logger(logObject);
       })
       .catch(async (error: any) => {
-        console.log(error);
+        console.error(error);
         const message = `Error on try to send email to contact email.
 Log from Nodemailer is ${error.toString()}`;
-        await logger('error', message, new ErrorLog());
+
+        const logObject: LogDatabase = {
+          emmiter: 'EmailService.sendMail.sendMail.catch',
+          level: 'error',
+          message: message,
+        };
+        await logger(logObject);
       });
 }
 

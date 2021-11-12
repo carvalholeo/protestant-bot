@@ -1,9 +1,8 @@
 import models from '../../db/models';
-import ErrorLog from './ErrorLog';
-import AccessLog from './AccessLog';
 import logger from '../../logs/logger';
 
 import UserInterface from '../../interfaces/typeDefinitions/UserInterface';
+import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
 
 /**
  * Class to handle with Users in database. Used for create, update, block and
@@ -36,12 +35,22 @@ class User {
       await models.User.create(data);
 
       const message = `User ${this.username} created successfully.`;
-      logger('access', message, new AccessLog());
+
+      const logObject: LogDatabase = {
+        emmiter: 'UserService.createUser.try',
+        level: 'info',
+        message: message,
+      };
+
+      await logger(logObject);
     } catch (error: any) {
-      const message = `Error from User class, method createUser.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
-      logger('error', message, new ErrorLog());
+      const logObject: LogDatabase = {
+        emmiter: 'UserService.createUser.catch',
+        level: 'error',
+        message: error.message,
+      };
+
+      await logger(logObject);
     }
   }
 
@@ -62,12 +71,21 @@ class User {
       });
 
       const message = `User ${this.username} blocked successfully.`;
-      logger('access', message, new AccessLog());
+      const logObject: LogDatabase = {
+        emmiter: 'UserService.blockUser.try',
+        level: 'info',
+        message: message,
+      };
+
+      await logger(logObject);
     } catch (error: any) {
-      const message = `Error from User class, method blockUser.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
-      logger('error', message, new ErrorLog());
+      const logObject: LogDatabase = {
+        emmiter: 'UserService.blockUser.catch',
+        level: 'error',
+        message: error.message,
+      };
+
+      await logger(logObject);
     }
   }
 
@@ -88,12 +106,21 @@ class User {
       });
 
       const message = `User ${this.username} unblock successfully.`;
-      logger('access', message, new AccessLog());
+      const logObject: LogDatabase = {
+        emmiter: 'UserService.unblockUser.try',
+        level: 'info',
+        message: message,
+      };
+
+      await logger(logObject);
     } catch (error: any) {
-      const message = `Error from User class, method unblockUser.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
-      logger('error', message, new ErrorLog());
+      const logObject: LogDatabase = {
+        emmiter: 'UserService.unblockUser.catch',
+        level: 'info',
+        message: error.message,
+      };
+
+      await logger(logObject);
     }
   }
 
@@ -115,12 +142,21 @@ class User {
 
       const message = `User ${this.username} have their password updated
       successfully.`;
-      logger('access', message, new AccessLog());
+      const logObject: LogDatabase = {
+        emmiter: 'UserService.changeMyPassword.try',
+        level: 'info',
+        message: message,
+      };
+
+      await logger(logObject);
     } catch (error: any) {
-      const message = `Error from User class, method changeMyPassword.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
-      logger('error', message, new ErrorLog());
+      const logObject: LogDatabase = {
+        emmiter: 'UserService.changeMyPassword.catch',
+        level: 'error',
+        message: error.message,
+      };
+
+      await logger(logObject);
     }
   }
 
@@ -145,12 +181,21 @@ class User {
 
       const message = `User ${username} have their password updated
       successfully.`;
-      logger('access', message, new AccessLog());
+      const logObject: LogDatabase = {
+        emmiter: 'UserService.changeThirdPartyPassword.try',
+        level: 'info',
+        message: message,
+      };
+
+      await logger(logObject);
     } catch (error: any) {
-      const message = `Error from User class, method changeThirdPartyPassword.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
-      logger('error', message, new ErrorLog());
+      const logObject: LogDatabase = {
+        emmiter: 'UserService.changeThirdPartyPassword.catch',
+        level: 'info',
+        message: error.message,
+      };
+
+      await logger(logObject);
     }
   }
 
@@ -173,12 +218,21 @@ class User {
 
       const message = `User ${this.username} have created Two factor auth
       successfully.`;
-      logger('access', message, new AccessLog());
+      const logObject: LogDatabase = {
+        emmiter: 'UserService.activateMultifactorAuth.try',
+        level: 'info',
+        message: message,
+      };
+
+      await logger(logObject);
     } catch (error: any) {
-      const message = `Error from User class, method activateMultifactorAuth.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
-      logger('error', message, new ErrorLog());
+      const logObject: LogDatabase = {
+        emmiter: 'UserService.activateMultifactorAuth.catch',
+        level: 'info',
+        message: error.message,
+      };
+
+      await logger(logObject);
     }
   }
 
@@ -197,14 +251,23 @@ class User {
       });
 
       const message = `User ${this.username} retrieved successfully.`;
-      logger('access', message, new AccessLog());
+      const logObject: LogDatabase = {
+        emmiter: 'UserService.getUser.try',
+        level: 'info',
+        message: message,
+      };
+
+      await logger(logObject);
 
       return information;
     } catch (error: any) {
-      const message = `Error from User class, method getUserInformations.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
-      logger('error', message, new ErrorLog());
+      const logObject: LogDatabase = {
+        emmiter: 'UserService.getUser.catch',
+        level: 'info',
+        message: error.message,
+      };
+
+      await logger(logObject);
     }
   }
 }

@@ -1,9 +1,9 @@
-import { ErrorLog, AccessLog } from '../models';
 import logger from '../../logs/logger';
 import client from '../api/client';
 import isReply from '../../utils/isReply';
 
 import Tweet from '../../interfaces/typeDefinitions/Tweet';
+import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
 
 const {QUERY, WORD_BLOCKLIST} = process.env;
 const QUERY_STRING = {
@@ -16,11 +16,11 @@ const QUERY_STRING = {
  * @class Stream
  */
 class StreamTwitter {
-  private static _instance:  any;
+  private static _instance: any;
   public RetweetClass: any;
   /**
    * Verify if there's a instance running and, if not, instantiate a new.
-   * @param retweetClass Class to handle with retweets.
+   * @param {Function} retweetClass Class to handle with retweets.
    */
   constructor(retweetClass: Function = () => {}) {
     if (typeof(StreamTwitter._instance) === 'undefined') {
@@ -32,21 +32,26 @@ class StreamTwitter {
 
   /**
    * Method to retrieve an instance of the Stream.
-   * @return {StreamTwitter} Returns the static member variable with the instance
-   * running now.
+   * @return {StreamTwitter} Returns the static member variable with the
+   * instance running now.
    */
-  getInstance(): any {
+  async getInstance(): Promise<any> {
     try {
       if (typeof (StreamTwitter._instance) === 'undefined' ||
         StreamTwitter._instance === null) {
         throw new ReferenceError('There isn\'t an instance running.');
       }
       return StreamTwitter._instance;
-    } catch (error) {
-      const message = `There was an error on during attempt of shut down app.
-      Reason: ${error}.`;
-      logger('error', message, new ErrorLog());
-      StreamTwitter._instance = client.stream('tweets/search/stream', QUERY_STRING);
+    } catch (error: any) {
+      const message: LogDatabase = {
+        emmiter: 'Stream.getInstance.catch',
+        level: 'error',
+        message: error.message,
+      };
+      await logger(message);
+
+      StreamTwitter._instance = client.stream(
+          'tweets/search/stream', QUERY_STRING);
       return StreamTwitter._instance;
     }
   }
@@ -54,35 +59,46 @@ class StreamTwitter {
   /**
    * Method to close connection, destroy stream and set static member to null.
    */
-  killInstance() {
+  async killInstance(): Promise<void> {
     try {
       if (typeof (StreamTwitter._instance) === 'undefined' ||
         StreamTwitter._instance === null) {
         throw new ReferenceError('There isn\'t an instance running.');
       }
-      const message = `App shut down. Reason: Killer method was invoked.`;
-      logger('access', message, new AccessLog());
+      const message: LogDatabase = {
+        emmiter: 'Stream.killInstance.try',
+        level: 'debug',
+        message: 'App shut down. Reason: Killer method was invoked.',
+      };
+      await logger(message);
 
       StreamTwitter._instance.close();
     } catch (error: any) {
-      const message = `There was an error on during attempt of shut down app.
-      Reason: ${error.message}.`;
-      logger('error', message, new ErrorLog());
+      const message: LogDatabase = {
+        emmiter: 'Stream.killInstance.catch',
+        level: 'error',
+        message: error.message,
+      };
+      await logger(message);
     }
   }
 
   /**
    * Method to handle with states of the stream.
    */
-  handleStream() {
+  async handleStream() {
     try {
       const stream = StreamTwitter._instance;
 
       stream
           .on('start', async () => {
-            const message = `Stream was initialized`;
-            await logger('access', message, new AccessLog());
-            console.info(message);
+            const message: LogDatabase = {
+              emmiter: 'Stream.handleStream.try.start',
+              level: 'info',
+              message: 'Stream was initialized',
+            };
+            await logger(message);
+            console.info(message.message);
           })
           .on('data', async (tweet: Tweet) => {
             const isTweetReply = isReply(tweet);
@@ -93,27 +109,45 @@ class StreamTwitter {
             }
           })
           .on('ping', async () => {
-            const message = `Ping to keep connection alive`;
-            await logger('access', message, new AccessLog());
-            console.info(message);
+            const message: LogDatabase = {
+              emmiter: 'Stream.handleStream.try.ping',
+              level: 'debug',
+              message: 'Ping to keep connection alive',
+            };
+            await logger(message);
+            console.info(message.message);
           })
           .on('end', async (response: unknown) => {
             this.killInstance();
             const message = `Method handleStream, from class Stream
             receive an end event. This is the complete object received:
             ${response}`;
+            const logObject: LogDatabase = {
+              emmiter: 'Stream.handleStream.try.end',
+              level: 'error',
+              message: message,
+            };
+            await logger(logObject);
             console.error(message);
-            await logger('error', message, new ErrorLog());
           })
-          .on('error', async (error: unknown) => {
+          .on('error', async (error: any) => {
             process.nextTick(() => stream.destroy());
             this.killInstance();
+            const logObject: LogDatabase = {
+              emmiter: 'Stream.handleStream.try.error',
+              level: 'critical',
+              message: error.message,
+            };
+            await logger(logObject);
             console.error(error);
           });
     } catch (error: any) {
-      const message = `There was an error on try handle incoming streaming.
-      Reason: ${error.message}.`;
-      logger('error', message, new ErrorLog());
+      const logObject: LogDatabase = {
+        emmiter: 'Stream.handleStream.catch',
+        level: 'error',
+        message: error.message,
+      };
+      await logger(logObject);
     }
   }
 }

@@ -1,7 +1,7 @@
 import models from '../../db/models';
-import ErrorLog from './ErrorLog';
-import AccessLog from './AccessLog';
 import logger from '../../logs/logger';
+
+import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
 
 /**
  * Handle with app configurations
@@ -28,10 +28,13 @@ class Configuration {
       }
       return config.value;
     } catch (error: any) {
-      const message = `Error from Configuration class, method getConfig.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
-      logger('error', message, new ErrorLog());
+      const logObject: LogDatabase = {
+        emmiter: 'ConfigurationService.getConfig.catch',
+        level: 'error',
+        message: error.message,
+      };
+
+      await logger(logObject);
     }
   }
 
@@ -52,12 +55,22 @@ class Configuration {
       });
 
       const message = `Config ${key} updated with value ${value}.`;
-      logger('access', message, new AccessLog());
+
+      const logObject: LogDatabase = {
+        emmiter: 'ConfigurationService.setConfig.catch',
+        level: 'info',
+        message: message,
+      };
+
+      await logger(logObject);
     } catch (error: any) {
-      const message = `Error from Configuration class, method setConfig.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
-      logger('error', message, new ErrorLog());
+      const logObject: LogDatabase = {
+        emmiter: 'ConfigurationService.setConfig.catch',
+        level: 'error',
+        message: error.message,
+      };
+
+      await logger(logObject);
     }
   }
 
@@ -76,12 +89,21 @@ class Configuration {
       await models.Configurations.create(data);
 
       const message = `Config ${key} created with value ${value}.`;
-      logger('access', message, new AccessLog());
+      const logObject: LogDatabase = {
+        emmiter: 'ConfigurationService.createConfig.catch',
+        level: 'info',
+        message: message,
+      };
+
+      await logger(logObject);
     } catch (error: any) {
-      const message = `Error from Configuration class, method createdConfig.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
-      logger('error', message, new ErrorLog());
+      const logObject: LogDatabase = {
+        emmiter: 'ConfigurationService.createConfig.catch',
+        level: 'error',
+        message: error.message,
+      };
+
+      await logger(logObject);
     }
   }
   /**
@@ -97,12 +119,21 @@ class Configuration {
       });
 
       const message = `Config ${key} successfully.`;
-      logger('access', message, new AccessLog());
+      const logObject: LogDatabase = {
+        emmiter: 'ConfigurationService.deleteConfig.catch',
+        level: 'info',
+        message: message,
+      };
+
+      await logger(logObject);
     } catch (error: any) {
-      const message = `Error from Configuration class, method createdConfig.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
-      logger('error', message, new ErrorLog());
+      const logObject: LogDatabase = {
+        emmiter: 'ConfigurationService.deleteConfig.catch',
+        level: 'error',
+        message: error.message,
+      };
+
+      await logger(logObject);
     }
   }
 }

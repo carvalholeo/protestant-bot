@@ -1,8 +1,8 @@
 import models from '../../db/models';
-import ErrorLog from './ErrorLog';
 import logger from '../../logs/logger';
 
 import ContactInterface from '../../interfaces/typeDefinitions/Contact';
+import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
 
 /**
  * Class to handle with contacts received from the front-end.
@@ -32,10 +32,13 @@ class Contact {
 
       await models.Contact.create(data);
     } catch (error: any) {
-      const message = `Error from Contact class, method createContact.
-      Message catched: ${error.message}.
-      Complete Error object: ${error}`;
-      logger('error', message, new ErrorLog());
+      const logObject: LogDatabase = {
+        emmiter: 'ContactService.createContact.catch',
+        level: 'error',
+        message: error.message,
+      };
+
+      await logger(logObject);
     }
   }
 }
