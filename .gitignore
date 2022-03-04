@@ -8,3 +8,4 @@ reports/
 **/SECRET_TOKEN
 dist/**
 types/
+.dccache
