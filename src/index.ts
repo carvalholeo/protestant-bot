@@ -9,8 +9,9 @@ import {Request, Response, NextFunction} from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import hpp from 'hpp';
-import cookieParser from 'cookie-parser';
+import cookieParser, {CookieParseOptions} from 'cookie-parser';
 import createError from 'http-errors';
+import csurf from 'csurf';
 
 import generateSecretToJWT from './utils/generateSecretToJWT';
 import routes from './routes';
@@ -27,13 +28,22 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
+const COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+};
+
 const app = express();
 
 app.use(httpLogger);
 app.use(helmet());
 app.use(json());
 app.use(urlencoded({extended: false}));
-app.use(cookieParser());
+app.use(cookieParser(process.env.JWT_SECRET,
+  COOKIE_OPTIONS as CookieParseOptions));
+app.use(csurf({
+  cookie: COOKIE_OPTIONS,
+}));
 app.use(hpp());
 
 app.use(cors(corsOptions));
