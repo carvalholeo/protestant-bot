@@ -20,5 +20,5 @@ module.exports = {
         queryInterface.removeColumn('TweetQueue', 'tweet_id', {transaction: t}),
       ]);
     });
-  }
+  },
 };

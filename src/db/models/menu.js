@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Menu extends Model {
