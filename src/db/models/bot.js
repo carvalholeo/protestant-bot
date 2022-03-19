@@ -12,7 +12,12 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Bot.belongsTo(models.User, {
+        as: 'bot_user',
+        foreignKey: 'user_id',
+        onDelete: 'RESTRICT',
+        onUpdate: 'CASCADE'
+      });
     }
   };
   Bot.init({
@@ -44,6 +49,49 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1
+    },
+    consumer_key: {
+      type: DataTypes.STRING(30),
+      allowNull: false
+    },
+    consumer_secret: {
+      type: DataTypes.STRING(60),
+      allowNull: false
+    },
+    access_token: {
+      type: DataTypes.STRING(60),
+      allowNull: false,
+    },
+    access_token_secret: {
+      type: DataTypes.STRING(50),
+      allowNull: false
+    },
+    bearer_token: {
+      type: DataTypes.STRING(150),
+      allowNull: false
+    },
+    query: {
+      type: DataTypes.STRING(150),
+      allowNull: false
+    },
+    blocked_words: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    language: {
+      type: DataTypes.STRING(10),
+      allowNull: false,
+      defaultValue: 'pt-BR'
+    },
+    is_payment_on_day: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
+    }
   }, {
     sequelize,
     modelName: 'Bot',

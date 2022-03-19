@@ -10,7 +10,12 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Blocklist.belongsTo(models.User, {
+        as: 'blocklist_user',
+        foreignKey: 'user_id',
+        onDelete: 'RESTRICT',
+        onUpdate: 'CASCADE'
+      });
     }
   };
   Blocklist.init({
@@ -18,6 +23,11 @@ module.exports = (sequelize, DataTypes) => {
     is_blocked_now: DataTypes.BOOLEAN,
     blocked_by_admin: DataTypes.BOOLEAN,
     comment: DataTypes.STRING,
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1
+    }
   }, {
     sequelize,
     modelName: 'Blocklist',

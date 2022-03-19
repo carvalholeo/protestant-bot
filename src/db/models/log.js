@@ -10,13 +10,23 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Log.belongsTo(models.User, {
+        as: 'log_user',
+        foreignKey: 'user_id',
+        onDelete: 'RESTRICT',
+        onUpdate: 'CASCADE'
+      });
     }
   };
   Log.init({
     level: DataTypes.STRING(15),
     emmiter: DataTypes.STRING,
     message: DataTypes.TEXT,
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1
+    }
   }, {
     sequelize,
     modelName: 'Log',

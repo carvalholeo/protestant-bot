@@ -10,7 +10,12 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      RetweetLog.belongsTo(models.User, {
+        as: 'retweetlog_user',
+        foreignKey: 'user_id',
+        onDelete: 'RESTRICT',
+        onUpdate: 'CASCADE'
+      });
     }
   };
   RetweetLog.init({
@@ -20,6 +25,11 @@ module.exports = (sequelize, DataTypes) => {
     tweet: DataTypes.TEXT,
     comment: DataTypes.STRING,
     was_undone: DataTypes.BOOLEAN,
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1
+    }
   }, {
     sequelize,
     modelName: 'RetweetLog',
