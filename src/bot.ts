@@ -1,8 +1,4 @@
-const ENV = process.env.NODE_ENV ?? 'development';
-const envFile = ENV === 'development' ? '.env.local' : '.env';
-
-import dotenv from 'dotenv';
-dotenv.config({ path: envFile });
+require('./utils/dotEnv');
 
 import Retweet from './services/Twitter/Retweet';
 import RateLimit from './services/Twitter/RateLimit';

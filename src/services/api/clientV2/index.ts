@@ -1,5 +1,4 @@
-import dotenv from 'dotenv';
-dotenv.config({path: '../.env'});
+require('../../../utils/dotEnv');
 
 import Twitter from 'twitter-v2';
 
