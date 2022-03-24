@@ -1,6 +1,5 @@
+require('../../../utils/dotEnv');
 import Twitter from 'twitter-lite';
-import dotenv from 'dotenv';
-dotenv.config({path: '../.env'});
 
 const consumerKey = process.env.CONSUMER_KEY || '';
 const consumerSecret = process.env.CONSUMER_SECRET || '';

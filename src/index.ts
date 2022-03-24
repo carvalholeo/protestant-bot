@@ -1,8 +1,4 @@
-const ENV = process.env.NODE_ENV ?? 'development';
-const envFile = ENV === 'development' ? '.env.local' : '.env';
-
-import dotenv from 'dotenv';
-dotenv.config({path: envFile});
+require('./utils/dotEnv');
 
 import express, {json, urlencoded} from 'express';
 import {Request, Response, NextFunction} from 'express';
