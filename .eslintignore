@@ -2,3 +2,4 @@ dist/
 reports/
 **/db/models
 **/db/migrations
+**/db/seeders
