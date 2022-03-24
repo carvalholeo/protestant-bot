@@ -9,7 +9,7 @@ const FILES = {
   production: '.env'
 };
 
-const envFile = FILES[NODE_ENV];
+const envFile = FILES[NODE_ENV] || '.env.local';
 
 dotenv.config({
   path: envFile
