@@ -44,8 +44,8 @@
     "twitter": "^1.7.1",
     "twitter-lite": "^1.1.0",
     "twitter-v2": "^1.1.0",
-    "winston": "^3.6.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "winston": "^3.6.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -65,11 +65,11 @@
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",
     "cpy-cli": "^4.0.0",
-    "eslint": "^8.10.0",
-    "eslint-config-google": "^0.14.0",
+    "eslint": "^8.11.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-security-node": "^1.1.1",
     "eslint-plugin-sonarjs": "^0.12.0",
     "nodemon": "^2.0.15",
     "sequelize-cli": "^6.4.1",
@@ -84,6 +84,7 @@
   "resolutions": {
     "set-value": "4.1.0",
     "glob-parent": "5.1.2",
-    "node-fetch": "2.6.7"
+    "node-fetch": "2.6.7",
+    "minimist": "1.2.6"
   }
 }
