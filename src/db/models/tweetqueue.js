@@ -1,6 +1,6 @@
 'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class TweetQueue extends Model {
@@ -10,13 +10,23 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      TweetQueue.belongsTo(models.User, {
+        as: 'tweetqueue_user',
+        foreignKey: 'user_id',
+        onDelete: 'RESTRICT',
+        onUpdate: 'CASCADE'
+      });
     }
   };
   TweetQueue.init({
     tweet: DataTypes.JSON,
     already_retweeted: DataTypes.BOOLEAN,
     tweet_id: DataTypes.STRING(50),
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1
+    }
   }, {
     sequelize,
     modelName: 'TweetQueue',

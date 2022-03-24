@@ -26,5 +26,5 @@ module.exports = {
         queryInterface.removeColumn('Blocklist', 'comment', {transaction: t}),
       ]);
     });
-  }
+  },
 };

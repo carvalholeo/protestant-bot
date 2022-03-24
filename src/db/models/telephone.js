@@ -1,28 +1,35 @@
 'use strict';
 const {
-  Model,
+  Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Contact extends Model {
+  class Telephone extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Contact.belongsTo(models.User, {
-        as: 'contact_user',
+      Telephone.belongsTo(models.User, {
+        as: 'telephone_user',
         foreignKey: 'user_id',
         onDelete: 'RESTRICT',
         onUpdate: 'CASCADE'
       });
     }
-  };
-  Contact.init({
-    name: DataTypes.STRING,
-    email: DataTypes.STRING,
-    twitter: DataTypes.STRING,
-    message: DataTypes.TEXT,
+  }
+  Telephone.init({
+    ddi: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    ddd: {
+      type: DataTypes.INTEGER
+    },
+    tel: {
+      type: DataTypes.STRING(20),
+      allowNull: false
+    },
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -30,9 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'Contact',
-    tableName: 'Contacts',
-    freezeTableName: true,
+    modelName: 'Telephone',
   });
-  return Contact;
+  return Telephone;
 };

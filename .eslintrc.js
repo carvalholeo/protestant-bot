@@ -16,5 +16,12 @@ module.exports = {
     'sonarjs',
   ],
   'rules': {
+    'max-len': ['error', {
+      'code': 120,
+      'ignoreComments': true,
+      'ignoreTrailingComments': true,
+      'ignoreUrls': true,
+      'ignoreTemplateLiterals': true,
+    }],
   },
 };
