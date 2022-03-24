@@ -10,43 +10,43 @@ const acquireConnectionTimeout =
   Number(process.env.DB_ACQUIRE_CONNECTION_TIMEOUT) ?? 60000;
 
 module.exports = {
-  'development': {
-    'username': username,
-    'password': password,
-    'database': database,
-    'host': host,
-    'port': port,
-    'dialect': client,
-    'pool': {
-      'min': poolMin,
-      'max': poolMax,
-      'acquire': acquireConnectionTimeout,
+  development: {
+    username: username,
+    password: password,
+    database: database,
+    host: host,
+    port: port,
+    dialect: client,
+    pool: {
+      min: poolMin,
+      max: poolMax,
+      acquire: acquireConnectionTimeout,
     },
   },
-  'test': {
-    'username': username,
-    'password': password,
-    'database': database,
-    'host': host,
-    'port': port,
-    'dialect': client,
-    'pool': {
-      'min': poolMin,
-      'max': poolMax,
-      'acquire': acquireConnectionTimeout,
+  test: {
+    username: username,
+    password: password,
+    database: database,
+    host: host,
+    port: port,
+    dialect: client,
+    pool: {
+      min: poolMin,
+      max: poolMax,
+      acquire: acquireConnectionTimeout,
     },
   },
-  'production': {
-    'username': username,
-    'password': password,
-    'database': database,
-    'host': host,
-    'port': port,
-    'dialect': client,
-    'pool': {
-      'min': poolMin,
-      'max': poolMax,
-      'acquire': acquireConnectionTimeout,
+  production: {
+    username: username,
+    password: password,
+    database: database,
+    host: host,
+    port: port,
+    dialect: client,
+    pool: {
+      min: poolMin,
+      max: poolMax,
+      acquire: acquireConnectionTimeout,
     },
   },
 };
