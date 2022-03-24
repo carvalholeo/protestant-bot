@@ -1,6 +1,6 @@
 const {
   DB_DATABASE: database = 'protestant_bot',
-  DB_USER: username = 'root',
+  DB_USER: username = '',
   DB_PASSWORD: password = '',
   DB_CLIENT: client = 'mysql',
   DB_HOST: host = 'localhost',
