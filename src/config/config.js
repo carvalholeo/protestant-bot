@@ -1,13 +1,14 @@
-const database = process.env.DB_DATABASE ?? 'protestant_bot';
-const username = process.env.DB_USER ?? 'root';
-const password = process.env.DB_PASSWORD ?? '';
-const client = process.env.DB_CLIENT ?? 'mysql';
-const host = process.env.DB_HOST ?? 'localhost';
-const port = Number(process.env.DB_PORT) ?? 3306;
-const poolMin = Number(process.env.DB_POOL_MIN) ?? 0;
-const poolMax = Number(process.env.DB_POOL_MAX) ?? 5;
-const acquireConnectionTimeout =
-  Number(process.env.DB_ACQUIRE_CONNECTION_TIMEOUT) ?? 60000;
+const {
+  DB_DATABASE: database = 'protestant_bot',
+  DB_USER: username = 'root',
+  DB_PASSWORD: password = '',
+  DB_CLIENT: client = 'mysql',
+  DB_HOST: host = 'localhost',
+  DB_PORT: port = 3306,
+  DB_POOL_MIN: poolMin = 0,
+  DB_POOL_MAX: poolMax = 5,
+  DB_ACQUIRE_CONNECTION_TIMEOUT: acquireConnectionTimeout = 60000,
+} = process.env;
 
 module.exports = {
   development: {
@@ -15,12 +16,25 @@ module.exports = {
     password: password,
     database: database,
     host: host,
-    port: port,
+    port: Number(port),
     dialect: client,
     pool: {
-      min: poolMin,
-      max: poolMax,
-      acquire: acquireConnectionTimeout,
+      min: Number(poolMin),
+      max: Number(poolMax),
+      acquire: Number(acquireConnectionTimeout),
+    },
+  },
+  stage: {
+    username: username,
+    password: password,
+    database: database,
+    host: host,
+    port: Number(port),
+    dialect: client,
+    pool: {
+      min: Number(poolMin),
+      max: Number(poolMax),
+      acquire: Number(acquireConnectionTimeout),
     },
   },
   test: {
@@ -28,12 +42,12 @@ module.exports = {
     password: password,
     database: database,
     host: host,
-    port: port,
+    port: Number(port),
     dialect: client,
     pool: {
-      min: poolMin,
-      max: poolMax,
-      acquire: acquireConnectionTimeout,
+      min: Number(poolMin),
+      max: Number(poolMax),
+      acquire: Number(acquireConnectionTimeout),
     },
   },
   production: {
@@ -41,12 +55,12 @@ module.exports = {
     password: password,
     database: database,
     host: host,
-    port: port,
+    port: Number(port),
     dialect: client,
     pool: {
-      min: poolMin,
-      max: poolMax,
-      acquire: acquireConnectionTimeout,
+      min: Number(poolMin),
+      max: Number(poolMax),
+      acquire: Number(acquireConnectionTimeout),
     },
   },
 };
