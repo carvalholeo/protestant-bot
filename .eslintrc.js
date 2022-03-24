@@ -10,7 +10,7 @@ module.exports = {
   ],
   'parser': '@typescript-eslint/parser',
   'parserOptions': {
-    'ecmaVersion': 12,
+    'ecmaVersion': 2020,
     'sourceType': 'module',
   },
   'plugins': [
@@ -28,5 +28,6 @@ module.exports = {
       'ignoreUrls': true,
       'ignoreTemplateLiterals': true,
     }],
+    'node/no-unsupported-features/es-syntax': 'off'
   },
 };
