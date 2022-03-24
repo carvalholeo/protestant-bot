@@ -3,9 +3,18 @@
   "version": "1.0.0",
   "description": "Bot to reply and retweet all about Martin Luther and Protestant Reform in Twitter.",
   "keywords": [],
+  "homepage": "https://protestantbot.leocarvalho.dev",
+  "repository": {
+    "type": "GitHub",
+    "url": "https://github.com/carvalholeo/protestant-bot"
+  },
   "license": "ISC",
-  "author": "",
-  "main": "index.js",
+  "author": {
+    "name": "Léo Carvalho",
+    "email": "leo@leocarvalho.dev",
+    "url": "https://leocarvalho.dev"
+  },
+  "main": "./dist/src/index.js",
   "scripts": {
     "build": "npx tsc --build tsconfig.json && npx cpy-cli ./src/views/* dist --dot --parents",
     "postbuild": "npx sequelize-cli db:migrate",
@@ -17,10 +26,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "resolutions": {
-    "glob-parent": "5.1.2",
     "minimist": "1.2.6",
-    "node-fetch": "2.6.7",
-    "set-value": "4.1.0"
+    "node-fetch": "2.6.7"
   },
   "dependencies": {
     "axios": "^0.26.0",
@@ -82,7 +89,8 @@
     "typescript": "^4.6.2"
   },
   "engines": {
-    "node": ">=16.x",
+    "node": ">=14.x || <= 17",
     "npm": ">=7.x"
-  }
+  },
+  "engineStrict": false
 }
