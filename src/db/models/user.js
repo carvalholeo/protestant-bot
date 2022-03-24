@@ -2,7 +2,6 @@
 const {
   Model,
 } = require('sequelize');
-const { Sequelize } = require('.');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -87,7 +86,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: null
     },
     email: {
-      type: Sequelize.STRING(100),
+      type: DataTypes.STRING(100),
       allowNull: false
     }
   }, {
