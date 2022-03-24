@@ -4,7 +4,9 @@ module.exports = {
     'node': true,
   },
   'extends': [
-    'google',
+    'eslint:recommended',
+    'plugin:node/recommended',
+    'plugin:security-node/recommended',
   ],
   'parser': '@typescript-eslint/parser',
   'parserOptions': {
@@ -12,8 +14,11 @@ module.exports = {
     'sourceType': 'module',
   },
   'plugins': [
+    'security-node',
     '@typescript-eslint',
     'sonarjs',
+    'promise',
+    'import'
   ],
   'rules': {
     'max-len': ['error', {
