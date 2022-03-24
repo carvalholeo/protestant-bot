@@ -9,12 +9,9 @@ import cookieParser, {CookieParseOptions} from 'cookie-parser';
 import createError from 'http-errors';
 import csurf from 'csurf';
 
-import generateSecretToJWT from './utils/generateSecretToJWT';
 import routes from './routes';
 
 import httpLogger from './services/logs/log';
-
-process.env.JWT_SECRET = generateSecretToJWT();
 
 const origin = process.env.FRONTEND_URL ?? 'http://localhost:3000';
 
