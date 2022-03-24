@@ -10,7 +10,6 @@
     "start": "node ./dist/src/server.js --use-strict",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsnd ./src/server.ts --rs",
-    "sonar": "node ./bin/sonar",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix"
   },
@@ -73,7 +72,6 @@
     "eslint-plugin-sonarjs": "^0.12.0",
     "nodemon": "^2.0.15",
     "sequelize-cli": "^6.4.1",
-    "sonarqube-scanner": "^2.8.1",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.6.2"
   },
