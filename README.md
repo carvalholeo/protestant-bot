@@ -1,5 +1,13 @@
 # Protestant Bot
 
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=carvalholeo_protestant-bot&metric=coverage)](https://sonarcloud.io/summary/new_code?id=carvalholeo_protestant-bot)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=carvalholeo_protestant-bot&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=carvalholeo_protestant-bot)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=carvalholeo_protestant-bot&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=carvalholeo_protestant-bot)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=carvalholeo_protestant-bot&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=carvalholeo_protestant-bot)
+[![Known Vulnerabilities](https://snyk.io/test/github/carvalholeo/protestant-bot/badge.svg)](https://snyk.io/test/github/carvalholeo/protestant-bot)
+[![CodeQL](https://github.com/carvalholeo/protestant-bot/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/carvalholeo/protestant-bot/actions/workflows/codeql-analysis.yml)
+[![CodeQL](https://github.com/carvalholeo/protestant-bot/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/carvalholeo/protestant-bot/actions/workflows/codeql-analysis.yml)
+
 Protestant Bot is a software to monitoring Twitter by a bot and retweet them into a specific account, by our own API to
 Twitter API.
 
