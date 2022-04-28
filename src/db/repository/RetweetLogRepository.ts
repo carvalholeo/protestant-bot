@@ -11,7 +11,7 @@ const initialOffset = 100;
  * Class to log all retweets done by the application
  * @class RetweetLog
  */
-class RetweetLog {
+class RetweetLogRepository {
   /**
    * Method to retrieve all retweets done on bot.
    * @param {number} page Page number of data to be retrieved.
@@ -154,4 +154,4 @@ class RetweetLog {
   }
 }
 
-export default RetweetLog;
+export default RetweetLogRepository;

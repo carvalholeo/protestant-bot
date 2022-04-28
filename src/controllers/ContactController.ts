@@ -1,9 +1,9 @@
 import {Request, Response} from 'express';
 
-import models from '../db/repository';
+import repositories from '../db/repository';
 const {
-  Contact,
-} = models;
+  ContactRepository,
+} = repositories;
 import logger from '../logs/logger';
 import email from '../services/emails';
 import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
@@ -13,7 +13,7 @@ const ContactController = {
   create: async (request: Request, response: Response) => {
     try {
       const {name, email, twitter, message} = request.body;
-      const contact = new Contact();
+      const contact = new ContactRepository();
 
       await contact.createContact({name, email, twitter, message});
 

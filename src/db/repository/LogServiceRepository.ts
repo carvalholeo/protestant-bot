@@ -1,5 +1,5 @@
 import models from '../models';
-import Base from './Base';
+import BaseRepository from './BaseRepository';
 import LogObject from '../../interfaces/typeDefinitions/LogDatabase';
 import ErrorObject from '../../interfaces/typeDefinitions/ErrorObject';
 
@@ -7,7 +7,7 @@ import ErrorObject from '../../interfaces/typeDefinitions/ErrorObject';
  * Class to log general of the application
  * @class Log
  */
-class Log extends Base {
+class LogRepository extends BaseRepository {
   /**
    * Method to create a log message at the database
    * @param {LogObject} logObject Object with the following
@@ -77,4 +77,4 @@ class Log extends Base {
   }
 }
 
-export default Log;
+export default LogRepository;

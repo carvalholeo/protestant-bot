@@ -1,5 +1,5 @@
 import client from '../api/client';
-import {RateLimit as RateLimitModel} from '../../db/repository';
+import {RateLimitRepository} from '../../db/repository';
 import logger from '../../logs/logger';
 
 import RateLimitInterface from '../../interfaces/typeDefinitions/RateLimitInterface';
@@ -70,7 +70,7 @@ class RateLimit {
       if (typeof(endpoint) === 'undefined') {
         throw new ReferenceError('You must to provide a resource to query.');
       }
-      const rateLimitModel = new RateLimitModel();
+      const rateLimitModel = new RateLimitRepository();
       const message: LogDatabase = {
         emmiter: 'RateLimit.getLimitFromDatabase.try',
         level: 'info',
@@ -119,7 +119,7 @@ class RateLimit {
         throw new ReferenceError(`You must to provide a object with 3
         properties: resource (string), limit (number) and nextReset (number).`);
       }
-      const rateLimitModel = new RateLimitModel();
+      const rateLimitModel = new RateLimitRepository();
       const isAlreadyOnDatabase = rateLimitModel.getOneRateLimit(endpoint);
       const message: LogDatabase = {
         emmiter: 'RateLimit.setLimit.try',

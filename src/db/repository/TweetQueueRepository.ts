@@ -1,3 +1,4 @@
+
 import models from '../models';
 import {Op} from 'sequelize';
 import logger from '../../logs/logger';
@@ -14,7 +15,7 @@ const {in: opIn} = Op;
  * reseted.
  * @class TweetQueue
  */
-class TweetQueue {
+class TweetQueueRepository {
   /**
    * Method to enqueue a tweet to be retweet later.
    * @param {Tweet} tweet Tweet to be queued
@@ -115,4 +116,4 @@ class TweetQueue {
   }
 }
 
-export default TweetQueue;
+export default TweetQueueRepository;

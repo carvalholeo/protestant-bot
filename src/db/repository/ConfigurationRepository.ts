@@ -8,7 +8,7 @@ import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
  * tweets retweet by the bot.
  * @class Configuration
  */
-class Configuration {
+class ConfigurationRepository {
   /**
    * Get the configuration of the bot
    * @param {string} key - the key of the configuration
@@ -138,4 +138,4 @@ class Configuration {
   }
 }
 
-export default Configuration;
+export default ConfigurationRepository;

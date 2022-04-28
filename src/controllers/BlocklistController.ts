@@ -1,8 +1,8 @@
 import {Request, Response} from 'express';
-import models from '../db/repository';
+import repositories from '../db/repository';
 const {
-  Blocklist,
-} = models;
+  BlocklistRepository,
+} = repositories;
 import logger from '../logs/logger';
 
 import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
@@ -14,7 +14,7 @@ const BlocklistController = {
     try {
       const {user} = request.body;
       const userClean = user.replace(regex, '');
-      const blocklist = new Blocklist();
+      const blocklist = new BlocklistRepository();
 
       await blocklist.block(userClean);
 
@@ -50,7 +50,7 @@ const BlocklistController = {
     try {
       const {user} = request.body;
       const userClean = user.replace(regex, '');
-      const blocklist = new Blocklist();
+      const blocklist = new BlocklistRepository();
 
       await blocklist.unblock(userClean);
 

@@ -1,9 +1,9 @@
 
 import {Request, Response} from 'express';
-import models from '../db/repository';
+import repositories from '../db/repository';
 const {
-  RetweetLog,
-} = models;
+  RetweetLogRepository,
+} = repositories;
 import client from '../services/api/client';
 import logger from '../logs/logger';
 import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
@@ -13,7 +13,7 @@ const RetweetController = {
     try {
       const {page = 1} = request.query;
 
-      const retweetLog = new RetweetLog();
+      const retweetLog = new RetweetLogRepository();
       const list = await retweetLog.getAllRetweets(Number(page));
       const retweetsTotal = await retweetLog.countRetweets() ?? 1;
       const totalPages = retweetsTotal / 100;
@@ -57,7 +57,7 @@ const RetweetController = {
 
       await client.post(`statuses/unretweet/${tweetId}`, {});
 
-      const retweetLog = new RetweetLog();
+      const retweetLog = new RetweetLogRepository();
       await retweetLog.undoRetweet(tweetId, comment);
 
       const message = `Retweet ${tweetId} was undone.
