@@ -1,7 +1,7 @@
 import client from '../api/client';
 import {
   RetweetLog, TweetQueue, Blocklist,
-} from '../models';
+} from '../../db/repository';
 import logger from '../../logs/logger';
 import RateLimit from './RateLimit';
 import Stream from './Stream';

@@ -1,5 +1,5 @@
 import logger from '../../logs/logger';
-import models from '../../db/models';
+import models from '../models';
 
 import RetweetLogInterface from '../../interfaces/typeDefinitions/RetweetLogInterface';
 import Tweet from '../../interfaces/typeDefinitions/Tweet';

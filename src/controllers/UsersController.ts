@@ -2,7 +2,7 @@
 import {hashSync, compareSync} from 'bcrypt';
 import {sign} from 'jsonwebtoken';
 import {Request, Response} from 'express';
-import models from '../services/models';
+import models from '../db/repository';
 const {
   User,
 } = models;

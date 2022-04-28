@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import models from '../services/models';
+import models from '../db/repository';
 const {
   Blocklist,
 } = models;
