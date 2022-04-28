@@ -2,7 +2,7 @@ require('./utils/dotEnv');
 
 import Retweet from './services/Twitter/Retweet';
 import RateLimit from './services/Twitter/RateLimit';
-import { TweetQueue } from './services/models';
+import { TweetQueue } from './db/repository';
 import StreamTwitter from './services/Twitter/Stream';
 import appError from './utils/appError';
 

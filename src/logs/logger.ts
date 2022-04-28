@@ -2,7 +2,7 @@ import {resolve} from 'path';
 import {appendFileSync, WriteFileOptions} from 'fs';
 
 import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
-import {LogService} from '../services/models';
+import {LogService} from '../db/repository';
 
 const FILE_CONFIG: WriteFileOptions = {
   encoding: 'utf-8',

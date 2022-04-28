@@ -1,4 +1,4 @@
-import models from '../../db/models';
+import models from '../models';
 import logger from '../../logs/logger';
 
 import RateLimitInterface from '../../interfaces/typeDefinitions/RateLimitInterface';

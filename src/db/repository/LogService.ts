@@ -1,4 +1,4 @@
-import models from '../../db/models';
+import models from '../models';
 import Base from './Base';
 import LogObject from '../../interfaces/typeDefinitions/LogDatabase';
 import ErrorObject from '../../interfaces/typeDefinitions/ErrorObject';

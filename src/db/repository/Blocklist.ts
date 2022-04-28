@@ -1,5 +1,5 @@
 import logger from '../../logs/logger';
-import models from '../../db/models';
+import models from '../models';
 
 import BlocklistInterface from '../../interfaces/typeDefinitions/BlocklistInterface';
 import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
