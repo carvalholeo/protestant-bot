@@ -1,6 +1,6 @@
 import client from '../api/client';
 import {
-  RetweetLog, TweetQueue, Blocklist,
+  RetweetLogRepository, TweetQueueRepository, BlocklistRepository,
 } from '../../db/repository';
 import logger from '../../logs/logger';
 import RateLimit from './RateLimit';
@@ -93,7 +93,7 @@ class Retweet {
           });
       // @ts-ignore @ts-nocheck
       if (rateLimitResponse.nextAction === 'enqueue') {
-        const queue = new TweetQueue();
+        const queue = new TweetQueueRepository();
         await queue.enqueue(this.tweet);
         return;
       }
@@ -108,7 +108,7 @@ class Retweet {
 
             const message = `Tweet de @${this.tweet.user.screen_name}:
 "${this.tweet.text}".`;
-            const retweet = new RetweetLog();
+            const retweet = new RetweetLogRepository();
             await retweet.registerRetweet(this.tweet);
 
             const logObject: LogDatabase = {
@@ -146,7 +146,7 @@ class Retweet {
   async isBlocked(): Promise<Boolean> {
     try {
       const screenName = this.tweet.user.screen_name;
-      const blocklist = new Blocklist();
+      const blocklist = new BlocklistRepository();
       // @ts-expect-error
       const [tweetOriginal] = await blocklist
           .getOneBlock(screenName);

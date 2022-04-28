@@ -8,7 +8,7 @@ import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
  * tweets retweet by the bot.
  * @class Blocklist
  */
-class Blocklist {
+class BlocklistRepository {
   /**
    * Method to block the user and prevent retweet them posts.
    * @param {string} username Screen name (@) of the user
@@ -166,4 +166,4 @@ class Blocklist {
   }
 }
 
-export default Blocklist;
+export default BlocklistRepository;

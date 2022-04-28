@@ -9,7 +9,7 @@ import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
  * unblock users on database.
  * @class User
  */
-class User {
+class UserRepository {
   private username = '';
   /**
    * Pass to the base class the name of table to be used. Also, receive
@@ -272,4 +272,4 @@ class User {
   }
 }
 
-export default User;
+export default UserRepository;

@@ -8,7 +8,7 @@ import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
  * Handle with rate limit of Twitter on database.
  * @class RateLimit
  */
-class RateLimit {
+class RateLimitRepository {
   /**
    * Method to create a new rate limit at the database.
    * @param {RateLimitInterface} information Literal object,
@@ -125,4 +125,4 @@ class RateLimit {
   }
 }
 
-export default RateLimit;
+export default RateLimitRepository;

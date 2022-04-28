@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
-const secret = process.env.JWT_SECRET;
+const secret = process.env.JWT_SECRET ?? '';
 
 /**
  * Function to handle with errors from Express Validator.

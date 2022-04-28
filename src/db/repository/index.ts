@@ -1,31 +1,31 @@
-import Blocklist from './Blocklist';
-import Configuration from './Configuration';
-import Contact from './Contact';
-import LogService from './LogService';
-import RateLimit from './RateLimit';
-import RetweetLog from './RetweetLog';
-import TweetQueue from './TweetQueue';
-import User from './User';
+import BlocklistRepository from './BlocklistRepository';
+import ConfigurationRepository from './ConfigurationRepository';
+import ContactRepository from './ContactRepository';
+import LogService from './LogServiceRepository';
+import RateLimitRepository from './RateLimitRepository';
+import RetweetLogRepository from './RetweetLogRepository';
+import TweetQueueRepository from './TweetQueueRepository';
+import UserRepository from './UserRepository';
 
 export {
-  Blocklist,
-  Configuration,
-  Contact,
+  BlocklistRepository,
+  ConfigurationRepository,
+  ContactRepository,
   LogService,
-  RateLimit,
-  RetweetLog,
-  TweetQueue,
-  User,
+  RateLimitRepository,
+  RetweetLogRepository,
+  TweetQueueRepository,
+  UserRepository,
 };
 
 
 export default {
-  Blocklist,
-  Configuration,
-  Contact,
+  BlocklistRepository: BlocklistRepository,
+  ConfigurationRepository: ConfigurationRepository,
+  ContactRepository: ContactRepository,
   LogService,
-  RateLimit,
-  RetweetLog,
-  TweetQueue,
-  User,
+  RateLimitRepository: RateLimitRepository,
+  RetweetLogRepository: RetweetLogRepository,
+  TweetQueueRepository: TweetQueueRepository,
+  UserRepository: UserRepository,
 };

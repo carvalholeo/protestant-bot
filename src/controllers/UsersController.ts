@@ -2,10 +2,10 @@
 import {hashSync, compareSync} from 'bcrypt';
 import {sign} from 'jsonwebtoken';
 import {Request, Response} from 'express';
-import models from '../db/repository';
+import repositories from '../db/repository';
 const {
-  User,
-} = models;
+  UserRepository,
+} = repositories;
 import logger from '../logs/logger';
 import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
 
@@ -18,7 +18,7 @@ const UsersController = {
       const {username, password} = request.body;
       const passwordHash = hashSync(password, SALT_ROUNDS);
 
-      const user = new User(username);
+      const user = new UserRepository(username);
       user.createUser(passwordHash);
 
       const message = 'User created successfully from UsersController';
@@ -54,7 +54,7 @@ const UsersController = {
     try {
       const {username, password} = request.body;
 
-      const userDb = new User(username);
+      const userDb = new UserRepository(username);
       const user = await userDb.getUser();
 
       if (!user) {

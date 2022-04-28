@@ -8,7 +8,7 @@ import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
  * Class to handle with contacts received from the front-end.
  * @class Contact
  */
-class Contact {
+class ContactRepository {
   /**
    * Method to save a contact on database.
    * @param {ContactInterface} contact Object with these properties:
@@ -43,4 +43,4 @@ class Contact {
   }
 }
 
-export default Contact;
+export default ContactRepository;

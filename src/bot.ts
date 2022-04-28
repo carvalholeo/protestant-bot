@@ -2,7 +2,7 @@ require('./utils/dotEnv');
 
 import Retweet from './services/Twitter/Retweet';
 import RateLimit from './services/Twitter/RateLimit';
-import { TweetQueue } from './db/repository';
+import { TweetQueueRepository } from './db/repository';
 import StreamTwitter from './services/Twitter/Stream';
 import appError from './utils/appError';
 
@@ -14,7 +14,7 @@ const botTimeout = Number(process.env.BOT_TIMEOUT) || 1800000;
 async function BotRetweet() {
   try {
     const rateLimitEndpoint = 'statuses/retweet';
-    const tweetQueue = new TweetQueue();
+    const tweetQueue = new TweetQueueRepository();
     const rateLimit = new RateLimit();
     const tweets = await tweetQueue.getQueue();
     // @ts-ignore @ts-nocheck
