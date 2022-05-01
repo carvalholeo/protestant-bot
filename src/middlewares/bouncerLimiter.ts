@@ -17,7 +17,7 @@ bouncerLimiter.whitelist.push(
  * @param {number} remaining Time, in miliseconds, to next rate limit reset.
  * @return {Response} Returns with response object if a error were found.
  */
-bouncerLimiter.blocked = function (req: Request, res: Response, next: NextFunction, remaining: number): Response {
+bouncerLimiter.blocked = function (_req: Request, res: Response, _next: NextFunction, remaining: number): Response {
     return res
         .status(429)
         .json({
