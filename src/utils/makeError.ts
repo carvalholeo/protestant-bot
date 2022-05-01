@@ -1,4 +1,4 @@
-import StreamTwitter from '../services/Twitter/Stream';
+import StreamTwitter from '../services/Twitter/StreamTwitter';
 import logger from '../logs/logger';
 import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
 

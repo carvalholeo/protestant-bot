@@ -3,7 +3,7 @@ require('./utils/dotEnv');
 import Retweet from './services/Twitter/Retweet';
 import RateLimit from './services/Twitter/RateLimit';
 import { TweetQueueRepository } from './db/repository';
-import StreamTwitter from './services/Twitter/Stream';
+import StreamTwitter from './services/Twitter/StreamTwitter';
 import appError from './utils/appError';
 
 const botTimeout = Number(process.env.BOT_TIMEOUT) || 1800000;
