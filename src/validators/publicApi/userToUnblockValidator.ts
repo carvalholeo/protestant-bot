@@ -1,6 +1,6 @@
 import { body } from 'express-validator';
 
-const userToBlockValidator = [
+const userToUnblockValidator = [
   body('user')
       .exists()
       .trim()
@@ -10,4 +10,4 @@ const userToBlockValidator = [
       .isLength({max: 15}),
 ];
 
-export default userToBlockValidator;
+export default userToUnblockValidator;
