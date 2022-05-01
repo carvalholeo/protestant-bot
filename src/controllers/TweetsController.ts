@@ -6,7 +6,7 @@ import client from '../services/api/client';
 import logger from '../logs/logger';
 import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
 
-const TweetController = {
+const TweetsController = {
   listRetweets: async (request: Request, response: Response) => {
     try {
       const {page = 1} = request.query;
@@ -89,4 +89,4 @@ const TweetController = {
   },
 };
 
-export default TweetController;
+export default TweetsController;

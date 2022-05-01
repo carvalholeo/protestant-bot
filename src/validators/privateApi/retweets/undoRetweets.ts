@@ -1,6 +1,6 @@
 import { param, body } from 'express-validator';
 
-const listRetweets = [
+const undoRetweets = [
   body('comment')
       .trim()
       .escape()
@@ -16,4 +16,4 @@ const listRetweets = [
       .isLength({min: 19, max: 30}),
 ];
 
-export default listRetweets;
+export default undoRetweets;
