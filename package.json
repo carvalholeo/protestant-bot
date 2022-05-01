@@ -60,6 +60,7 @@
     "winston": "^3.6.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^6.2.0",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.12",
