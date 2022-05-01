@@ -4,7 +4,7 @@ import {
 } from '../../db/repository';
 import logger from '../../logs/logger';
 import RateLimit from './RateLimit';
-import Stream from './Stream';
+import Stream from './StreamTwitter';
 
 import Tweet from '../../interfaces/typeDefinitions/Tweet';
 import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
