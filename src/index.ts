@@ -2,7 +2,7 @@ require('./utils/dotEnv');
 
 import express, {json, urlencoded, Request, Response, NextFunction} from 'express';
 import helmet from 'helmet';
-import cors from 'cors';
+import cors, {CorsOptions} from 'cors';
 import hpp from 'hpp';
 import cookieParser, {CookieParseOptions} from 'cookie-parser';
 import createError from 'http-errors';
@@ -14,11 +14,12 @@ import httpLogger from './services/logs/log';
 
 const origin = process.env.FRONTEND_URL ?? 'http://localhost:3000';
 
-const corsOptions = {
+const corsOptions: CorsOptions = {
   origin: origin,
   preflightContinue: true,
   optionsSuccessStatus: 200,
 };
+
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
@@ -26,6 +27,7 @@ const COOKIE_OPTIONS = {
 };
 
 const app = express();
+const corsExecution = cors(corsOptions);
 
 app.use(httpLogger);
 app.use(helmet());
@@ -38,10 +40,10 @@ app.use(csurf({
 }));
 app.use(hpp());
 
-app.use(cors(corsOptions));
+app.use(corsExecution);
 
-// @ts-expect-error
-app.options('*', cors());
+
+app.options('*', corsExecution);
 app.use('/api', routes);
 
 app.use((_req: Request, _res: Response, next: NextFunction) => {
