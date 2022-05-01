@@ -29,7 +29,7 @@ There are also very other technologies and dependencies. But tech above are the 
 
 This project needs the below minimum environment to run correctly:
 
-- Node.JS 14 or above
+- Node.JS 15 or above
 - NPM 7 or above
 - A database in one of these database servers:
   - MySQL
