@@ -141,9 +141,9 @@ class Retweet {
   /**
    * Method to confirm if post's owner blocked or not the bot, to prevent
    * retweet from the bot.
-   * @return {Promise<Boolean>} Return true if is actually blocked.
+   * @return {Promise<boolean>} Return true if is actually blocked.
    */
-  async isBlocked(): Promise<Boolean> {
+  async isBlocked(): Promise<boolean> {
     try {
       const screenName = this.tweet.user.screen_name;
       const blocklist = new BlocklistRepository();
