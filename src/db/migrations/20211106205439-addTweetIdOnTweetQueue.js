@@ -14,7 +14,7 @@ module.exports = {
     });
   },
 
-  down: (queryInterface, Sequelize) => {
+  down: (queryInterface, _Sequelize) => {
     return queryInterface.sequelize.transaction((t) => {
       return Promise.all([
         queryInterface.removeColumn('TweetQueue', 'tweet_id', {transaction: t}),
