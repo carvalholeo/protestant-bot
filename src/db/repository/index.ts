@@ -1,7 +1,7 @@
 import BlocklistRepository from './BlocklistRepository';
 import ConfigurationRepository from './ConfigurationRepository';
 import ContactRepository from './ContactRepository';
-import LogService from './LogServiceRepository';
+import LogServiceRepository from './LogServiceRepository';
 import RateLimitRepository from './RateLimitRepository';
 import RetweetLogRepository from './RetweetLogRepository';
 import TweetQueueRepository from './TweetQueueRepository';
@@ -11,7 +11,7 @@ export {
   BlocklistRepository,
   ConfigurationRepository,
   ContactRepository,
-  LogService,
+  LogServiceRepository,
   RateLimitRepository,
   RetweetLogRepository,
   TweetQueueRepository,
@@ -23,7 +23,7 @@ export default {
   BlocklistRepository: BlocklistRepository,
   ConfigurationRepository: ConfigurationRepository,
   ContactRepository: ContactRepository,
-  LogService,
+  LogService: LogServiceRepository,
   RateLimitRepository: RateLimitRepository,
   RetweetLogRepository: RetweetLogRepository,
   TweetQueueRepository: TweetQueueRepository,
