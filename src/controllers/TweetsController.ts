@@ -6,7 +6,7 @@ import client from '../services/api/client';
 import logger from '../logs/logger';
 import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
 
-const RetweetController = {
+const TweetController = {
   listRetweets: async (request: Request, response: Response) => {
     try {
       const {page = 1} = request.query;
@@ -89,4 +89,4 @@ const RetweetController = {
   },
 };
 
-export default RetweetController;
+export default TweetController;
