@@ -113,6 +113,7 @@ async function renderMail(data: Contact): Promise<string> {
       resolve(__dirname, '..', '..', 'views', 'email.ejs'), {data});
 }
 
-export default {
-  sendMail,
-};
+
+export {
+  sendMail
+}

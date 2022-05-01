@@ -2,9 +2,9 @@ import {Request, Response} from 'express';
 
 import {ContactRepository} from '../db/repository';
 import logger from '../logs/logger';
-import email from '../services/emails';
+import {sendMail} from '../services/emails';
 import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
-const {sendMail} = email;
+
 
 const ContactController = {
   create: async (request: Request, response: Response) => {
