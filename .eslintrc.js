@@ -5,7 +5,6 @@ module.exports = {
   },
   'extends': [
     'eslint:recommended',
-    'plugin:node/recommended',
     'plugin:security-node/recommended',
   ],
   'parser': '@typescript-eslint/parser',
@@ -28,6 +27,5 @@ module.exports = {
       'ignoreUrls': true,
       'ignoreTemplateLiterals': true,
     }],
-    'node/no-unsupported-features/es-syntax': 'off'
   },
 };
