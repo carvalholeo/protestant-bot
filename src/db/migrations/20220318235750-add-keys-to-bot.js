@@ -13,7 +13,7 @@ module.exports = {
     await queryInterface.addColumn('Bots', 'is_payment_on_day', Sequelize.BOOLEAN);
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface, _Sequelize) {
     await queryInterface.removeColumn('Bots', 'consumer_key');
     await queryInterface.removeColumn('Bots', 'consumer_secret');
     await queryInterface.removeColumn('Bots', 'access_token');

@@ -5,7 +5,7 @@ module.exports = {
     await queryInterface.addColumn('Users', 'email', Sequelize.STRING(100));
   },
 
-  async down (queryInterface, Sequelize) {
+  async down (queryInterface, _Sequelize) {
     await queryInterface.removeColumn('Users', 'email')
   }
 };

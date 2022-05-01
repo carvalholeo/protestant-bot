@@ -19,7 +19,7 @@ module.exports = {
     });
   },
 
-  down: (queryInterface, Sequelize) => {
+  down: (queryInterface, _Sequelize) => {
     return queryInterface.sequelize.transaction((t) => {
       return Promise.all([
         queryInterface.removeColumn('Blocklist', 'blocked_by_admin', {transaction: t}),
