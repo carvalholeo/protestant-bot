@@ -1,4 +1,4 @@
-import { createLogger, config, transports as _transports } from 'winston';
+import { createLogger, config, transports } from 'winston';
 import { resolve } from 'path';
 
 const options = {
@@ -22,8 +22,8 @@ const options = {
 const logger = createLogger({
   levels: config.npm.levels,
   transports: [
-    new _transports.File(options.file),
-    new _transports.Console(options.console),
+    new transports.File(options.file),
+    new transports.Console(options.console),
   ],
   exitOnError: false,
 });
