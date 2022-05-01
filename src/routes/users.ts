@@ -4,7 +4,7 @@ import usersController from '../controllers/UsersController';
 
 import validatorMiddleware from '../middlewares/validatorMiddleware';
 import verifyLogoutMiddleware from '../middlewares/verifyLogoutMiddleware';
-import authorizationMiddleware from '../middlewares/authorizarionMiddleware';
+import authorizationMiddleware from '../middlewares/authorizationMiddleware';
 
 import tokenValidator from '../validators/privateApi/tokenValidator';
 import loginValidator from '../validators/privateApi/users/loginValidator';

@@ -27,7 +27,7 @@ function authorizationMiddleware(req: Request, res: Response, next: NextFunction
     if (!/Bearer/i.test(scheme)) {
       throw new Error('Malformed token.');
     }
-    verify(token, secret, (error, decoded) => {
+    verify(token, secret, (error, _decoded) => {
       if (error) {
         throw new Error('Invalid token.');
       }
