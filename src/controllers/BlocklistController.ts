@@ -1,8 +1,6 @@
 import {Request, Response} from 'express';
-import repositories from '../db/repository';
-const {
-  BlocklistRepository,
-} = repositories;
+import { BlocklistRepository } from '../db/repository';
+
 import logger from '../logs/logger';
 
 import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
