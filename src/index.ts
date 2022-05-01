@@ -1,7 +1,6 @@
 require('./utils/dotEnv');
 
-import express, {json, urlencoded} from 'express';
-import {Request, Response, NextFunction} from 'express';
+import express, {json, urlencoded, Request, Response, NextFunction} from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import hpp from 'hpp';
@@ -45,12 +44,12 @@ app.use(cors(corsOptions));
 app.options('*', cors());
 app.use('/api', routes);
 
-app.use((req: Request, res: Response, next: NextFunction) => {
+app.use((_req: Request, _res: Response, next: NextFunction) => {
   next(createError(404));
 });
 
 interface Error {
-  message: String;
+  message: string;
   status: number;
 }
 
