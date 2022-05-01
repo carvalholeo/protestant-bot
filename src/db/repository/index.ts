@@ -23,7 +23,7 @@ export default {
   BlocklistRepository: BlocklistRepository,
   ConfigurationRepository: ConfigurationRepository,
   ContactRepository: ContactRepository,
-  LogService: LogServiceRepository,
+  LogServiceRepository: LogServiceRepository,
   RateLimitRepository: RateLimitRepository,
   RetweetLogRepository: RetweetLogRepository,
   TweetQueueRepository: TweetQueueRepository,
