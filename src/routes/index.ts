@@ -10,7 +10,7 @@ const routes = Router();
 
 routes.use(fullAppSanitizer);
 
-routes.get('/', (req, res) =>
+routes.get('/', (_req, res) =>
   res.status(200).json({message: 'API it\'s working!'}));
 
 routes.use('/blocklist', blocklist);
