@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'CASCADE'
       });
     }
-  };
+  }
   Bot.init({
     id: {
       type: DataTypes.UUIDV4,

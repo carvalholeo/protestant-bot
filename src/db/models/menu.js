@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'RESTRICT',
       });
     }
-  };
+  }
   Menu.init({
     page_name: DataTypes.STRING,
     path: DataTypes.STRING,

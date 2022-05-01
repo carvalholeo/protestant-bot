@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'CASCADE'
       });
     }
-  };
+  }
   Log.init({
     level: DataTypes.STRING(15),
     emmiter: DataTypes.STRING,

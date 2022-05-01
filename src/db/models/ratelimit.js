@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-  };
+  }
   RateLimit.init({
     limit: DataTypes.INTEGER,
     resource: DataTypes.STRING(100),

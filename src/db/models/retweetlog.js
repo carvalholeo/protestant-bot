@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'CASCADE'
       });
     }
-  };
+  }
   RetweetLog.init({
     message: DataTypes.TEXT,
     tweet_id: DataTypes.STRING(50),
