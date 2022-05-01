@@ -5,13 +5,11 @@ import logger from '../logs/logger';
 
 import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
 
-const regex = /@/gi;
-
 const BlocklistController = {
   block: async (request: Request, response: Response) => {
     try {
       const {user} = request.body;
-      const userClean = user.replace(regex, '');
+      const userClean = user.replaceAll('@', '');
       const blocklist = new BlocklistRepository();
 
       await blocklist.block(userClean);
@@ -47,7 +45,7 @@ const BlocklistController = {
   unblock: async (request: Request, response: Response) => {
     try {
       const {user} = request.body;
-      const userClean = user.replace(regex, '');
+      const userClean = user.replaceAll('@', '');
       const blocklist = new BlocklistRepository();
 
       await blocklist.unblock(userClean);
