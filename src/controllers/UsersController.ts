@@ -7,7 +7,7 @@ import logger from '../logs/logger';
 import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
 
 const SALT_ROUNDS = Number(process.env.SALT_ROUNDS) ?? 12;
-const JWT_SECRET = process.env.JWT_SECRET || '';
+const JWT_SECRET = process.env.JWT_SECRET ?? '';
 
 const UsersController = {
   create: async (request: Request, response: Response) => {
