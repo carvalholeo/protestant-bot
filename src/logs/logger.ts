@@ -2,7 +2,7 @@ import {resolve} from 'path';
 import {appendFileSync, WriteFileOptions} from 'fs';
 
 import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
-import {LogService} from '../db/repository';
+import {LogServiceRepository} from '../db/repository';
 
 const FILE_CONFIG: WriteFileOptions = {
   encoding: 'utf-8',
@@ -23,7 +23,7 @@ async function logger(logObject: LogDatabase, isToDatabase: boolean = true) {
   const dateTime = new Date();
   try {
     if (isToDatabase) {
-      const log = new LogService();
+      const log = new LogServiceRepository();
       await log.create(logObject);
       return;
     }
