@@ -2,10 +2,7 @@
 import {hashSync, compareSync} from 'bcrypt';
 import {sign} from 'jsonwebtoken';
 import {Request, Response} from 'express';
-import repositories from '../db/repository';
-const {
-  UserRepository,
-} = repositories;
+import {UserRepository} from '../db/repository';
 import logger from '../logs/logger';
 import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
 

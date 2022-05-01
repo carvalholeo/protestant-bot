@@ -1,9 +1,6 @@
 import {Request, Response} from 'express';
 
-import repositories from '../db/repository';
-const {
-  ContactRepository,
-} = repositories;
+import {ContactRepository} from '../db/repository';
 import logger from '../logs/logger';
 import email from '../services/emails';
 import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';

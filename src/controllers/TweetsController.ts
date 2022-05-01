@@ -1,9 +1,7 @@
 
 import {Request, Response} from 'express';
-import repositories from '../db/repository';
-const {
-  RetweetLogRepository,
-} = repositories;
+
+import {RetweetLogRepository} from '../db/repository';
 import client from '../services/api/client';
 import logger from '../logs/logger';
 import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
