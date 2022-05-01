@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'CASCADE'
       });
     }
-  };
+  }
   TweetQueue.init({
     tweet: DataTypes.JSON,
     already_retweeted: DataTypes.BOOLEAN,

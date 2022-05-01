@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'CASCADE'
       });
     }
-  };
+  }
   Contact.init({
     name: DataTypes.STRING,
     email: DataTypes.STRING,

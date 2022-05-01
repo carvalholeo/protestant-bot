@@ -59,7 +59,7 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'CASCADE'
       });
     }
-  };
+  }
   User.init({
     username: {
       type: DataTypes.STRING(30),

@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'CASCADE'
       });
     }
-  };
+  }
   Blocklist.init({
     screen_name: DataTypes.STRING,
     is_blocked_now: DataTypes.BOOLEAN,
