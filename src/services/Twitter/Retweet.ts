@@ -40,57 +40,57 @@ class Retweet {
       }
 
       const rateLimitResponse = rateLimit.getLimitFromDatabase(endpoint)
-          .then(async (response) => {
-            if (typeof (response) === 'string') {
+        .then(async (response) => {
+          if (typeof (response) === 'string') {
             // @ts-ignore @ts-nocheck
-              const {resources} = await rateLimit
-                  .getLimitFromTwitter('statuses');
+            const { resources } = await rateLimit
+              .getLimitFromTwitter('statuses');
 
-              const {
-                remaining: apiLimit,
-                reset,
-              } = resources.statuses['/statuses/retweets/:id'];
+            const {
+              remaining: apiLimit,
+              reset,
+            } = resources.statuses['/statuses/retweets/:id'];
 
-              await rateLimit.setLimit(endpoint,
+            await rateLimit.setLimit(endpoint,
+              apiLimit,
+              reset * 1000);
+          } else {
+            if (response.limit < 1) {
+              // @ts-ignore @ts-nocheck
+              if (Date.now() > response.next_reset) {
+                // @ts-ignore @ts-nocheck
+                const { resources } = await rateLimit.
+                  getLimitFromTwitter('statuses');
+
+                const {
+                  remaining: apiLimit,
+                  reset,
+                } = resources.statuses['/statuses/retweets/:id'];
+
+                await rateLimit.setLimit(endpoint,
                   apiLimit,
                   reset * 1000);
-            } else {
-              if (response.limit < 1) {
-              // @ts-ignore @ts-nocheck
-                if (Date.now() > response.next_reset) {
-                // @ts-ignore @ts-nocheck
-                  const {resources} = await rateLimit.
-                      getLimitFromTwitter('statuses');
-
-                  const {
-                    remaining: apiLimit,
-                    reset,
-                  } = resources.statuses['/statuses/retweets/:id'];
-
-                  await rateLimit.setLimit(endpoint,
-                      apiLimit,
-                      reset * 1000);
-                }
-                response.nextAction = 'enqueue';
-              } else {
-                response.nextAction = 'retweet';
               }
+              response.nextAction = 'enqueue';
+            } else {
+              response.nextAction = 'retweet';
             }
-            return response;
-          })
-          .catch(async (error) => {
-            const text = `Error on handle with rate limit.
+          }
+          return response;
+        })
+        .catch(async (error) => {
+          const text = `Error on handle with rate limit.
               Reason: ${error.message}.
               Stack: ${error}`;
 
-            const message: LogDatabase = {
-              emmiter: 'RetweetService.retweet.try.rateLimitResponse.catch',
-              level: 'error',
-              message: text,
-            };
+          const message: LogDatabase = {
+            emmiter: 'RetweetService.retweet.try.rateLimitResponse.catch',
+            level: 'error',
+            message: text,
+          };
 
-            await logger(message);
-          });
+          await logger(message);
+        });
       // @ts-ignore @ts-nocheck
       if (rateLimitResponse.nextAction === 'enqueue') {
         const queue = new TweetQueueRepository();
@@ -99,35 +99,36 @@ class Retweet {
       }
 
       await client.post(`statuses/retweet/${this.tweet.id_str}`, {})
-          .then(async () => {
-            await rateLimit.setLimit(endpoint,
+        .then(async () => {
+          await rateLimit.setLimit(endpoint,
             // @ts-ignore @ts-nocheck
-                rateLimitResponse.limit - 1,
-                // @ts-ignore @ts-nocheck
-                rateLimitResponse.next_reset);
+            rateLimitResponse.limit - 1,
+            // @ts-ignore @ts-nocheck
+            rateLimitResponse.next_reset);
 
-            const message = `Tweet de @${this.tweet.user.screen_name}:
+          const message = `Tweet de @${this.tweet.user.screen_name}:
 "${this.tweet.text}".`;
-            const retweet = new RetweetLogRepository();
-            await retweet.registerRetweet(this.tweet);
+          const retweet = new RetweetLogRepository();
+          await retweet.registerRetweet(this.tweet);
 
-            const logObject: LogDatabase = {
-              emmiter: 'RetweetService.retweet.try.post.then',
-              level: 'info',
-              message: 'A tweet post was retweeted.',
-            };
-            await logger(logObject);
+          const logObject: LogDatabase = {
+            emmiter: 'RetweetService.retweet.try.post.then',
+            level: 'info',
+            message: 'A tweet post was retweeted.',
+          };
+          await logger(logObject);
 
-            console.log(message);
-          })
-          .catch(async (error) => {
-            const logObject: LogDatabase = {
-              emmiter: 'RetweetService.retweet.try.post.catch',
-              level: 'error',
-              message: error.message,
-            };
-            await logger(logObject);
-          });
+          // eslint-disable-next-line security-node/detect-crlf
+          console.log(message);
+        })
+        .catch(async (error) => {
+          const logObject: LogDatabase = {
+            emmiter: 'RetweetService.retweet.try.post.catch',
+            level: 'error',
+            message: error.message,
+          };
+          await logger(logObject);
+        });
     } catch (error: any) {
       const logObject: LogDatabase = {
         emmiter: 'RetweetService.retweet.catch',
@@ -149,7 +150,7 @@ class Retweet {
       const blocklist = new BlocklistRepository();
       // @ts-expect-error
       const [tweetOriginal] = await blocklist
-          .getOneBlock(screenName);
+        .getOneBlock(screenName);
       let quotedTweet = undefined;
       const message: LogDatabase = {
         level: 'debug',
@@ -170,7 +171,7 @@ class Retweet {
 
       if (this.tweet.is_quote_status) {
         [quotedTweet] = await blocklist
-            .getOneBlock(this.tweet.quoted_status.user.screen_name);
+          .getOneBlock(this.tweet.quoted_status.user.screen_name);
 
         await logger({
           ...message,

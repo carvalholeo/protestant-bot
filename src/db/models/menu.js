@@ -10,16 +10,16 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
+    static associate({Menu}) {
       // define association here
-      Menu.hasMany(models.Menu, {
+      Menu.hasMany(Menu, {
         foreignKey: 'page_father',
         as: 'pageFatherId',
         onDelete: 'RESTRICT',
         onUpdate: 'CASCADE',
       });
 
-      Menu.belongsTo(models.Menu, {
+      Menu.belongsTo(Menu, {
         foreignKey: {
           field: 'id',
           allowNull: true,

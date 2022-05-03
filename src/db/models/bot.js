@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      Bot.belongsTo(models.User, {
+    static associate({User}) {
+      Bot.belongsTo(User, {
         as: 'bot_user',
         foreignKey: 'user_id',
         onDelete: 'RESTRICT',

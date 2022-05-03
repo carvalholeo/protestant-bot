@@ -5,7 +5,7 @@ import isReply from '../../utils/isReply';
 import Tweet from '../../interfaces/typeDefinitions/Tweet';
 import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
 
-const {QUERY, WORD_BLOCKLIST} = process.env;
+const { QUERY, WORD_BLOCKLIST } = process.env;
 const QUERY_STRING = {
   track: `${QUERY},${WORD_BLOCKLIST}`,
   // follow: '85838972',
@@ -22,8 +22,8 @@ class StreamTwitter {
    * Verify if there's a instance running and, if not, instantiate a new.
    * @param {Function} retweetClass Class to handle with retweets.
    */
-  constructor(retweetClass: Function = () => {}) {
-    if (typeof(StreamTwitter._instance) === 'undefined') {
+  constructor(retweetClass: Function = () => { }) {
+    if (typeof (StreamTwitter._instance) === 'undefined') {
       StreamTwitter._instance = client.stream('statuses/filter', QUERY_STRING);
     }
 
@@ -51,7 +51,7 @@ class StreamTwitter {
       await logger(message);
 
       StreamTwitter._instance = client.stream(
-          'tweets/search/stream', QUERY_STRING);
+        'tweets/search/stream', QUERY_STRING);
       return StreamTwitter._instance;
     }
   }
@@ -91,56 +91,56 @@ class StreamTwitter {
       const stream = StreamTwitter._instance;
 
       stream
-          .on('start', async () => {
-            const message: LogDatabase = {
-              emmiter: 'Stream.handleStream.try.start',
-              level: 'info',
-              message: 'Stream was initialized',
-            };
-            await logger(message);
-            console.info(message.message);
-          })
-          .on('data', async (tweet: Tweet) => {
-            const isTweetReply = isReply(tweet);
-            const retweet = new this.RetweetClass(tweet);
+        .on('start', async () => {
+          const message: LogDatabase = {
+            emmiter: 'Stream.handleStream.try.start',
+            level: 'info',
+            message: 'Stream was initialized',
+          };
+          await logger(message);
+          console.info(message.message);
+        })
+        .on('data', async (tweet: Tweet) => {
+          const isTweetReply = isReply(tweet);
+          const retweet = new this.RetweetClass(tweet);
 
-            if (!isTweetReply) {
-              await retweet.retweet(tweet);
-            }
-          })
-          .on('ping', async () => {
-            const message: LogDatabase = {
-              emmiter: 'Stream.handleStream.try.ping',
-              level: 'debug',
-              message: 'Ping to keep connection alive',
-            };
-            await logger(message);
-            console.info(message.message);
-          })
-          .on('end', async (response: unknown) => {
-            this.killInstance();
-            const message = `Method handleStream, from class Stream
+          if (!isTweetReply) {
+            await retweet.retweet(tweet);
+          }
+        })
+        .on('ping', async () => {
+          const message: LogDatabase = {
+            emmiter: 'Stream.handleStream.try.ping',
+            level: 'debug',
+            message: 'Ping to keep connection alive',
+          };
+          await logger(message);
+          console.info(message.message);
+        })
+        .on('end', async (response: unknown) => {
+          this.killInstance();
+          const message = `Method handleStream, from class Stream
             receive an end event. This is the complete object received:
             ${response}`;
-            const logObject: LogDatabase = {
-              emmiter: 'Stream.handleStream.try.end',
-              level: 'error',
-              message: message,
-            };
-            await logger(logObject);
-            console.error(message);
-          })
-          .on('error', async (error: any) => {
-            process.nextTick(() => stream.destroy());
-            this.killInstance();
-            const logObject: LogDatabase = {
-              emmiter: 'Stream.handleStream.try.error',
-              level: 'critical',
-              message: error.message,
-            };
-            await logger(logObject);
-            console.error(error);
-          });
+          const logObject: LogDatabase = {
+            emmiter: 'Stream.handleStream.try.end',
+            level: 'error',
+            message: message,
+          };
+          await logger(logObject);
+          console.error(message);
+        })
+        .on('error', async (error: any) => {
+          process.nextTick(() => stream.destroy());
+          this.killInstance();
+          const logObject: LogDatabase = {
+            emmiter: 'Stream.handleStream.try.error',
+            level: 'critical',
+            message: error.message,
+          };
+          await logger(logObject);
+          console.error(error);
+        });
     } catch (error: any) {
       const logObject: LogDatabase = {
         emmiter: 'Stream.handleStream.catch',

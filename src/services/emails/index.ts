@@ -1,6 +1,6 @@
-import {createTransport} from 'nodemailer';
-import {renderFile} from 'ejs';
-import {resolve} from 'path';
+import { createTransport } from 'nodemailer';
+import { renderFile } from 'ejs';
+import { resolve } from 'path';
 
 import logger from '../../logs/logger';
 
@@ -75,28 +75,28 @@ Mensagem: ${data.message}`;
   }
 
   transporter().sendMail(config)
-      .then(async (success: any) => {
-        const message = `Message ${data.message} sent to contact email.
+    .then(async (success: any) => {
+      const message = `Message ${data.message} sent to contact email.
 Log from Nodemailer is ${success}`;
-        const logObject: LogDatabase = {
-          emmiter: 'EmailService.sendMail.sendMail.then',
-          level: 'info',
-          message: message,
-        };
-        await logger(logObject);
-      })
-      .catch(async (error: any) => {
-        console.error(error);
-        const message = `Error on try to send email to contact email.
+      const logObject: LogDatabase = {
+        emmiter: 'EmailService.sendMail.sendMail.then',
+        level: 'info',
+        message: message,
+      };
+      await logger(logObject);
+    })
+    .catch(async (error: any) => {
+      console.error(error);
+      const message = `Error on try to send email to contact email.
 Log from Nodemailer is ${error.toString()}`;
 
-        const logObject: LogDatabase = {
-          emmiter: 'EmailService.sendMail.sendMail.catch',
-          level: 'error',
-          message: message,
-        };
-        await logger(logObject);
-      });
+      const logObject: LogDatabase = {
+        emmiter: 'EmailService.sendMail.sendMail.catch',
+        level: 'error',
+        message: message,
+      };
+      await logger(logObject);
+    });
 }
 
 /**
@@ -110,7 +110,7 @@ Log from Nodemailer is ${error.toString()}`;
  */
 async function renderMail(data: Contact): Promise<string> {
   return await renderFile(
-      resolve(__dirname, '..', '..', 'views', 'email.ejs'), {data});
+    resolve(__dirname, '..', '..', 'views', 'email.ejs'), { data });
 }
 
 

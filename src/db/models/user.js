@@ -9,50 +9,57 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      User.hasMany(models.Blocklist, {
+    static associate({
+      Blocklist,
+      Bot,
+      Log,
+      RetweetLog,
+      TweetQueue,
+      Contact,
+      Telephone}) {
+      User.hasMany(Blocklist, {
         as: 'user_blocklist',
         foreignKey: 'user_id',
         onDelete: 'RESTRICT',
         onUpdate: 'CASCADE'
       });
 
-      User.hasMany(models.Bot, {
+      User.hasMany(Bot, {
         as: 'user_bot',
         foreignKey: 'user_id',
         onDelete: 'RESTRICT',
         onUpdate: 'CASCADE'
       });
 
-      User.hasMany(models.Log, {
+      User.hasMany(Log, {
         as: 'user_log',
         foreignKey: 'user_id',
         onDelete: 'RESTRICT',
         onUpdate: 'CASCADE'
       });
 
-      User.hasMany(models.RetweetLog, {
+      User.hasMany(RetweetLog, {
         as: 'user_retweetlog',
         foreignKey: 'user_id',
         onDelete: 'RESTRICT',
         onUpdate: 'CASCADE'
       });
 
-      User.hasMany(models.TweetQueue, {
+      User.hasMany(TweetQueue, {
         as: 'user_tweetqueue',
         foreignKey: 'user_id',
         onDelete: 'RESTRICT',
         onUpdate: 'CASCADE'
       });
 
-      User.hasMany(models.Contact, {
+      User.hasMany(Contact, {
         as: 'user_contact',
         foreignKey: 'user_id',
         onDelete: 'RESTRICT',
         onUpdate: 'CASCADE'
       });
 
-      User.hasMany(models.Telephone, {
+      User.hasMany(Telephone, {
         as: 'user_telephone',
         foreignKey: 'user_id',
         onDelete: 'RESTRICT',

@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      RetweetLog.belongsTo(models.User, {
+    static associate({User}) {
+      RetweetLog.belongsTo(User, {
         as: 'retweetlog_user',
         foreignKey: 'user_id',
         onDelete: 'RESTRICT',

@@ -1,5 +1,5 @@
 import client from '../api/client';
-import {RateLimitRepository} from '../../db/repository';
+import { RateLimitRepository } from '../../db/repository';
 import logger from '../../logs/logger';
 
 import RateLimitInterface from '../../interfaces/typeDefinitions/RateLimitInterface';
@@ -16,11 +16,11 @@ class RateLimit {
    * use across the app.
    */
   constructor() {
-    if (typeof(RateLimit.limit) === 'undefined') {
+    if (typeof (RateLimit.limit) === 'undefined') {
       RateLimit.limit = 0;
     }
     this.dateTime = new Date()
-        .toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'});
+      .toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
   }
 
   /**
@@ -30,7 +30,7 @@ class RateLimit {
    * Returns a JSON with rate limit. If fails, returns an error message.
    */
   async getLimitFromTwitter(resource: string):
-      Promise<RateLimitInterface | string> {
+    Promise<RateLimitInterface | string> {
     try {
       const getApiLimit = await client.get(`application/rate_limit_status`, {
         resources: resource,
@@ -67,7 +67,7 @@ class RateLimit {
    */
   async getLimitFromDatabase(endpoint: string) {
     try {
-      if (typeof(endpoint) === 'undefined') {
+      if (typeof (endpoint) === 'undefined') {
         throw new ReferenceError('You must to provide a resource to query.');
       }
       const rateLimitModel = new RateLimitRepository();
@@ -81,7 +81,7 @@ class RateLimit {
 
       await logger(message);
 
-      if (typeof(getLimit) === 'string') {
+      if (typeof (getLimit) === 'string') {
         throw new Error(`There is no rate limit registered on database
         to the resource asked.`);
       }
@@ -109,13 +109,13 @@ class RateLimit {
    * @param {number} nextReset Integer number, time in minutes to the next reset
    */
   async setLimit(
-      endpoint: string,
-      limit: number,
-      nextReset: number): Promise<void> {
+    endpoint: string,
+    limit: number,
+    nextReset: number): Promise<void> {
     try {
-      if (typeof(endpoint) === 'undefined' ||
-          typeof(limit) === 'undefined' ||
-          typeof(nextReset) === 'undefined') {
+      if (typeof (endpoint) === 'undefined' ||
+        typeof (limit) === 'undefined' ||
+        typeof (nextReset) === 'undefined') {
         throw new ReferenceError(`You must to provide a object with 3
         properties: resource (string), limit (number) and nextReset (number).`);
       }
@@ -127,7 +127,7 @@ class RateLimit {
         message: '',
       };
 
-      if (typeof(isAlreadyOnDatabase) !== 'string') {
+      if (typeof (isAlreadyOnDatabase) !== 'string') {
         await rateLimitModel.update({
           resource: endpoint,
           limit: limit,
@@ -168,7 +168,7 @@ class RateLimit {
   async recalibrate(endpoint: string): Promise<void> {
     try {
       // @ts-ignore @ts-nocheck
-      const {resources} = await this.getLimitFromTwitter('statuses');
+      const { resources } = await this.getLimitFromTwitter('statuses');
       const {
         remaining,
         reset,
