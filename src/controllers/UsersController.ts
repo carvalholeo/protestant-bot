@@ -1,18 +1,18 @@
 
-import {hashSync, compareSync} from 'bcrypt';
-import {sign} from 'jsonwebtoken';
-import {Request, Response} from 'express';
-import {UserRepository} from '../db/repository';
+import { hashSync, compareSync } from 'bcrypt';
+import { sign } from 'jsonwebtoken';
+import { Request, Response } from 'express';
+import { UserRepository } from '../db/repository';
 import logger from '../logs/logger';
 import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
 
 const SALT_ROUNDS = Number(process.env.SALT_ROUNDS) ?? 12;
 const JWT_SECRET = process.env.JWT_SECRET ?? '';
 
-const UsersController = {
-  create: async (request: Request, response: Response) => {
+class UsersController {
+  async create(request: Request, response: Response) {
     try {
-      const {username, password} = request.body;
+      const { username, password } = request.body;
       const passwordHash = hashSync(password, SALT_ROUNDS);
 
       const user = new UserRepository(username);
@@ -29,7 +29,7 @@ const UsersController = {
       await logger(logObject);
 
       return response.status(201)
-          .json({message});
+        .json({ message });
     } catch (error: any) {
       const message = `There was an error on create user.
       Reason: ${error.message}`;
@@ -43,13 +43,13 @@ const UsersController = {
       await logger(logObject);
 
       return response.status(500)
-          .json({message});
+        .json({ message });
     }
-  },
+  }
 
-  login: async (request: Request, response: Response) => {
+  async login(request: Request, response: Response) {
     try {
-      const {username, password} = request.body;
+      const { username, password } = request.body;
 
       const userDb = new UserRepository(username);
       const user = await userDb.getUser();
@@ -65,7 +65,7 @@ const UsersController = {
 
         await logger(logObject);
         return response.status(401)
-            .json({message});
+          .json({ message });
       }
 
       const passwordHash = user?.password || '';
@@ -82,7 +82,7 @@ const UsersController = {
 
         await logger(logObject);
         return response.status(401)
-            .json({message});
+          .json({ message });
       }
 
       if (!compareSync(password, passwordHash)) {
@@ -97,7 +97,7 @@ const UsersController = {
         await logger(logObject);
 
         return response.status(401)
-            .json({message});
+          .json({ message });
       }
 
       delete user.password;
@@ -112,14 +112,14 @@ const UsersController = {
 
       await logger(logObject);
 
-      const token = sign({user}, JWT_SECRET, {
+      const token = sign({ user }, JWT_SECRET, {
         expiresIn: '6h',
       });
 
       user.token = token;
 
       return response.status(201)
-          .json({user});
+        .json({ user });
     } catch (error: any) {
       const message = `There was an error to try login.
       Reason: ${error.message}`;
@@ -133,13 +133,13 @@ const UsersController = {
       await logger(logObject);
 
       return response.status(500)
-          .json({message});
+        .json({ message });
     }
-  },
+  }
 
-  logout: async (request: Request, response: Response) => {
+  async logout(request: Request, response: Response) {
     try {
-      const {authorization} = request.headers;
+      const { authorization } = request.headers;
 
       // @ts-ignore
       const hasTokenCache = request.map.has(authorization);
@@ -156,7 +156,7 @@ const UsersController = {
         await logger(logObject);
 
         return response.status(401)
-            .json({message});
+          .json({ message });
       }
 
       // @ts-ignore
@@ -173,7 +173,7 @@ const UsersController = {
       await logger(logObject);
 
       return response.status(204)
-          .json({message});
+        .json({ message });
     } catch (error: any) {
       const message = `There was an error to try login.
       Reason: ${error.message}`;
@@ -187,9 +187,9 @@ const UsersController = {
       await logger(logObject);
 
       return response.status(500)
-          .json({message});
+        .json({ message });
     }
-  },
-};
+  }
+}
 
-export default UsersController;
+export default new UsersController();

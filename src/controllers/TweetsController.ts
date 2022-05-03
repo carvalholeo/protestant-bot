@@ -1,15 +1,15 @@
 
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
 
-import {RetweetLogRepository} from '../db/repository';
+import { RetweetLogRepository } from '../db/repository';
 import client from '../services/api/client';
 import logger from '../logs/logger';
 import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
 
-const TweetsController = {
-  listRetweets: async (request: Request, response: Response) => {
+class TweetsController {
+  async listRetweets(request: Request, response: Response) {
     try {
-      const {page = 1} = request.query;
+      const { page = 1 } = request.query;
 
       const retweetLog = new RetweetLogRepository();
       const list = await retweetLog.getAllRetweets(Number(page));
@@ -26,11 +26,11 @@ const TweetsController = {
       await logger(logObject);
 
       return response.status(200)
-          .json({
-            current_page: page,
-            total_of_pages: totalPages,
-            result: list,
-          });
+        .json({
+          current_page: page,
+          total_of_pages: totalPages,
+          result: list,
+        });
     } catch (error: any) {
       const message = `There was an error on try list retweets.
       Reason: ${error.message}`;
@@ -44,14 +44,14 @@ const TweetsController = {
       await logger(logObject);
 
       return response.status(500)
-          .json({message});
+        .json({ message });
     }
-  },
+  }
 
-  undoRetweets: async (request: Request, response: Response) => {
+  async undoRetweets(request: Request, response: Response) {
     try {
-      const {tweetId} = request.params;
-      const {comment} = request.body;
+      const { tweetId } = request.params;
+      const { comment } = request.body;
 
       await client.post(`statuses/unretweet/${tweetId}`, {});
 
@@ -70,8 +70,8 @@ const TweetsController = {
       await logger(logObject);
 
       return response.status(204)
-          .json({message: message});
-    } catch (error:any) {
+        .json({ message: message });
+    } catch (error: any) {
       const message = `There was an error on trying undo retweet.
       Reason: ${error.message}`;
 
@@ -84,9 +84,9 @@ const TweetsController = {
       await logger(logObject);
 
       return response.status(500)
-          .json({message: message});
+        .json({ message: message });
     }
-  },
-};
+  }
+}
 
-export default TweetsController;
+export default new TweetsController();

@@ -1,14 +1,14 @@
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
 import { BlocklistRepository } from '../db/repository';
 
 import logger from '../logs/logger';
 
 import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
 
-const BlocklistController = {
-  block: async (request: Request, response: Response) => {
+class BlocklistController {
+  async block(request: Request, response: Response) {
     try {
-      const {user} = request.body;
+      const { user } = request.body;
       const userClean = user.replaceAll('@', '');
       const blocklist = new BlocklistRepository();
 
@@ -23,9 +23,9 @@ const BlocklistController = {
 
       await logger(logObject);
       return response
-          .status(204)
-          .json({message});
-    } catch (error:any) {
+        .status(204)
+        .json({ message });
+    } catch (error: any) {
       console.error(error);
       const message = `Error on block user.
       Reason: ${error.message}`;
@@ -38,13 +38,14 @@ const BlocklistController = {
       await logger(logObject);
 
       return response
-          .status(500)
-          .json({message});
+        .status(500)
+        .json({ message });
     }
-  },
-  unblock: async (request: Request, response: Response) => {
+  }
+
+  async unblock(request: Request, response: Response) {
     try {
-      const {user} = request.body;
+      const { user } = request.body;
       const userClean = user.replaceAll('@', '');
       const blocklist = new BlocklistRepository();
 
@@ -60,8 +61,8 @@ const BlocklistController = {
 
       await logger(logObject);
       return response
-          .status(202)
-          .json({message});
+        .status(202)
+        .json({ message });
     } catch (error: any) {
       const message = `Error on unblock user.
       Reason: ${error.message}`;
@@ -74,10 +75,10 @@ const BlocklistController = {
       await logger(logObject);
 
       return response
-          .status(500)
-          .json({message});
+        .status(500)
+        .json({ message });
     }
-  },
-};
+  }
+}
 
-export default BlocklistController;
+export default new BlocklistController();
