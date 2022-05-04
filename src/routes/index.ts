@@ -8,14 +8,16 @@ import contact from './contact';
 
 const routes = Router();
 
-routes.use(fullAppSanitizer);
+routes.use(fullAppSanitizer)
 
 routes.get('/', (_req, res) =>
-  res.status(200).json({message: 'API it\'s working!'}));
+  res.status(200).json({ message: 'API it\'s working!' })
+)
 
-routes.use('/blocklist', blocklist);
-routes.use('/tweets', tweets);
-routes.use('/users', users);
-routes.use('/contact', contact);
+routes
+  .use('/blocklist', blocklist)
+  .use('/tweets', tweets)
+  .use('/users', users)
+  .use('/contact', contact);
 
 export default routes;

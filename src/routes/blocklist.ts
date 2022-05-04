@@ -11,14 +11,10 @@ blocklist
     .post('/block',
         userToBlockValidator,
         validatorMiddleware,
-        BlocklistController.block,
-    );
-
-blocklist
+        BlocklistController.block)
     .put('/unblock',
         userToUnblockValidator,
         validatorMiddleware,
-        BlocklistController.unblock,
-    );
+        BlocklistController.unblock);
 
 export default blocklist;

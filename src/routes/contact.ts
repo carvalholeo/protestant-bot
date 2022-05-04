@@ -10,7 +10,6 @@ contact
     .post('/',
         contactFormValidator,
         validatorMiddleware,
-        ContactController.create,
-    );
+        ContactController.create);
 
 export default contact;
