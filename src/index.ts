@@ -10,6 +10,7 @@ import csurf, { CookieOptions } from 'csurf';
 
 import routes from './routes';
 import httpLogger from './services/logs/httpLogger';
+import logger from './services/logs/logger';
 import logUniqueIdentifier from './middlewares/logUniqueIdentifier';
 
 const origin = process.env.FRONTEND_URL ?? 'http://localhost:3000';
@@ -40,7 +41,8 @@ app.use(corsExecution);
 app.options('*', corsExecution);
 app.use('/api', routes);
 
-app.use((_req: Request, _res: Response, next: NextFunction) => {
+app.use((req: Request, _res: Response, next: NextFunction) => {
+  logger.warn(`Request to ${req.path} resulted into error 404. ID: ${req.app.get('uniqueIdentifier')}`);
   next(createError(404));
 });
 
@@ -53,6 +55,8 @@ app.use((err: Error, req: Request, res: Response) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  logger.crit(`An error has occurred on requesting ${req.path}, resulting into error ${err.status}. ID: ${req.app.get('uniqueIdentifier')}`);
 
   // render the error page
   res
