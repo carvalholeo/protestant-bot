@@ -1,9 +1,8 @@
 import client from '../api/client';
 import { RateLimitRepository } from '../../db/repository';
-import logger from '../../logs/logger';
+import logger from '../../services/logs/logger';
 
 import RateLimitInterface from '../../interfaces/typeDefinitions/RateLimitInterface';
-import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
 
 /**
  * Handle with rate limit from Twitter App.
@@ -36,24 +35,14 @@ class RateLimit {
         resources: resource,
       });
 
-      const message: LogDatabase = {
-        emmiter: 'RateLimit.getLimitFromTwitter.try',
-        level: 'info',
-        message: 'API rate limit asked for Twitter',
-      };
-
-      await logger(message);
+      const message = 'API rate limit asked for Twitter';
+      logger.info(`${message} at RateLimit.getLimitFromTwitter.try`);
       return getApiLimit;
     } catch (error: any) {
       const text = `There was an error on get rate limit from Twitter.
       Reason: ${error.errors[0].message}.`;
 
-      const message: LogDatabase = {
-        emmiter: 'RateLimit.getLimitFromTwitter.catch',
-        level: 'error',
-        message: error.errors[0].message,
-      };
-      await logger(message);
+      logger.error(`${text} at RateLimit.getLimitFromTwitter.catch`)
 
       return text;
     }
@@ -71,15 +60,11 @@ class RateLimit {
         throw new ReferenceError('You must to provide a resource to query.');
       }
       const rateLimitModel = new RateLimitRepository();
-      const message: LogDatabase = {
-        emmiter: 'RateLimit.getLimitFromDatabase.try',
-        level: 'info',
-        message: 'API rate limit asked for database',
-      };
+
+      const message = 'API rate limit asked for database';
+      logger.info(`${message} at RateLimit.getLimitFromDatabase.try`);
 
       const getLimit = await rateLimitModel.getOneRateLimit(endpoint);
-
-      await logger(message);
 
       if (typeof (getLimit) === 'string') {
         throw new Error(`There is no rate limit registered on database
@@ -91,12 +76,7 @@ class RateLimit {
       const text = `There was an error on get rate limit from database.
       Reason: ${error.message}.`;
 
-      const message: LogDatabase = {
-        emmiter: 'RateLimit.getLimitFromDatabase.catch',
-        level: 'error',
-        message: error.message,
-      };
-      await logger(message);
+      logger.error(`${text} at RateLimit.getLimitFromDatabase.catch`)
 
       return text;
     }
@@ -121,11 +101,6 @@ class RateLimit {
       }
       const rateLimitModel = new RateLimitRepository();
       const isAlreadyOnDatabase = rateLimitModel.getOneRateLimit(endpoint);
-      const message: LogDatabase = {
-        emmiter: 'RateLimit.setLimit.try',
-        level: 'info',
-        message: '',
-      };
 
       if (typeof (isAlreadyOnDatabase) !== 'string') {
         await rateLimitModel.update({
@@ -134,14 +109,14 @@ class RateLimit {
           nextReset,
         });
 
-        message.message = 'API rate limit updated on database';
-        await logger(message);
+        const message = 'API rate limit updated on database';
+        logger.info(`${message} at RateLimit.setLimit.try`);
 
         return;
       }
 
-      message.message = 'API rate limit created on database';
-      await logger(message);
+      const message = 'API rate limit created on database';
+      logger.info(`${message} at RateLimit.setLimit.try`);
 
       await rateLimitModel.create({
         resource: endpoint,
@@ -150,12 +125,7 @@ class RateLimit {
       });
       return;
     } catch (error: any) {
-      const message: LogDatabase = {
-        emmiter: 'RateLimit.setLimit.catch',
-        level: 'error',
-        message: error.message,
-      };
-      await logger(message);
+      logger.error(`${error.message} at RateLimit.setLimit.catch`);
 
       return;
     }
@@ -176,12 +146,7 @@ class RateLimit {
 
       await this.setLimit(endpoint, remaining, reset * 1000);
     } catch (error: any) {
-      const message: LogDatabase = {
-        emmiter: 'RateLimit.setLimit.catch',
-        level: 'error',
-        message: error.message,
-      };
-      await logger(message);
+      logger.error(`${error.message} at RateLimit.recalibrate.catch`);
     }
   }
 }

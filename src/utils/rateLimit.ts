@@ -1,6 +1,5 @@
 import RateLimit from '../services/Twitter/RateLimit';
-import logger from '../logs/logger';
-import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
+import logger from '../services/logs/logger';
 
 import RateLimitInterface from '../interfaces/typeDefinitions/RateLimitInterface';
 
@@ -56,14 +55,7 @@ async function rateLimit(): Promise<string | void | RateLimitInterface> {
     const message = `Error on handle with rate limit.
           Reason: ${error.response.data}.
           Stack: ${error}`;
-
-    const logObject: LogDatabase = {
-      emmiter: 'RateLimit function',
-      level: 'error',
-      message,
-    };
-
-    await logger(logObject);
+    logger.error(`${message} at RateLimit function.`);
   }
 }
 

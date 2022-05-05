@@ -1,9 +1,8 @@
-import logger from '../../logs/logger';
 import models from '../models';
+import logger from '../../services/logs/logger';
 
 import RetweetLogInterface from '../../interfaces/typeDefinitions/RetweetLogInterface';
 import Tweet from '../../interfaces/typeDefinitions/Tweet';
-import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
 
 const initialLimit = 100;
 const initialOffset = 100;
@@ -32,13 +31,7 @@ class RetweetLogRepository {
         offset,
       });
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'RetweetLogService.getAllRetweets.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at RetweetLogService.getAllRetweets.catch`);
     }
   }
 
@@ -57,13 +50,7 @@ class RetweetLogRepository {
         col: 'tweet_id',
       });
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'RetweetLogService.countRetweets.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at RetweetLogService.countRetweets.catch`);
     }
   }
 
@@ -89,13 +76,7 @@ class RetweetLogRepository {
 
       return count;
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'RetweetLogService.getAllRetweetsUndone.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at RetweetLogService.getAllRetweetsUndone.catch`);
     }
   }
   /**
@@ -114,13 +95,7 @@ class RetweetLogRepository {
 
       await tweet.save();
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'RetweetLogService.undoRetweet.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at RetweetLogService.undoRetweet.catch`);
     }
   }
 
@@ -143,13 +118,7 @@ class RetweetLogRepository {
         message,
       });
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'RetweetLogService.registerRetweet.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at RetweetLogService.registerRetweet.catch`);
     }
   }
 }

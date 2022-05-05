@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
 
 import { ContactRepository } from '../db/repository';
-import logger from '../logs/logger';
+import logger from '../services/logs/logger';
 import { sendMail } from '../services/emails';
-import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
 
 
 class ContactController {
@@ -17,13 +16,7 @@ class ContactController {
       const messageToUser = `Message from ${name} posted on front and
 created at database.`;
 
-      const logObject: LogDatabase = {
-        emmiter: 'ContactController.create.try',
-        level: 'info',
-        message: messageToUser,
-      };
-
-      await logger(logObject);
+      logger.info(`${messageToUser} at ContactController.create.try`);
 
       response
         .status(201)
@@ -35,13 +28,7 @@ created at database.`;
       const message = `Error on register contact at database.
       Reason: ${error.message}`;
 
-      const logObject: LogDatabase = {
-        emmiter: 'ContactController.create.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${message} at ContactController.create.try`);
 
       return response
         .status(500)
