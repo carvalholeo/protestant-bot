@@ -3,7 +3,7 @@ node_modules/
 .env.local
 .scannerwork
 reports/
-**/logs/*.log
+**/src/logs/
 **/database/*.sqlite
 **/SECRET_TOKEN
 dist/**
