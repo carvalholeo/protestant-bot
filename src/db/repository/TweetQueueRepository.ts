@@ -1,7 +1,7 @@
 
 import {Op} from 'sequelize';
 import models from '../models';
-import logger from '../../services/logs/logger';
+import logger from '../../utils/logs/logger';
 
 import Tweet from '../../interfaces/typeDefinitions/Tweet';
 import TweetQueueInterface from '../../interfaces/typeDefinitions/TweetQueueInterface';

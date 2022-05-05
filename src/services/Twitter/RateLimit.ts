@@ -1,6 +1,6 @@
 import client from '../api/client';
 import { RateLimitRepository } from '../../db/repository';
-import logger from '../../services/logs/logger';
+import logger from '../../utils/logs/logger';
 
 import RateLimitInterface from '../../interfaces/typeDefinitions/RateLimitInterface';
 

@@ -3,7 +3,7 @@ import { hashSync, compareSync } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import { UserRepository } from '../db/repository';
-import logger from '../services/logs/logger';
+import logger from '../utils/logs/logger';
 
 const SALT_ROUNDS = Number(process.env.SALT_ROUNDS) ?? 12;
 const JWT_SECRET = process.env.JWT_SECRET ?? '';

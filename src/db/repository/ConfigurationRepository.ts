@@ -1,5 +1,5 @@
 import models from '../models';
-import logger from '../../services/logs/logger';
+import logger from '../../utils/logs/logger';
 
 /**
  * Handle with app configurations

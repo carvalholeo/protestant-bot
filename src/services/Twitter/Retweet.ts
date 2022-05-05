@@ -2,7 +2,7 @@ import client from '../api/client';
 import {
   RetweetLogRepository, TweetQueueRepository, BlocklistRepository,
 } from '../../db/repository';
-import logger from '../../services/logs/logger';
+import logger from '../../utils/logs/logger';
 import RateLimit from './RateLimit';
 import Stream from './StreamTwitter';
 

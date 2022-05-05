@@ -1,4 +1,4 @@
-import logger from '../../services/logs/logger';
+import logger from '../../utils/logs/logger';
 
 import models from '../models';
 

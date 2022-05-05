@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import logger from '../services/logs/logger';
+import logger from '../utils/logs/logger';
 import fullAppSanitizer from '../validators/fullAppSanitizer';
 
 import blocklist from './blocklist';

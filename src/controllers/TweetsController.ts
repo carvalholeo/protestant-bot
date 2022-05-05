@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 
 import { RetweetLogRepository } from '../db/repository';
 import client from '../services/api/client';
-import logger from '../services/logs/logger';
+import logger from '../utils/logs/logger';
 
 class TweetsController {
   async listRetweets(request: Request, response: Response) {
