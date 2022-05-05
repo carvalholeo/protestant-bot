@@ -1,31 +1,38 @@
-import { createLogger, config, transports } from 'winston';
 import { resolve } from 'path';
+import { createLogger, config, transports, format } from 'winston';
+import 'winston-daily-rotate-file';
+import { DailyRotateFileTransportOptions } from 'winston-daily-rotate-file';
 
-const options = {
-  file: {
-    level: 'verbose',
-    filename: resolve(__dirname, '..', '..', 'logs', 'app.log'),
-    handleExceptions: true,
-    json: true,
-    maxsize: 5242880, // 5MB
-    maxFiles: 5,
-    colorize: false,
-  },
-  console: {
-    level: 'debug',
-    handleExceptions: true,
-    json: false,
-    colorize: true,
-  },
+const consoleOptions: transports.ConsoleTransportOptions = {
+  consoleWarnLevels: ['warn', 'debug', 'trace'],
+  handleExceptions: true,
+  handleRejections: true,
+  level: 'debug',
+  stderrLevels: ['error'],
+};
+
+const dailyRotateOptions: DailyRotateFileTransportOptions = {
+  datePattern: 'YYYY-MM-DD',
+  dirname: resolve(__dirname, '..', '..', 'logs'),
+  filename: 'server.log',
+  level: 'info',
+  maxFiles: '366d',
+  maxSize: '20m',
+  zippedArchive: true,
 };
 
 const logger = createLogger({
+  exitOnError: true,
+  format: format.combine(
+    format.timestamp({ format: 'MMM-DD-YYYY HH:mm:ss' }),
+    format.align(),
+    format.printf(i => `${i.level}: ${[i.timestamp]}: ${i.message}`)
+  ),
   levels: config.npm.levels,
   transports: [
-    new transports.File(options.file),
-    new transports.Console(options.console),
+    new transports.Console(consoleOptions),
+    new transports.DailyRotateFile(dailyRotateOptions),
   ],
-  exitOnError: false,
 });
 
 export default logger;
