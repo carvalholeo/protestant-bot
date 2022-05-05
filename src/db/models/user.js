@@ -12,7 +12,6 @@ module.exports = (sequelize, DataTypes) => {
     static associate({
       Blocklist,
       Bot,
-      Log,
       RetweetLog,
       TweetQueue,
       Contact,
@@ -26,13 +25,6 @@ module.exports = (sequelize, DataTypes) => {
 
       User.hasMany(Bot, {
         as: 'user_bot',
-        foreignKey: 'user_id',
-        onDelete: 'RESTRICT',
-        onUpdate: 'CASCADE'
-      });
-
-      User.hasMany(Log, {
-        as: 'user_log',
         foreignKey: 'user_id',
         onDelete: 'RESTRICT',
         onUpdate: 'CASCADE'
