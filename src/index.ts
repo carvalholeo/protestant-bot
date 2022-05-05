@@ -10,6 +10,7 @@ import csurf, { CookieOptions } from 'csurf';
 
 import routes from './routes';
 import httpLogger from './services/logs/httpLogger';
+import logUniqueIdentifier from './middlewares/logUniqueIdentifier';
 
 const origin = process.env.FRONTEND_URL ?? 'http://localhost:3000';
 const corsOptions: CorsOptions = {
@@ -25,6 +26,7 @@ const COOKIE_OPTIONS: CookieParseOptions | CookieOptions = {
 const app = express();
 const corsExecution = cors(corsOptions);
 
+app.use(logUniqueIdentifier);
 app.use(httpLogger);
 app.use(helmet());
 app.use(json());
