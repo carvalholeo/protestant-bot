@@ -2,7 +2,7 @@ import { createTransport } from 'nodemailer';
 import { renderFile } from 'ejs';
 import { resolve } from 'path';
 
-import logger from '../../services/logs/logger';
+import logger from '../../utils/logs/logger';
 
 import Contact from '../../interfaces/typeDefinitions/Contact';
 import ConfigEmail from '../../interfaces/typeDefinitions/ConfigEmail';

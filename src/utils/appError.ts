@@ -1,4 +1,4 @@
-import logger from '../services/logs/logger';
+import logger from './logs/logger';
 
 /**
  * Function to generate a log and stop the bot.

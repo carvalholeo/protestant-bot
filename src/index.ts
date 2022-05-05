@@ -9,8 +9,8 @@ import createError from 'http-errors';
 import csurf, { CookieOptions } from 'csurf';
 
 import routes from './routes';
-import httpLogger from './services/logs/httpLogger';
-import logger from './services/logs/logger';
+import httpLogger from './utils/logs/httpLogger';
+import logger from './utils/logs/logger';
 import logUniqueIdentifier from './middlewares/logUniqueIdentifier';
 
 const origin = process.env.FRONTEND_URL ?? 'http://localhost:3000';

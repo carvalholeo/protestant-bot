@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { BlocklistRepository } from '../db/repository';
 
-import logger from '../services/logs/logger';
+import logger from '../utils/logs/logger';
 
 class BlocklistController {
   async block(request: Request, response: Response) {

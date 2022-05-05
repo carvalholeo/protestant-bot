@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import { ContactRepository } from '../db/repository';
-import logger from '../services/logs/logger';
+import logger from '../utils/logs/logger';
 import { sendMail } from '../services/emails';
 
 

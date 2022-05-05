@@ -1,4 +1,4 @@
-import logger from '../../services/logs/logger';
+import logger from '../../utils/logs/logger';
 import client from '../api/client';
 import isReply from '../../utils/isReply';
 

@@ -1,4 +1,4 @@
-import logger from '../../services/logs/logger';
+import logger from '../../utils/logs/logger';
 
 /**
  * Class to emulate interface at Javascript.

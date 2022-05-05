@@ -1,5 +1,5 @@
 import RateLimit from '../services/Twitter/RateLimit';
-import logger from '../services/logs/logger';
+import logger from './logs/logger';
 
 import RateLimitInterface from '../interfaces/typeDefinitions/RateLimitInterface';
 
