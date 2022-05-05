@@ -5,6 +5,7 @@ import logger from '../services/logs/logger';
 
 class BlocklistController {
   async block(request: Request, response: Response) {
+    const uniqueIdentifier = request.app.get('uniqueIdentifier');
     try {
       const { user } = request.body;
       const userClean = user.replaceAll('@', '');
@@ -13,7 +14,7 @@ class BlocklistController {
       await blocklist.block(userClean);
 
       const message = `User @${userClean} blocked successfully`;
-      logger.info(`${message} in BlocklistController.block.try`);
+      logger.info(`${message} in BlocklistController.block.try. ID ${uniqueIdentifier}`);
 
       return response
         .status(204)
@@ -23,7 +24,7 @@ class BlocklistController {
       const message = `Error on block user.
       Reason: ${error.message}`;
 
-      logger.error(`${error} in BlocklistController.block.catch`);
+      logger.error(`${error} in BlocklistController.block.catch. ID ${uniqueIdentifier}`);
 
       return response
         .status(500)
@@ -32,6 +33,7 @@ class BlocklistController {
   }
 
   async unblock(request: Request, response: Response) {
+    const uniqueIdentifier = request.app.get('uniqueIdentifier');
     try {
       const { user } = request.body;
       const userClean = user.replaceAll('@', '');
@@ -40,7 +42,7 @@ class BlocklistController {
       await blocklist.unblock(userClean);
 
       const message = `User @${userClean} unblocked successfully`;
-      logger.info(`${message} in BlocklistController.unblock.try`);
+      logger.info(`${message} in BlocklistController.unblock.try. ID ${uniqueIdentifier}`);
 
       return response
         .status(202)
@@ -49,7 +51,7 @@ class BlocklistController {
       const message = `Error on unblock user.
       Reason: ${error.message}`;
 
-      logger.error(`${error} in BlocklistController.unblock.catch`);
+      logger.error(`${error} in BlocklistController.unblock.catch. ID ${uniqueIdentifier}`);
 
       return response
         .status(500)

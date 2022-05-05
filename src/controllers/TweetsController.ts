@@ -7,6 +7,7 @@ import logger from '../services/logs/logger';
 
 class TweetsController {
   async listRetweets(request: Request, response: Response) {
+    const uniqueIdentifier = request.app.get('uniqueIdentifier');
     try {
       const { page = 1 } = request.query;
 
@@ -16,7 +17,7 @@ class TweetsController {
       const totalPages = retweetsTotal / 100;
 
       const message = `List of all retweets sent to client.`;
-      logger.info(`${message} at RetweetController.listRetweets.try`);
+      logger.info(`${message} at RetweetController.listRetweets.try. ID ${uniqueIdentifier}`);
 
       return response.status(200)
         .json({
@@ -27,7 +28,7 @@ class TweetsController {
     } catch (error: any) {
       const message = `There was an error on try list retweets.
       Reason: ${error.message}`;
-      logger.error(`${message} at RetweetController.listRetweets.catch`);
+      logger.error(`${message} at RetweetController.listRetweets.catch. ID ${uniqueIdentifier}`);
 
       return response.status(500)
         .json({ message });
@@ -35,6 +36,7 @@ class TweetsController {
   }
 
   async undoRetweets(request: Request, response: Response) {
+    const uniqueIdentifier = request.app.get('uniqueIdentifier');
     try {
       const { tweetId } = request.params;
       const { comment } = request.body;
@@ -46,14 +48,14 @@ class TweetsController {
 
       const message = `Retweet ${tweetId} was undone.
       Reason: ${comment}`;
-      logger.info(`${message} from RetweetController.undoRetweets.try`);
+      logger.info(`${message} from RetweetController.undoRetweets.try. ID ${uniqueIdentifier}`);
 
       return response.status(204)
         .json({ message: message });
     } catch (error: any) {
       const message = `There was an error on trying undo retweet.
       Reason: ${error.message}`;
-      logger.error(`${message} at RetweetController.undoRetweets.catch`);
+      logger.error(`${message} at RetweetController.undoRetweets.catch. ID ${uniqueIdentifier}`);
 
       return response.status(500)
         .json({ message: message });
