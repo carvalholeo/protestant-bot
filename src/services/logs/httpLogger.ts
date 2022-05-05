@@ -12,7 +12,6 @@ const accessLogStream = createStream('access.log', {
 });
 
 const httpLogger = morgan(function(tokens, req: Request, res: Response) {
-  console.log(tokens)
   return [
     tokens['remote-addr'](req, res), '-',
     tokens['remote-user'](req, res), '-',
