@@ -1,7 +1,6 @@
 import { resolve } from 'path';
 import { createLogger, config, transports, format } from 'winston';
-import 'winston-daily-rotate-file';
-import { DailyRotateFileTransportOptions } from 'winston-daily-rotate-file';
+import DailyRotateFile, { DailyRotateFileTransportOptions } from 'winston-daily-rotate-file';
 
 const textFormat = format.combine(
   format.timestamp({ format: 'MMM-DD-YYYY HH:mm:ss' }),
@@ -40,6 +39,11 @@ const dailyRotateOptions: DailyRotateFileTransportOptions = {
   zippedArchive: true,
   watchLog: true,
 };
+
+// Add DailyRotateFile for transports object, because I'm not using default
+// import recommended on documentation and it's necessary import type for
+// object of configuration.
+transports.DailyRotateFile = DailyRotateFile;
 
 const logger = createLogger({
   exitOnError: true,
