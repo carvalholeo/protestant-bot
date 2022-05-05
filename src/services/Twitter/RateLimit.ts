@@ -109,14 +109,12 @@ class RateLimit {
           nextReset,
         });
 
-        const message = 'API rate limit updated on database';
-        logger.info(`${message} at RateLimit.setLimit.try`);
+        logger.info(`API rate limit updated on database at RateLimit.setLimit.try`);
 
         return;
       }
 
-      const message = 'API rate limit created on database';
-      logger.info(`${message} at RateLimit.setLimit.try`);
+      logger.info(`API rate limit updated on database at RateLimit.setLimit.try`);
 
       await rateLimitModel.create({
         resource: endpoint,
