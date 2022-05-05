@@ -6,7 +6,7 @@ const accessLogStream = createStream('access.log', {
   interval: '1d',
   maxFiles: 366,
   maxSize: '5M',
-  path: path.join(__dirname, '..', '..', 'logs'),
+  path: path.join(__dirname, '..', '..', 'logs', 'http'),
   teeToStdout: true,
 })
 
