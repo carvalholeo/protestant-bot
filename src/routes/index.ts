@@ -8,11 +8,11 @@ import contact from './contact';
 
 const routes = Router();
 
-routes.use(fullAppSanitizer)
+routes.use(fullAppSanitizer);
 
 routes.get('/', (_req, res) =>
   res.status(200).json({ message: 'API it\'s working!' })
-)
+);
 
 routes
   .use('/blocklist', blocklist)
