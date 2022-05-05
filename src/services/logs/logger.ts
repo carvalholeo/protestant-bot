@@ -21,8 +21,9 @@ const consoleOptions: transports.ConsoleTransportOptions = {
 
 const dailyRotateOptions: DailyRotateFileTransportOptions = {
   datePattern: 'YYYY-MM-DD',
-  dirname: resolve(__dirname, '..', '..', 'logs'),
-  filename: 'server.log',
+  dirname: resolve(__dirname, '..', '..', 'logs', 'app'),
+  extension: '.log',
+  filename: 'server.%DATE%',
   format: customFormat,
   level: 'info',
   maxFiles: '366d',
