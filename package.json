@@ -27,8 +27,7 @@
   },
   "resolutions": {
     "js-beautify": "1.14.3",
-    "minimist": "1.2.6",
-    "node-fetch": "2.6.7"
+    "minimist": "1.2.6"
   },
   "dependencies": {
     "axios": "^0.26.0",
@@ -52,10 +51,8 @@
     "nodemailer": "^6.7.2",
     "rotating-file-stream": "^3.0.3",
     "sequelize": "^6.17.0",
-    "twit": "^2.2.11",
-    "twitter": "^1.7.1",
     "twitter-lite": "^1.1.0",
-    "twitter-v2": "^1.1.0",
+    "twitter-v2": "https://github.com/gardentree/twitter-v2.git",
     "uuid": "^8.3.2",
     "winston": "^3.7.2",
     "winston-daily-rotate-file": "^4.6.1"
