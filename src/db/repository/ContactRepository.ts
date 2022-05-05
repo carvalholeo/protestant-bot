@@ -1,8 +1,8 @@
 import models from '../models';
-import logger from '../../logs/logger';
+import logger from '../../services/logs/logger';
+
 
 import ContactInterface from '../../interfaces/typeDefinitions/Contact';
-import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
 
 /**
  * Class to handle with contacts received from the front-end.
@@ -31,14 +31,9 @@ class ContactRepository {
       };
 
       await models.Contact.create(data);
+      logger.info('Contact sent to database at ContactService.createContact.try');
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'ContactService.createContact.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at ContactService.createContact.catch`);
     }
   }
 }

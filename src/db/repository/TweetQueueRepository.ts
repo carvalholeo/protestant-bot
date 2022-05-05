@@ -1,11 +1,10 @@
 
-import models from '../models';
 import {Op} from 'sequelize';
-import logger from '../../logs/logger';
+import models from '../models';
+import logger from '../../services/logs/logger';
 
 import Tweet from '../../interfaces/typeDefinitions/Tweet';
 import TweetQueueInterface from '../../interfaces/typeDefinitions/TweetQueueInterface';
-import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
 
 const {in: opIn} = Op;
 
@@ -34,13 +33,7 @@ class TweetQueueRepository {
 
       await models.TweetQueue.create(data);
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'TweetQueueService.enqueue.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at TweetQueueService.enqueue.catch`);
     }
   }
 
@@ -66,13 +59,7 @@ class TweetQueueRepository {
 
       return tweetsEnqueued;
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'TweetQueueService.getQueue.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at TweetQueueService.getQueue.catch`);
 
       return error.message;
     }
@@ -105,13 +92,7 @@ class TweetQueueRepository {
         },
       });
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'TweetQueueService.dequeue.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at TweetQueueService.dequeue.catch`);
     }
   }
 }

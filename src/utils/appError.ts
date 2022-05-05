@@ -1,6 +1,4 @@
-
-import logger from '../logs/logger';
-import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
+import logger from '../services/logs/logger';
 
 /**
  * Function to generate a log and stop the bot.
@@ -9,16 +7,10 @@ import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
  * @param {NodeJS.Timer} initializeBot Constant with an instance of
  * setInterval/setTimeout, to be dropped.
  */
-async function appError(error: any, initializeBot: NodeJS.Timer) {
+function appError(error: any, initializeBot: NodeJS.Timer) {
   const message = `Error on bot. Reason: ${error}`;
 
-  const logObject: LogDatabase = {
-    level: 'error',
-    emmiter: 'Function appError',
-    message,
-  };
-
-  await logger(logObject);
+  logger.error(`${message} at Function appError.`);
 
   clearInterval(initializeBot);
   process.exit(1);

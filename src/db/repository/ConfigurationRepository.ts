@@ -1,7 +1,5 @@
 import models from '../models';
-import logger from '../../logs/logger';
-
-import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
+import logger from '../../services/logs/logger';
 
 /**
  * Handle with app configurations
@@ -28,13 +26,7 @@ class ConfigurationRepository {
       }
       return config.value;
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'ConfigurationService.getConfig.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at ConfigurationService.getConfig.catch`)
     }
   }
 
@@ -55,22 +47,10 @@ class ConfigurationRepository {
       });
 
       const message = `Config ${key} updated with value ${value}.`;
+      logger.info(`${message} at ConfigurationService.setConfig.try`)
 
-      const logObject: LogDatabase = {
-        emmiter: 'ConfigurationService.setConfig.catch',
-        level: 'info',
-        message: message,
-      };
-
-      await logger(logObject);
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'ConfigurationService.setConfig.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at ConfigurationService.setConfig.catch`);
     }
   }
 
@@ -89,21 +69,11 @@ class ConfigurationRepository {
       await models.Configurations.create(data);
 
       const message = `Config ${key} created with value ${value}.`;
-      const logObject: LogDatabase = {
-        emmiter: 'ConfigurationService.createConfig.catch',
-        level: 'info',
-        message: message,
-      };
 
-      await logger(logObject);
+      logger.info(`${message} at ConfigurationService.createConfig.try`);
+
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'ConfigurationService.createConfig.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at ConfigurationService.createConfig.catch`);
     }
   }
   /**
@@ -119,21 +89,10 @@ class ConfigurationRepository {
       });
 
       const message = `Config ${key} successfully.`;
-      const logObject: LogDatabase = {
-        emmiter: 'ConfigurationService.deleteConfig.catch',
-        level: 'info',
-        message: message,
-      };
+      logger.info(`${message} at ConfigurationService.deleteConfig.try`);
 
-      await logger(logObject);
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'ConfigurationService.deleteConfig.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at ConfigurationService.deleteConfig.catch`);
     }
   }
 }

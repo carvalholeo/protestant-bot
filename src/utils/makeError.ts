@@ -1,6 +1,5 @@
 import StreamTwitter from '../services/Twitter/StreamTwitter';
-import logger from '../logs/logger';
-import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
+import logger from '../services/logs/logger';
 
 const stream = new StreamTwitter();
 
@@ -10,18 +9,12 @@ const stream = new StreamTwitter();
  * @param {string} error Error message emitted from the origin.
  * @param {string} origin Original source of the error.
  */
-async function makeError(error: string, origin: string) {
+function makeError(error: string, origin: string) {
   process.nextTick(() => stream.killInstance());
   const message = `An error was produced by ${origin}.
   The message emitted was '${error}'.`;
 
-  const logObject: LogDatabase = {
-    level: 'error',
-    emmiter: origin,
-    message,
-  };
-
-  await logger(logObject);
+  logger.error(`${message} at ${origin}.`)
 }
 
 export default makeError;

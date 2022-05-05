@@ -2,12 +2,11 @@ import client from '../api/client';
 import {
   RetweetLogRepository, TweetQueueRepository, BlocklistRepository,
 } from '../../db/repository';
-import logger from '../../logs/logger';
+import logger from '../../services/logs/logger';
 import RateLimit from './RateLimit';
 import Stream from './StreamTwitter';
 
 import Tweet from '../../interfaces/typeDefinitions/Tweet';
-import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
 
 const rateLimit = new RateLimit();
 const endpoint = 'statuses/retweet';
@@ -78,18 +77,11 @@ class Retweet {
           }
           return response;
         })
-        .catch(async (error) => {
+        .catch((error) => {
           const text = `Error on handle with rate limit.
               Reason: ${error.message}.
               Stack: ${error}`;
-
-          const message: LogDatabase = {
-            emmiter: 'RetweetService.retweet.try.rateLimitResponse.catch',
-            level: 'error',
-            message: text,
-          };
-
-          await logger(message);
+          logger.error(`${text} at RetweetService.retweet.try.rateLimitResponse.catch`);
         });
       // @ts-ignore @ts-nocheck
       if (rateLimitResponse.nextAction === 'enqueue') {
@@ -111,31 +103,16 @@ class Retweet {
           const retweet = new RetweetLogRepository();
           await retweet.registerRetweet(this.tweet);
 
-          const logObject: LogDatabase = {
-            emmiter: 'RetweetService.retweet.try.post.then',
-            level: 'info',
-            message: 'A tweet post was retweeted.',
-          };
-          await logger(logObject);
+          logger.info(`A tweet post was retweeted at RetweetService.retweet.try.post.then`);
 
           // eslint-disable-next-line security-node/detect-crlf
           console.log(message);
         })
-        .catch(async (error) => {
-          const logObject: LogDatabase = {
-            emmiter: 'RetweetService.retweet.try.post.catch',
-            level: 'error',
-            message: error.message,
-          };
-          await logger(logObject);
+        .catch((error) => {
+          logger.error(`${error.message} at RetweetService.retweet.try.post.catch`);
         });
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'RetweetService.retweet.catch',
-        level: 'error',
-        message: error.message,
-      };
-      await logger(logObject);
+      logger.error(`${error.message} at RetweetService.retweet.catch`);
     }
   }
 
@@ -152,42 +129,18 @@ class Retweet {
       const [tweetOriginal] = await blocklist
         .getOneBlock(screenName);
       let quotedTweet = undefined;
-      const message: LogDatabase = {
-        level: 'debug',
-        emmiter: '',
-        message: '',
-      };
-
-      await logger({
-        ...message,
-        emmiter: 'Retweet.isBlocked.tweet_object.try',
-        message: JSON.stringify(this.tweet),
-      });
-      await logger({
-        ...message,
-        emmiter: 'Retweet.isBlocked.blocklist_object.original.try',
-        message: JSON.stringify(tweetOriginal),
-      });
+      logger.debug(`${JSON.stringify(tweetOriginal)} at Retweet.isBlocked.blocklist_object.original.try`);
+      logger.debug(`${JSON.stringify(this.tweet)} at Retweet.isBlocked.tweet_object.try`);
 
       if (this.tweet.is_quote_status) {
         [quotedTweet] = await blocklist
           .getOneBlock(this.tweet.quoted_status.user.screen_name);
-
-        await logger({
-          ...message,
-          emmiter: 'Retweet.isBlocked.blocklist_object.quoted.try',
-          message: JSON.stringify(quotedTweet),
-        });
+        logger.debug(`${JSON.stringify(quotedTweet)} at Retweet.isBlocked.blocklist_object.quoted.try`);
       }
 
       return (tweetOriginal || quotedTweet) ? true : false;
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        level: 'debug',
-        emmiter: 'Retweet.isBlocked.catch',
-        message: error.message,
-      };
-      await logger(logObject);
+      logger.error(`${error.message} at Retweet.isBlocked.catch`);
       return true;
     }
   }

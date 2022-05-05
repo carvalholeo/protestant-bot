@@ -3,8 +3,7 @@ import { Request, Response } from 'express';
 
 import { RetweetLogRepository } from '../db/repository';
 import client from '../services/api/client';
-import logger from '../logs/logger';
-import LogDatabase from '../interfaces/typeDefinitions/LogDatabase';
+import logger from '../services/logs/logger';
 
 class TweetsController {
   async listRetweets(request: Request, response: Response) {
@@ -17,13 +16,7 @@ class TweetsController {
       const totalPages = retweetsTotal / 100;
 
       const message = `List of all retweets sent to client.`;
-      const logObject: LogDatabase = {
-        emmiter: 'RetweetController.listRetweets.try',
-        level: 'info',
-        message: message,
-      };
-
-      await logger(logObject);
+      logger.info(`${message} at RetweetController.listRetweets.try`);
 
       return response.status(200)
         .json({
@@ -34,14 +27,7 @@ class TweetsController {
     } catch (error: any) {
       const message = `There was an error on try list retweets.
       Reason: ${error.message}`;
-
-      const logObject: LogDatabase = {
-        emmiter: 'RetweetController.listRetweets.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${message} at RetweetController.listRetweets.catch`);
 
       return response.status(500)
         .json({ message });
@@ -60,28 +46,14 @@ class TweetsController {
 
       const message = `Retweet ${tweetId} was undone.
       Reason: ${comment}`;
-
-      const logObject: LogDatabase = {
-        emmiter: 'RetweetController.undoRetweets.try',
-        level: 'info',
-        message: message,
-      };
-
-      await logger(logObject);
+      logger.info(`${message} from RetweetController.undoRetweets.try`);
 
       return response.status(204)
         .json({ message: message });
     } catch (error: any) {
       const message = `There was an error on trying undo retweet.
       Reason: ${error.message}`;
-
-      const logObject: LogDatabase = {
-        emmiter: 'RetweetController.undoRetweets.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${message} at RetweetController.undoRetweets.catch`);
 
       return response.status(500)
         .json({ message: message });

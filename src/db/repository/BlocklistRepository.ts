@@ -1,8 +1,8 @@
-import logger from '../../logs/logger';
+import logger from '../../services/logs/logger';
+
 import models from '../models';
 
 import BlocklistInterface from '../../interfaces/typeDefinitions/BlocklistInterface';
-import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
 /**
  * Handle with the users block list, that don't want to have their
  * tweets retweet by the bot.
@@ -47,14 +47,10 @@ class BlocklistRepository {
       user.comment = data.comment;
 
       await user.save();
-    } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'BlocklistService.block.catch',
-        level: 'error',
-        message: error.message,
-      };
 
-      await logger(logObject);
+      logger.info('User blocked in database at BlocklistService.block.try');
+    } catch (error: any) {
+      logger.error(`${error.message} at BlocklistService.block.catch`);
     }
   }
 
@@ -71,13 +67,8 @@ class BlocklistRepository {
       }}).toJSON();
     } catch (error: any) {
       const errorParsed = JSON.stringify(error);
-      const logObject: LogDatabase = {
-        emmiter: 'BlocklistService.getAllActiveBlocks.catch',
-        level: 'error',
-        message: error.message,
-      };
+      logger.error(`${errorParsed} at BlocklistService.getAllActiveBlocks.catch`);
 
-      await logger(logObject);
       return JSON.parse(JSON.stringify({message: errorParsed}));
     }
   }
@@ -93,13 +84,8 @@ class BlocklistRepository {
       return await models.Blocklist.findAll().toJSON();
     } catch (error: any) {
       const errorParsed = JSON.stringify(error);
-      const logObject: LogDatabase = {
-        emmiter: 'BlocklistService.getAllBlocks.catch',
-        level: 'error',
-        message: error.message,
-      };
+      logger.error(`${errorParsed} at BlocklistService.getAllBlocks.catch`);
 
-      await logger(logObject);
       return JSON.parse(JSON.stringify({message: errorParsed}));
     }
   }
@@ -119,13 +105,8 @@ class BlocklistRepository {
       }});
     } catch (error: any) {
       const errorParsed = JSON.stringify(error);
-      const logObject: LogDatabase = {
-        emmiter: 'BlocklistService.getOneBlock.catch',
-        level: 'error',
-        message: error.message,
-      };
+      logger.error(`${errorParsed} at BlocklistService.getOneBlock.catch`);
 
-      await logger(logObject);
       return JSON.parse(JSON.stringify({message: errorParsed}));
     }
   }
@@ -154,14 +135,9 @@ class BlocklistRepository {
 
       user.is_blocked_now = data.is_blocked_now;
       await user.save();
+      logger.info(`User unblocked at BlocklistService.unblock.try`);
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'BlocklistService.unblock.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at BlocklistService.unblock.catch`);
     }
   }
 }

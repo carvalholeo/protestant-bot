@@ -1,8 +1,7 @@
 import models from '../models';
-import logger from '../../logs/logger';
+import logger from '../../services/logs/logger';
 
 import UserInterface from '../../interfaces/typeDefinitions/UserInterface';
-import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
 
 /**
  * Class to handle with Users in database. Used for create, update, block and
@@ -35,22 +34,9 @@ class UserRepository {
       await models.User.create(data);
 
       const message = `User ${this.username} created successfully.`;
-
-      const logObject: LogDatabase = {
-        emmiter: 'UserService.createUser.try',
-        level: 'info',
-        message: message,
-      };
-
-      await logger(logObject);
+      logger.info(`${message} at UserService.createUser.try`);
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'UserService.createUser.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at UserService.createUser.catch`);
     }
   }
 
@@ -71,21 +57,9 @@ class UserRepository {
       });
 
       const message = `User ${this.username} blocked successfully.`;
-      const logObject: LogDatabase = {
-        emmiter: 'UserService.blockUser.try',
-        level: 'info',
-        message: message,
-      };
-
-      await logger(logObject);
+      logger.info(`${message} at UserService.blockUser.try`);
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'UserService.blockUser.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at UserService.block.catch`);
     }
   }
 
@@ -106,21 +80,10 @@ class UserRepository {
       });
 
       const message = `User ${this.username} unblock successfully.`;
-      const logObject: LogDatabase = {
-        emmiter: 'UserService.unblockUser.try',
-        level: 'info',
-        message: message,
-      };
 
-      await logger(logObject);
+      logger.info(`${message} at UserService.unblockUser.try`);
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'UserService.unblockUser.catch',
-        level: 'info',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at UserService.unblockUser.catch`);
     }
   }
 
@@ -142,21 +105,9 @@ class UserRepository {
 
       const message = `User ${this.username} have their password updated
       successfully.`;
-      const logObject: LogDatabase = {
-        emmiter: 'UserService.changeMyPassword.try',
-        level: 'info',
-        message: message,
-      };
-
-      await logger(logObject);
+      logger.info(`${message} at UserService.changeMyPassword.try`);
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'UserService.changeMyPassword.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at UserService.changeMyPassword.catch`);
     }
   }
 
@@ -181,21 +132,9 @@ class UserRepository {
 
       const message = `User ${username} have their password updated
       successfully.`;
-      const logObject: LogDatabase = {
-        emmiter: 'UserService.changeThirdPartyPassword.try',
-        level: 'info',
-        message: message,
-      };
-
-      await logger(logObject);
+      logger.info(`${message} at UserService.changeThirdPartyPassword.try`);
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'UserService.changeThirdPartyPassword.catch',
-        level: 'info',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at UserService.changeThirdPartyPassword.catch`);
     }
   }
 
@@ -218,21 +157,9 @@ class UserRepository {
 
       const message = `User ${this.username} have created Two factor auth
       successfully.`;
-      const logObject: LogDatabase = {
-        emmiter: 'UserService.activateMultifactorAuth.try',
-        level: 'info',
-        message: message,
-      };
-
-      await logger(logObject);
+      logger.info(`${message} at UserService.activateMultifactorAuth.try`);
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'UserService.activateMultifactorAuth.catch',
-        level: 'info',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at UserService.activateMultifactorAuth.catch`);
     }
   }
 
@@ -251,23 +178,12 @@ class UserRepository {
       });
 
       const message = `User ${this.username} retrieved successfully.`;
-      const logObject: LogDatabase = {
-        emmiter: 'UserService.getUser.try',
-        level: 'info',
-        message: message,
-      };
 
-      await logger(logObject);
+      logger.info(`${message} at UserService.getUser.try`);
 
       return information;
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'UserService.getUser.catch',
-        level: 'info',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at UserService.getUser.catch`);
     }
   }
 }

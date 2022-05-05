@@ -1,8 +1,7 @@
 import models from '../models';
-import logger from '../../logs/logger';
+import logger from '../../services/logs/logger';
 
 import RateLimitInterface from '../../interfaces/typeDefinitions/RateLimitInterface';
-import LogDatabase from '../../interfaces/typeDefinitions/LogDatabase';
 
 /**
  * Handle with rate limit of Twitter on database.
@@ -35,21 +34,9 @@ class RateLimitRepository {
 
       await models.RateLimit.create(dataToInsert);
 
-      const logObject: LogDatabase = {
-        emmiter: 'RateLimitService.create.try',
-        level: 'info',
-        message: 'Rate limit to resource created',
-      };
-
-      await logger(logObject);
+      logger.info(`Rate limit to resource created at RateLimitService.create.try`);
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'RateLimitService.create.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at RateLimitService.create.catch`);
     }
   }
 
@@ -73,13 +60,7 @@ class RateLimitRepository {
       Message catched: ${error.message}.
       Complete Error object: ${error}`;
 
-      const logObject: LogDatabase = {
-        emmiter: 'RateLimitService.getOneRateLimit.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${message} at RateLimitService.getOneRateLimit.catch`);
       return message;
     }
   }
@@ -114,13 +95,7 @@ class RateLimitRepository {
         },
       });
     } catch (error: any) {
-      const logObject: LogDatabase = {
-        emmiter: 'RateLimitService.update.catch',
-        level: 'error',
-        message: error.message,
-      };
-
-      await logger(logObject);
+      logger.error(`${error.message} at RateLimitService.getOneRateLimit.catch`);
     }
   }
 }
