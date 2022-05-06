@@ -21,21 +21,21 @@ async function rateLimit(): Promise<string | void | RateLimitInterface> {
     const response = await limit.getLimitFromDatabase(resource) || example;
     if (typeof (response) === 'string') {
       // @ts-ignore @ts-nocheck
-      const {resources} = await limit.getLimitFromTwitter('statuses');
+      const { resources } = await limit.getLimitFromTwitter('statuses');
       const {
         limit: apiLimit,
         reset,
       } = resources.statuses['/statuses/retweets/:id'];
 
       await limit.setLimit(resource,
-          apiLimit,
-          reset * 1000);
+        apiLimit,
+        reset * 1000);
     } else {
       if (response.limit < 1) {
         // @ts-ignore @ts-nocheck
-        if (Date.now() > response.next_reset ) {
+        if (Date.now() > response.next_reset) {
           // @ts-ignore @ts-nocheck
-          const {resources: resources_1} = await limit.getLimitFromTwitter('statuses');
+          const { resources: resources_1 } = await limit.getLimitFromTwitter('statuses');
           const {
             limit: apiLimit_1,
             reset: reset_1,
@@ -50,7 +50,7 @@ async function rateLimit(): Promise<string | void | RateLimitInterface> {
         response.nextAction = 'retweet';
       }
     }
-    return await response;
+    return response;
   } catch (error: any) {
     const message = `Error on handle with rate limit.
           Reason: ${error.response.data}.

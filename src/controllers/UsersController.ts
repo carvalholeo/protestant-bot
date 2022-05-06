@@ -16,7 +16,7 @@ class UsersController {
       const passwordHash = hashSync(password, SALT_ROUNDS);
 
       const user = new UserRepository(username);
-      user.createUser(passwordHash);
+      await user.createUser(passwordHash);
 
       const message = 'User created successfully from UsersController';
       logger.info(`${message} at UsersController.create.try. ID ${uniqueIdentifier}`);
@@ -92,8 +92,9 @@ class UsersController {
     }
   }
 
-  async logout(request: Request, response: Response) {
+  logout(request: Request, response: Response) {
     const uniqueIdentifier = request.app.get('uniqueIdentifier');
+    // TODO: make a denylist for JWT emmited.
     try {
       const { authorization } = request.headers;
 

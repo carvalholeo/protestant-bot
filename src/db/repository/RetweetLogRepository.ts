@@ -17,8 +17,7 @@ class RetweetLogRepository {
    * @return {Promise<RetweetLogInterface[] | undefined>}
    * Return an array on success by retrieving.
    */
-  async getAllRetweets(
-      page: number = 1): Promise<RetweetLogInterface[] | undefined> {
+  async getAllRetweets(page: number = 1): Promise<RetweetLogInterface[] | undefined> {
     try {
       const limit = page === 1 ? initialLimit : page * initialLimit;
       const offset = initialOffset * (page - 1);
@@ -60,8 +59,7 @@ class RetweetLogRepository {
    * @return {Promise<RetweetLogInterface[] | undefined>}
    * Return an array on success by retrieving.
    */
-  async getAllRetweetsUndone(
-      page: number = 1): Promise<RetweetLogInterface[] | undefined> {
+  async getAllRetweetsUndone(page: number = 1): Promise<RetweetLogInterface[] | undefined> {
     try {
       const limit = page === 1 ? initialLimit : page * initialLimit;
       const offset = initialOffset * (page - 1);
