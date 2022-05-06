@@ -22,9 +22,43 @@
     "preinstall": "npx npm-force-resolutions",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "prepare": "husky install",
     "start": "node ./dist/src/server.js --use-strict",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky install"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "eslintConfig": {
+    "env": {
+      "es2021": true,
+      "node": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": 2020,
+      "sourceType": "module"
+    },
+    "plugins": [
+      "security-node",
+      "@typescript-eslint",
+      "sonarjs",
+      "promise",
+      "import"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:security-node/recommended"
+    ],
+    "rules": {
+      "max-len": [
+        "error",
+        {
+          "code": 120,
+          "ignoreComments": true,
+          "ignoreTrailingComments": true,
+          "ignoreUrls": true,
+          "ignoreTemplateLiterals": true
+        }
+      ]
+    }
   },
   "resolutions": {
     "js-beautify": "1.14.3",
@@ -93,39 +127,5 @@
     "node": ">=15.x",
     "npm": ">=7.x"
   },
-  "engineStrict": true,
-  "eslintConfig": {
-    "env": {
-      "es2021": true,
-      "node": true
-    },
-    "extends": [
-      "eslint:recommended",
-      "plugin:security-node/recommended"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-      "ecmaVersion": 2020,
-      "sourceType": "module"
-    },
-    "plugins": [
-      "security-node",
-      "@typescript-eslint",
-      "sonarjs",
-      "promise",
-      "import"
-    ],
-    "rules": {
-      "max-len": [
-        "error",
-        {
-          "code": 120,
-          "ignoreComments": true,
-          "ignoreTrailingComments": true,
-          "ignoreUrls": true,
-          "ignoreTemplateLiterals": true
-        }
-      ]
-    }
-  }
+  "engineStrict": true
 }
