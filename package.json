@@ -23,7 +23,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "start": "node ./dist/src/server.js --use-strict",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "precommit": "npm run lint:fix"
   },
   "resolutions": {
     "js-beautify": "1.14.3",
