@@ -1,6 +1,6 @@
 require('./utils/dotEnv');
 
-import express, { json, urlencoded, Request, Response } from 'express';
+import express, { json, urlencoded } from 'express';
 import helmet from 'helmet';
 import cors, { CorsOptions } from 'cors';
 import hpp from 'hpp';
@@ -9,9 +9,9 @@ import csurf, { CookieOptions } from 'csurf';
 
 import routes from './routes';
 import httpLogger from './utils/logs/httpLogger';
-import logger from './utils/logs/logger';
 import logUniqueIdentifier from './middlewares/logUniqueIdentifier';
 import createError404 from './middlewares/createError404';
+import errorHandlerMiddleware from './middlewares/errorHandlerMiddleware';
 
 const origin = process.env.FRONTEND_URL ?? 'http://localhost:3000';
 const corsOptions: CorsOptions = {
@@ -41,23 +41,8 @@ app.use(corsExecution);
 app.options('*', corsExecution);
 app.use('/api', routes);
 
+// Error Handling
 app.use(createError404);
-interface Error {
-  message: string;
-  status: number;
-}
-
-app.use((err: Error, req: Request, res: Response) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  logger.crit(`An error has occurred on requesting ${req.path}, resulting into error ${err.status}. ID: ${req.app.get('uniqueIdentifier')}`);
-
-  // render the error page
-  res
-    .status(err.status || 500)
-    .json({ 'message': err.message });
-});
+app.use(errorHandlerMiddleware);
 
 export default app;
