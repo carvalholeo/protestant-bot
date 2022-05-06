@@ -1,17 +1,17 @@
 require('./utils/dotEnv');
 
-import express, { json, urlencoded, Request, Response, NextFunction } from 'express';
+import express, { json, urlencoded, Request, Response } from 'express';
 import helmet from 'helmet';
 import cors, { CorsOptions } from 'cors';
 import hpp from 'hpp';
 import cookieParser, { CookieParseOptions } from 'cookie-parser';
-import createError from 'http-errors';
 import csurf, { CookieOptions } from 'csurf';
 
 import routes from './routes';
 import httpLogger from './utils/logs/httpLogger';
 import logger from './utils/logs/logger';
 import logUniqueIdentifier from './middlewares/logUniqueIdentifier';
+import createError404 from './middlewares/createError404';
 
 const origin = process.env.FRONTEND_URL ?? 'http://localhost:3000';
 const corsOptions: CorsOptions = {
@@ -41,11 +41,7 @@ app.use(corsExecution);
 app.options('*', corsExecution);
 app.use('/api', routes);
 
-app.use((req: Request, _res: Response, next: NextFunction) => {
-  logger.warn(`Request to ${req.path} resulted into error 404. ID: ${req.app.get('uniqueIdentifier')}`);
-  next(createError(404));
-});
-
+app.use(createError404);
 interface Error {
   message: string;
   status: number;
