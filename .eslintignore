@@ -1,5 +1,5 @@
 dist/
 reports/
-**/db/models
-**/db/migrations
-**/db/seeders
+src/db/models
+src/db/migrations
+src/db/seeders
