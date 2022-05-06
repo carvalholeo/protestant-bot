@@ -1,12 +1,12 @@
 
-import {Op} from 'sequelize';
+import { Op } from 'sequelize';
 import models from '../models';
 import logger from '../../utils/logs/logger';
 
 import Tweet from '../../interfaces/typeDefinitions/Tweet';
 import TweetQueueInterface from '../../interfaces/typeDefinitions/TweetQueueInterface';
 
-const {in: opIn} = Op;
+const { in: opIn } = Op;
 
 /**
  * Class to create and handle with a queue of tweets. Used when the rate limit
@@ -21,7 +21,7 @@ class TweetQueueRepository {
    */
   async enqueue(tweet: Tweet): Promise<void> {
     try {
-      if (typeof(tweet) === 'undefined') {
+      if (typeof (tweet) === 'undefined') {
         throw new ReferenceError(`You must provide a object with
         the tweet to be stored and enqueued.`);
       }
@@ -72,7 +72,7 @@ class TweetQueueRepository {
    */
   async dequeue(tweets: Array<Tweet>): Promise<void> {
     try {
-      if (typeof(tweets) === 'undefined') {
+      if (typeof (tweets) === 'undefined') {
         throw new ReferenceError(`You must to provide an array of literal
         objects to be iterated.`);
       }

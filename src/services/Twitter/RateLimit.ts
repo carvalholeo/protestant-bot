@@ -28,8 +28,7 @@ class RateLimit {
    * @return {Promise<RateLimitInterface | string>}
    * Returns a JSON with rate limit. If fails, returns an error message.
    */
-  async getLimitFromTwitter(resource: string):
-    Promise<RateLimitInterface | string> {
+  async getLimitFromTwitter(resource: string): Promise<RateLimitInterface | string> {
     try {
       const getApiLimit = await client.get(`application/rate_limit_status`, {
         resources: resource,
@@ -51,10 +50,10 @@ class RateLimit {
   /**
    * Method to query rate limit on database.
    * @param {string} endpoint API endpoint stored on database to be queried.
-   * @return {Promise<JSON | string>} If success, returns an object within data.
+   * @return {Promise<RateLimitInterface | string>} If success, returns an object within data.
    * If fails, return the string with error message.
    */
-  async getLimitFromDatabase(endpoint: string) {
+  async getLimitFromDatabase(endpoint: string): Promise<RateLimitInterface | string> {
     try {
       if (typeof (endpoint) === 'undefined') {
         throw new ReferenceError('You must to provide a resource to query.');
