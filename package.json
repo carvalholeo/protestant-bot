@@ -21,7 +21,7 @@
     "dev": "tsnd ./src/server.ts --rs",
     "preinstall": "npx npm-force-resolutions",
     "lint": "eslint .",
-    "lint-fix": "eslint . --fix",
+    "lint:fix": "eslint . --fix",
     "start": "node ./dist/src/server.js --use-strict",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
