@@ -16,11 +16,13 @@ class BlocklistRepository {
    * blocked by an administrator of the system.
    * @param {string} comment Comment from administrator on block some user.
    */
-  async block(username: string,
-      blockedByAdmin: boolean = false,
-      comment: string = ''): Promise<void> {
+  async block(
+    username: string,
+    blockedByAdmin: boolean = false,
+    comment: string = ''
+  ): Promise<void> {
     try {
-      if (typeof (username) === 'undefined') {
+      if (typeof username === 'undefined') {
         throw new ReferenceError(`You must to provide the username to be
         blocked.`);
       }
@@ -32,7 +34,7 @@ class BlocklistRepository {
       };
 
       const [user, created] = await models.Blocklist.findOrCreate({
-        where: {screen_name: username},
+        where: { screen_name: username },
         defaults: {
           ...data,
         },
@@ -62,14 +64,18 @@ class BlocklistRepository {
    */
   async getAllActiveBlocks(): Promise<BlocklistInterface[] | undefined> {
     try {
-      return await models.Blocklist.findAll({where: {
-        is_blocked_now: true,
-      }}).toJSON();
+      return await models.Blocklist.findAll({
+        where: {
+          is_blocked_now: true,
+        },
+      }).toJSON();
     } catch (error: any) {
       const errorParsed = JSON.stringify(error);
-      logger.error(`${errorParsed} at BlocklistService.getAllActiveBlocks.catch`);
+      logger.error(
+        `${errorParsed} at BlocklistService.getAllActiveBlocks.catch`
+      );
 
-      return JSON.parse(JSON.stringify({message: errorParsed}));
+      return JSON.parse(JSON.stringify({ message: errorParsed }));
     }
   }
 
@@ -86,7 +92,7 @@ class BlocklistRepository {
       const errorParsed = JSON.stringify(error);
       logger.error(`${errorParsed} at BlocklistService.getAllBlocks.catch`);
 
-      return JSON.parse(JSON.stringify({message: errorParsed}));
+      return JSON.parse(JSON.stringify({ message: errorParsed }));
     }
   }
 
@@ -96,18 +102,21 @@ class BlocklistRepository {
    * @return {Promise<BlocklistInterface[] | undefined>} Return a JSON within an
    * response from database or an error.
    */
-  async getOneBlock(username: string):
-  Promise<BlocklistInterface[] | undefined> {
+  async getOneBlock(
+    username: string
+  ): Promise<BlocklistInterface[] | undefined> {
     try {
-      return await models.Blocklist.findOne({where: {
-        is_blocked_now: true,
-        screen_name: username,
-      }});
+      return await models.Blocklist.findOne({
+        where: {
+          is_blocked_now: true,
+          screen_name: username,
+        },
+      });
     } catch (error: any) {
       const errorParsed = JSON.stringify(error);
       logger.error(`${errorParsed} at BlocklistService.getOneBlock.catch`);
 
-      return JSON.parse(JSON.stringify({message: errorParsed}));
+      return JSON.parse(JSON.stringify({ message: errorParsed }));
     }
   }
 
@@ -117,17 +126,19 @@ class BlocklistRepository {
    */
   async unblock(username: string): Promise<void> {
     try {
-      if (typeof (username) === 'undefined') {
+      if (typeof username === 'undefined') {
         throw new ReferenceError(`You must to provide the username to be
         blocked.`);
       }
       const data = {
         is_blocked_now: false,
       };
-      const user = await models.Blocklist.findOne({where: {
-        screen_name: username,
-        blocked_by_admin: false,
-      }});
+      const user = await models.Blocklist.findOne({
+        where: {
+          screen_name: username,
+          blocked_by_admin: false,
+        },
+      });
 
       if (user === null) {
         return;

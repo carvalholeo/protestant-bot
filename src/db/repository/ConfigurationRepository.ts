@@ -26,7 +26,7 @@ class ConfigurationRepository {
       }
       return config.value;
     } catch (error: any) {
-      logger.error(`${error.message} at ConfigurationService.getConfig.catch`)
+      logger.error(`${error.message} at ConfigurationService.getConfig.catch`);
     }
   }
 
@@ -47,8 +47,7 @@ class ConfigurationRepository {
       });
 
       const message = `Config ${key} updated with value ${value}.`;
-      logger.info(`${message} at ConfigurationService.setConfig.try`)
-
+      logger.info(`${message} at ConfigurationService.setConfig.try`);
     } catch (error: any) {
       logger.error(`${error.message} at ConfigurationService.setConfig.catch`);
     }
@@ -71,9 +70,10 @@ class ConfigurationRepository {
       const message = `Config ${key} created with value ${value}.`;
 
       logger.info(`${message} at ConfigurationService.createConfig.try`);
-
     } catch (error: any) {
-      logger.error(`${error.message} at ConfigurationService.createConfig.catch`);
+      logger.error(
+        `${error.message} at ConfigurationService.createConfig.catch`
+      );
     }
   }
   /**
@@ -90,9 +90,10 @@ class ConfigurationRepository {
 
       const message = `Config ${key} successfully.`;
       logger.info(`${message} at ConfigurationService.deleteConfig.try`);
-
     } catch (error: any) {
-      logger.error(`${error.message} at ConfigurationService.deleteConfig.catch`);
+      logger.error(
+        `${error.message} at ConfigurationService.deleteConfig.catch`
+      );
     }
   }
 }

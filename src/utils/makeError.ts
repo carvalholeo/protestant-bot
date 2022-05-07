@@ -14,7 +14,7 @@ function makeError(error: string, origin: string) {
   const message = `An error was produced by ${origin}.
   The message emitted was '${error}'.`;
 
-  logger.error(`${message} at ${origin}.`)
+  logger.error(`${message} at ${origin}.`);
 }
 
 export default makeError;

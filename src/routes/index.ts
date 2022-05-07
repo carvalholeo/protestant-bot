@@ -11,11 +11,11 @@ const routes = Router();
 
 routes.use(fullAppSanitizer);
 
-routes.get('/', (req, res,) => {
-  const message = 'API it\'s working!';
+routes.get('/', (req, res) => {
+  const message = "API it's working!";
   res.status(200).json({ message });
 
-  logger.verbose(`${message}. ID: ${req.app.get('uniqueIdentifier')}`)
+  logger.verbose(`${message}. ID: ${req.app.get('uniqueIdentifier')}`);
 });
 
 routes

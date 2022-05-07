@@ -13,19 +13,23 @@ import undoRetweets from '../validators/privateApi/retweets/undoRetweets';
 const tweets = Router();
 
 tweets
-    .use(tokenValidator)
-    .use(validatorMiddleware)
-    .use(authorizationMiddleware)
-    .use(verifyLogoutMiddleware);
+  .use(tokenValidator)
+  .use(validatorMiddleware)
+  .use(authorizationMiddleware)
+  .use(verifyLogoutMiddleware);
 
 tweets
-    .get('/retweets',
-        listRetweets,
-        validatorMiddleware,
-        TweetsController.listRetweets)
-    .delete('/:tweetId',
-        undoRetweets,
-        validatorMiddleware,
-        TweetsController.undoRetweets);
+  .get(
+    '/retweets',
+    listRetweets,
+    validatorMiddleware,
+    TweetsController.listRetweets
+  )
+  .delete(
+    '/:tweetId',
+    undoRetweets,
+    validatorMiddleware,
+    TweetsController.undoRetweets
+  );
 
 export default tweets;

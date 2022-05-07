@@ -17,7 +17,9 @@ class RetweetLogRepository {
    * @return {Promise<RetweetLogInterface[] | undefined>}
    * Return an array on success by retrieving.
    */
-  async getAllRetweets(page: number = 1): Promise<RetweetLogInterface[] | undefined> {
+  async getAllRetweets(
+    page: number = 1
+  ): Promise<RetweetLogInterface[] | undefined> {
     try {
       const limit = page === 1 ? initialLimit : page * initialLimit;
       const offset = initialOffset * (page - 1);
@@ -30,7 +32,9 @@ class RetweetLogRepository {
         offset,
       });
     } catch (error: any) {
-      logger.error(`${error.message} at RetweetLogService.getAllRetweets.catch`);
+      logger.error(
+        `${error.message} at RetweetLogService.getAllRetweets.catch`
+      );
     }
   }
 
@@ -59,12 +63,14 @@ class RetweetLogRepository {
    * @return {Promise<RetweetLogInterface[] | undefined>}
    * Return an array on success by retrieving.
    */
-  async getAllRetweetsUndone(page: number = 1): Promise<RetweetLogInterface[] | undefined> {
+  async getAllRetweetsUndone(
+    page: number = 1
+  ): Promise<RetweetLogInterface[] | undefined> {
     try {
       const limit = page === 1 ? initialLimit : page * initialLimit;
       const offset = initialOffset * (page - 1);
 
-      const {count} = await models.RetweetLog.findAndCountAll({
+      const { count } = await models.RetweetLog.findAndCountAll({
         where: {
           was_undone: true,
         },
@@ -74,7 +80,9 @@ class RetweetLogRepository {
 
       return count;
     } catch (error: any) {
-      logger.error(`${error.message} at RetweetLogService.getAllRetweetsUndone.catch`);
+      logger.error(
+        `${error.message} at RetweetLogService.getAllRetweetsUndone.catch`
+      );
     }
   }
   /**
@@ -84,9 +92,11 @@ class RetweetLogRepository {
    */
   async undoRetweet(tweetId: string, comment: string = ''): Promise<void> {
     try {
-      const tweet = await models.RetweetLog.findOne({where: {
-        tweet_id: tweetId,
-      }});
+      const tweet = await models.RetweetLog.findOne({
+        where: {
+          tweet_id: tweetId,
+        },
+      });
 
       tweet.comment = comment === '' ? null : comment;
       tweet.was_undone = true;
@@ -116,7 +126,9 @@ class RetweetLogRepository {
         message,
       });
     } catch (error: any) {
-      logger.error(`${error.message} at RetweetLogService.registerRetweet.catch`);
+      logger.error(
+        `${error.message} at RetweetLogService.registerRetweet.catch`
+      );
     }
   }
 }

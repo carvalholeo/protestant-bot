@@ -13,22 +13,15 @@ import userCreateValidator from '../validators/privateApi/users/userCreateValida
 const users = Router();
 
 users
-    .post('/',
-        userCreateValidator,
-        validatorMiddleware,
-        usersController.create)
-    .post('/login',
-        loginValidator,
-        validatorMiddleware,
-        usersController.login);
+  .post('/', userCreateValidator, validatorMiddleware, usersController.create)
+  .post('/login', loginValidator, validatorMiddleware, usersController.login);
 
 users
-    .use(tokenValidator)
-    .use(validatorMiddleware)
-    .use(authorizationMiddleware)
-    .use(verifyLogoutMiddleware);
+  .use(tokenValidator)
+  .use(validatorMiddleware)
+  .use(authorizationMiddleware)
+  .use(verifyLogoutMiddleware);
 
 users.delete('/', usersController.logout);
-
 
 export default users;

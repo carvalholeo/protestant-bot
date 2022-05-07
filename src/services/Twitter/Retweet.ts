@@ -1,6 +1,8 @@
 import client from '../api/client';
 import {
-  RetweetLogRepository, TweetQueueRepository, BlocklistRepository,
+  RetweetLogRepository,
+  TweetQueueRepository,
+  BlocklistRepository,
 } from '../../db/repository';
 import logger from '../../utils/logs/logger';
 import RateLimit from './RateLimit';
@@ -22,7 +24,7 @@ class Retweet {
    * @param {Tweet} tweet A single tweet to be retweeted
    */
   constructor(tweet: Tweet) {
-    if (typeof (tweet) === 'undefined') {
+    if (typeof tweet === 'undefined') {
       throw new ReferenceError(`You must provide a tweet.`);
     }
     this.tweet = tweet;
@@ -38,37 +40,32 @@ class Retweet {
         return;
       }
 
-      const rateLimitResponse = rateLimit.getLimitFromDatabase(endpoint)
+      const rateLimitResponse = rateLimit
+        .getLimitFromDatabase(endpoint)
         .then(async (response) => {
-          if (typeof (response) === 'string') {
+          if (typeof response === 'string') {
             // @ts-ignore @ts-nocheck
-            const { resources } = await rateLimit
-              .getLimitFromTwitter('statuses');
+            const { resources } = await rateLimit.getLimitFromTwitter(
+              'statuses'
+            );
 
-            const {
-              remaining: apiLimit,
-              reset,
-            } = resources.statuses['/statuses/retweets/:id'];
+            const { remaining: apiLimit, reset } =
+              resources.statuses['/statuses/retweets/:id'];
 
-            await rateLimit.setLimit(endpoint,
-              apiLimit,
-              reset * 1000);
+            await rateLimit.setLimit(endpoint, apiLimit, reset * 1000);
           } else {
             if (response.limit < 1) {
               // @ts-ignore @ts-nocheck
               if (Date.now() > response.next_reset) {
                 // @ts-ignore @ts-nocheck
-                const { resources } = await rateLimit.
-                  getLimitFromTwitter('statuses');
+                const { resources } = await rateLimit.getLimitFromTwitter(
+                  'statuses'
+                );
 
-                const {
-                  remaining: apiLimit,
-                  reset,
-                } = resources.statuses['/statuses/retweets/:id'];
+                const { remaining: apiLimit, reset } =
+                  resources.statuses['/statuses/retweets/:id'];
 
-                await rateLimit.setLimit(endpoint,
-                  apiLimit,
-                  reset * 1000);
+                await rateLimit.setLimit(endpoint, apiLimit, reset * 1000);
               }
               response.nextAction = 'enqueue';
             } else {
@@ -81,7 +78,9 @@ class Retweet {
           const text = `Error on handle with rate limit.
               Reason: ${error.message}.
               Stack: ${error}`;
-          logger.error(`${text} at RetweetService.retweet.try.rateLimitResponse.catch`);
+          logger.error(
+            `${text} at RetweetService.retweet.try.rateLimitResponse.catch`
+          );
         });
       // @ts-ignore @ts-nocheck
       if (rateLimitResponse.nextAction === 'enqueue') {
@@ -90,26 +89,33 @@ class Retweet {
         return;
       }
 
-      await client.post(`statuses/retweet/${this.tweet.id_str}`, {})
+      await client
+        .post(`statuses/retweet/${this.tweet.id_str}`, {})
         .then(async () => {
-          await rateLimit.setLimit(endpoint,
+          await rateLimit.setLimit(
+            endpoint,
             // @ts-ignore @ts-nocheck
             rateLimitResponse.limit - 1,
             // @ts-ignore @ts-nocheck
-            rateLimitResponse.next_reset);
+            rateLimitResponse.next_reset
+          );
 
           const message = `Tweet de @${this.tweet.user.screen_name}:
 "${this.tweet.text}".`;
           const retweet = new RetweetLogRepository();
           await retweet.registerRetweet(this.tweet);
 
-          logger.info(`A tweet post was retweeted at RetweetService.retweet.try.post.then`);
+          logger.info(
+            `A tweet post was retweeted at RetweetService.retweet.try.post.then`
+          );
 
           // eslint-disable-next-line security-node/detect-crlf
           console.log(message);
         })
         .catch((error) => {
-          logger.error(`${error.message} at RetweetService.retweet.try.post.catch`);
+          logger.error(
+            `${error.message} at RetweetService.retweet.try.post.catch`
+          );
         });
     } catch (error: any) {
       logger.error(`${error.message} at RetweetService.retweet.catch`);
@@ -126,19 +132,29 @@ class Retweet {
       const screenName = this.tweet.user.screen_name;
       const blocklist = new BlocklistRepository();
       // @ts-expect-error
-      const [tweetOriginal] = await blocklist
-        .getOneBlock(screenName);
+      const [tweetOriginal] = await blocklist.getOneBlock(screenName);
       let quotedTweet = undefined;
-      logger.debug(`${JSON.stringify(tweetOriginal)} at Retweet.isBlocked.blocklist_object.original.try`);
-      logger.debug(`${JSON.stringify(this.tweet)} at Retweet.isBlocked.tweet_object.try`);
+      logger.debug(
+        `${JSON.stringify(
+          tweetOriginal
+        )} at Retweet.isBlocked.blocklist_object.original.try`
+      );
+      logger.debug(
+        `${JSON.stringify(this.tweet)} at Retweet.isBlocked.tweet_object.try`
+      );
 
       if (this.tweet.is_quote_status) {
-        [quotedTweet] = await blocklist
-          .getOneBlock(this.tweet.quoted_status.user.screen_name);
-        logger.debug(`${JSON.stringify(quotedTweet)} at Retweet.isBlocked.blocklist_object.quoted.try`);
+        [quotedTweet] = await blocklist.getOneBlock(
+          this.tweet.quoted_status.user.screen_name
+        );
+        logger.debug(
+          `${JSON.stringify(
+            quotedTweet
+          )} at Retweet.isBlocked.blocklist_object.quoted.try`
+        );
       }
 
-      return (tweetOriginal || quotedTweet) ? true : false;
+      return tweetOriginal || quotedTweet ? true : false;
     } catch (error: any) {
       logger.error(`${error.message} at Retweet.isBlocked.catch`);
       return true;

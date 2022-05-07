@@ -6,11 +6,11 @@ const FILES = {
   development: '.env.local',
   stage: '.env.stage',
   test: '.env.test',
-  production: '.env'
+  production: '.env',
 };
 
 const envFile = FILES[NODE_ENV] || '.env.local';
 
 dotenv.config({
-  path: envFile
+  path: envFile,
 });
