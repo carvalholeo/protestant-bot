@@ -18,11 +18,13 @@ class RateLimitRepository {
    */
   async create(information: RateLimitInterface): Promise<void> {
     try {
-      const {resource, limit, nextReset} = information;
+      const { resource, limit, nextReset } = information;
 
-      if (typeof(resource) === 'undefined' ||
-      typeof(limit) === 'undefined' ||
-      typeof(nextReset) === 'undefined') {
+      if (
+        typeof resource === 'undefined' ||
+        typeof limit === 'undefined' ||
+        typeof nextReset === 'undefined'
+      ) {
         throw new ReferenceError(`You must to provide a object with
         3 properties: resource (string), limit (number) and nextReset (date).`);
       }
@@ -34,7 +36,9 @@ class RateLimitRepository {
 
       await models.RateLimit.create(dataToInsert);
 
-      logger.info(`Rate limit to resource created at RateLimitService.create.try`);
+      logger.info(
+        `Rate limit to resource created at RateLimitService.create.try`
+      );
     } catch (error: any) {
       logger.error(`${error.message} at RateLimitService.create.catch`);
     }
@@ -46,15 +50,19 @@ class RateLimitRepository {
    * @return {Promise<RateLimitInterface | string>} Literal object
    * data from database with the data asked.
    */
-  async getOneRateLimit(resource: string): Promise<RateLimitInterface|string> {
+  async getOneRateLimit(
+    resource: string
+  ): Promise<RateLimitInterface | string> {
     try {
-      if (typeof(resource) === 'undefined') {
+      if (typeof resource === 'undefined') {
         throw new ReferenceError('You must to provide a resource to retrieve.');
       }
 
-      return await models.RateLimit.findOne({where: {
-        resource,
-      }});
+      return await models.RateLimit.findOne({
+        where: {
+          resource,
+        },
+      });
     } catch (error: any) {
       const message = `Error from RateLimit class, method getOneRateLimit.
       Message catched: ${error.message}.
@@ -75,11 +83,13 @@ class RateLimitRepository {
    */
   async update(information: RateLimitInterface): Promise<void> {
     try {
-      const {resource, limit, nextReset} = information;
+      const { resource, limit, nextReset } = information;
 
-      if (typeof(resource) === 'undefined' ||
-          typeof(limit) === 'undefined' ||
-          typeof(nextReset) === 'undefined') {
+      if (
+        typeof resource === 'undefined' ||
+        typeof limit === 'undefined' ||
+        typeof nextReset === 'undefined'
+      ) {
         throw new ReferenceError(`You must to provide a object with
         3 properties: resource (string), limit (number) and nextReset (date).`);
       }
@@ -89,13 +99,18 @@ class RateLimitRepository {
         next_reset: nextReset,
       };
 
-      await models.RateLimit.update({...dataToUpdate}, {
-        where: {
-          resource,
-        },
-      });
+      await models.RateLimit.update(
+        { ...dataToUpdate },
+        {
+          where: {
+            resource,
+          },
+        }
+      );
     } catch (error: any) {
-      logger.error(`${error.message} at RateLimitService.getOneRateLimit.catch`);
+      logger.error(
+        `${error.message} at RateLimitService.getOneRateLimit.catch`
+      );
     }
   }
 }

@@ -68,7 +68,8 @@ Mensagem: ${data.message}`;
     logger.error(`${error.message} at EmailService.sendMail.renderEJS.catch`);
   }
 
-  transporter().sendMail(config)
+  transporter()
+    .sendMail(config)
     .then((success: any) => {
       const message = `Message ${data.message} sent to contact email.
 Log from Nodemailer is ${success}`;
@@ -93,10 +94,9 @@ Log from Nodemailer is ${error.toString()}`;
  */
 async function renderMail(data: Contact): Promise<string> {
   return await renderFile(
-    resolve(__dirname, '..', '..', 'views', 'email.ejs'), { data });
+    resolve(__dirname, '..', '..', 'views', 'email.ejs'),
+    { data }
+  );
 }
 
-
-export {
-  sendMail
-}
+export { sendMail };

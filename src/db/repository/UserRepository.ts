@@ -25,7 +25,7 @@ class UserRepository {
    */
   async createUser(password: string): Promise<void> {
     try {
-      const data: UserInterface ={
+      const data: UserInterface = {
         username: this.username,
         password: password,
         is_active: true,
@@ -117,8 +117,9 @@ class UserRepository {
    * @param {string} password New password to be updated.
    */
   async changeThirdPartyPassword(
-      username: string,
-      password: string): Promise<void> {
+    username: string,
+    password: string
+  ): Promise<void> {
     try {
       const data = {
         password: password,
@@ -134,7 +135,9 @@ class UserRepository {
       successfully.`;
       logger.info(`${message} at UserService.changeThirdPartyPassword.try`);
     } catch (error: any) {
-      logger.error(`${error.message} at UserService.changeThirdPartyPassword.catch`);
+      logger.error(
+        `${error.message} at UserService.changeThirdPartyPassword.catch`
+      );
     }
   }
 
@@ -159,7 +162,9 @@ class UserRepository {
       successfully.`;
       logger.info(`${message} at UserService.activateMultifactorAuth.try`);
     } catch (error: any) {
-      logger.error(`${error.message} at UserService.activateMultifactorAuth.catch`);
+      logger.error(
+        `${error.message} at UserService.activateMultifactorAuth.catch`
+      );
     }
   }
 

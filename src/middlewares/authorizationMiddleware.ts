@@ -9,7 +9,11 @@ const secret = process.env.JWT_SECRET ?? '';
  * @param {Function} next Callback to be called if no errors occured.
  * @return {Response} Returns with response object if a error were found.
  */
-function authorizationMiddleware(req: Request, res: Response, next: NextFunction) {
+function authorizationMiddleware(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   try {
     const { authorization = '' } = req.headers;
 
@@ -35,9 +39,7 @@ function authorizationMiddleware(req: Request, res: Response, next: NextFunction
       next();
     });
   } catch (error: any) {
-    return res
-      .status(401)
-      .json({ error: error.message });
+    return res.status(401).json({ error: error.message });
   }
 }
 

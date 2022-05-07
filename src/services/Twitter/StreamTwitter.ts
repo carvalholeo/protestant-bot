@@ -21,8 +21,8 @@ class StreamTwitter {
    * Verify if there's a instance running and, if not, instantiate a new.
    * @param {Function} retweetClass Class to handle with retweets.
    */
-  constructor(retweetClass: Function = () => { }) {
-    if (typeof (StreamTwitter._instance) === 'undefined') {
+  constructor(retweetClass: Function = () => {}) {
+    if (typeof StreamTwitter._instance === 'undefined') {
       StreamTwitter._instance = client.stream('statuses/filter', QUERY_STRING);
     }
 
@@ -36,16 +36,20 @@ class StreamTwitter {
    */
   getInstance(): any {
     try {
-      if (typeof (StreamTwitter._instance) === 'undefined' ||
-        StreamTwitter._instance === null) {
-        throw new ReferenceError('There isn\'t an instance running.');
+      if (
+        typeof StreamTwitter._instance === 'undefined' ||
+        StreamTwitter._instance === null
+      ) {
+        throw new ReferenceError("There isn't an instance running.");
       }
       return StreamTwitter._instance;
     } catch (error: any) {
       logger.error(`${error.message} at Stream.getInstance.catch`);
 
       StreamTwitter._instance = client.stream(
-        'tweets/search/stream', QUERY_STRING);
+        'tweets/search/stream',
+        QUERY_STRING
+      );
       return StreamTwitter._instance;
     }
   }
@@ -55,11 +59,15 @@ class StreamTwitter {
    */
   killInstance(): void {
     try {
-      if (typeof (StreamTwitter._instance) === 'undefined' ||
-        StreamTwitter._instance === null) {
-        throw new ReferenceError('There isn\'t an instance running.');
+      if (
+        typeof StreamTwitter._instance === 'undefined' ||
+        StreamTwitter._instance === null
+      ) {
+        throw new ReferenceError("There isn't an instance running.");
       }
-      logger.debug(`App shut down. Reason: Killer method was invoked at Stream.killInstance.try`)
+      logger.debug(
+        `App shut down. Reason: Killer method was invoked at Stream.killInstance.try`
+      );
 
       StreamTwitter._instance.close();
     } catch (error: any) {
@@ -103,11 +111,11 @@ class StreamTwitter {
         .on('error', (error: any) => {
           process.nextTick(() => stream.destroy());
           this.killInstance();
-          logger.crit(`${error.message} at Stream.handleStream.try.error`)
+          logger.crit(`${error.message} at Stream.handleStream.try.error`);
           console.error(error);
         });
     } catch (error: any) {
-      logger.error(`${error.message} at Stream.handleStream.catch`)
+      logger.error(`${error.message} at Stream.handleStream.catch`);
     }
   }
 }

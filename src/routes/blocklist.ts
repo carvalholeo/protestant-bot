@@ -8,13 +8,17 @@ import userToUnblockValidator from '../validators/publicApi/userToUnblockValidat
 const blocklist = Router();
 
 blocklist
-    .post('/block',
-        userToBlockValidator,
-        validatorMiddleware,
-        BlocklistController.block)
-    .put('/unblock',
-        userToUnblockValidator,
-        validatorMiddleware,
-        BlocklistController.unblock);
+  .post(
+    '/block',
+    userToBlockValidator,
+    validatorMiddleware,
+    BlocklistController.block
+  )
+  .put(
+    '/unblock',
+    userToUnblockValidator,
+    validatorMiddleware,
+    BlocklistController.unblock
+  );
 
 export default blocklist;

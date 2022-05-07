@@ -1,7 +1,6 @@
 import models from '../models';
 import logger from '../../utils/logs/logger';
 
-
 import ContactInterface from '../../interfaces/typeDefinitions/Contact';
 
 /**
@@ -19,7 +18,7 @@ class ContactRepository {
    */
   async createContact(contact: ContactInterface) {
     try {
-      if (typeof(contact.message) === 'undefined') {
+      if (typeof contact.message === 'undefined') {
         throw new ReferenceError(`You must provide a object of contact
         to be stored on database or, at least, a message.`);
       }
@@ -31,7 +30,9 @@ class ContactRepository {
       };
 
       await models.Contact.create(data);
-      logger.info('Contact sent to database at ContactService.createContact.try');
+      logger.info(
+        'Contact sent to database at ContactService.createContact.try'
+      );
     } catch (error: any) {
       logger.error(`${error.message} at ContactService.createContact.catch`);
     }

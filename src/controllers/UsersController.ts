@@ -1,4 +1,3 @@
-
 import { hashSync, compareSync } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { Request, Response } from 'express';
@@ -19,17 +18,19 @@ class UsersController {
       await user.createUser(passwordHash);
 
       const message = 'User created successfully from UsersController';
-      logger.info(`${message} at UsersController.create.try. ID ${uniqueIdentifier}`);
+      logger.info(
+        `${message} at UsersController.create.try. ID ${uniqueIdentifier}`
+      );
 
-      return response.status(201)
-        .json({ message });
+      return response.status(201).json({ message });
     } catch (error: any) {
       const message = `There was an error on create user.
       Reason: ${error.message}`;
-      logger.error(`${message} at UsersController.create.catch. ID ${uniqueIdentifier}`);
+      logger.error(
+        `${message} at UsersController.create.catch. ID ${uniqueIdentifier}`
+      );
 
-      return response.status(500)
-        .json({ message });
+      return response.status(500).json({ message });
     }
   }
 
@@ -43,10 +44,11 @@ class UsersController {
 
       if (!user) {
         const message = 'User or password incorrect. Try again.';
-        logger.error(`${message} at UsersController.login.try. ID ${uniqueIdentifier}`);
+        logger.error(
+          `${message} at UsersController.login.try. ID ${uniqueIdentifier}`
+        );
 
-        return response.status(401)
-          .json({ message });
+        return response.status(401).json({ message });
       }
 
       const passwordHash = user?.password || '';
@@ -54,24 +56,28 @@ class UsersController {
 
       if (!isActive) {
         const message = 'User is not active';
-        logger.error(`${message} at UsersController.login.try. ID ${uniqueIdentifier}`);
+        logger.error(
+          `${message} at UsersController.login.try. ID ${uniqueIdentifier}`
+        );
 
-        return response.status(401)
-          .json({ message });
+        return response.status(401).json({ message });
       }
 
       if (!compareSync(password, passwordHash)) {
         const message = 'User or password incorrect. Try again.';
-        logger.error(`${message} at UsersController.login.try. ID ${uniqueIdentifier}`);
+        logger.error(
+          `${message} at UsersController.login.try. ID ${uniqueIdentifier}`
+        );
 
-        return response.status(401)
-          .json({ message });
+        return response.status(401).json({ message });
       }
 
       delete user.password;
 
       const message = 'User login successfully from UsersController';
-      logger.info(`${message} at UsersController.login.try. ID ${uniqueIdentifier}`);
+      logger.info(
+        `${message} at UsersController.login.try. ID ${uniqueIdentifier}`
+      );
 
       const token = sign({ user }, JWT_SECRET, {
         expiresIn: '6h',
@@ -79,16 +85,16 @@ class UsersController {
 
       user.token = token;
 
-      return response.status(201)
-        .json({ user });
+      return response.status(201).json({ user });
     } catch (error: any) {
       const message = `There was an error to try login.
       Reason: ${error.message}`;
 
-      logger.error(`${message} at UsersController.login.catch. ID ${uniqueIdentifier}`);
+      logger.error(
+        `${message} at UsersController.login.catch. ID ${uniqueIdentifier}`
+      );
 
-      return response.status(500)
-        .json({ message });
+      return response.status(500).json({ message });
     }
   }
 
@@ -103,27 +109,30 @@ class UsersController {
 
       if (!hasTokenCache) {
         const message = 'User is not logged in';
-        logger.error(`${message} at UsersController.logout.try. ID ${uniqueIdentifier}`);
+        logger.error(
+          `${message} at UsersController.logout.try. ID ${uniqueIdentifier}`
+        );
 
-        return response.status(401)
-          .json({ message });
+        return response.status(401).json({ message });
       }
 
       // @ts-ignore
       request.map.set(authorization, null);
 
       const message = 'User logout successfully from UsersController';
-      logger.info(`${message} at UsersController.logout.try. ID ${uniqueIdentifier}`);
+      logger.info(
+        `${message} at UsersController.logout.try. ID ${uniqueIdentifier}`
+      );
 
-      return response.status(204)
-        .json({ message });
+      return response.status(204).json({ message });
     } catch (error: any) {
       const message = `There was an error to try login.
       Reason: ${error.message}`;
-      logger.error(`${message} at UsersController.logout.catch. ID ${uniqueIdentifier}`);
+      logger.error(
+        `${message} at UsersController.logout.catch. ID ${uniqueIdentifier}`
+      );
 
-      return response.status(500)
-        .json({ message });
+      return response.status(500).json({ message });
     }
   }
 }

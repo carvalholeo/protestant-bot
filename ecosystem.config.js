@@ -9,8 +9,8 @@ module.exports = {
       increment_var: 'PORT',
       exec_mode: 'cluster',
       env: {
-        'PORT': 6050,
-        'NODE_ENV': 'production',
+        PORT: 6050,
+        NODE_ENV: 'production',
       },
     },
     {
@@ -20,7 +20,7 @@ module.exports = {
       instances: 1,
       exec_mode: 'fork',
       env: {
-        'NODE_ENV': 'production',
+        NODE_ENV: 'production',
       },
       cron_restart: '0 * * * *',
     },

@@ -1,4 +1,3 @@
-
 import { Request, Response } from 'express';
 
 import { RetweetLogRepository } from '../db/repository';
@@ -13,25 +12,27 @@ class TweetsController {
 
       const retweetLog = new RetweetLogRepository();
       const list = await retweetLog.getAllRetweets(Number(page));
-      const retweetsTotal = await retweetLog.countRetweets() ?? 1;
+      const retweetsTotal = (await retweetLog.countRetweets()) ?? 1;
       const totalPages = retweetsTotal / 100;
 
       const message = `List of all retweets sent to client.`;
-      logger.info(`${message} at RetweetController.listRetweets.try. ID ${uniqueIdentifier}`);
+      logger.info(
+        `${message} at RetweetController.listRetweets.try. ID ${uniqueIdentifier}`
+      );
 
-      return response.status(200)
-        .json({
-          current_page: page,
-          total_of_pages: totalPages,
-          result: list,
-        });
+      return response.status(200).json({
+        current_page: page,
+        total_of_pages: totalPages,
+        result: list,
+      });
     } catch (error: any) {
       const message = `There was an error on try list retweets.
       Reason: ${error.message}`;
-      logger.error(`${message} at RetweetController.listRetweets.catch. ID ${uniqueIdentifier}`);
+      logger.error(
+        `${message} at RetweetController.listRetweets.catch. ID ${uniqueIdentifier}`
+      );
 
-      return response.status(500)
-        .json({ message });
+      return response.status(500).json({ message });
     }
   }
 
@@ -48,17 +49,19 @@ class TweetsController {
 
       const message = `Retweet ${tweetId} was undone.
       Reason: ${comment}`;
-      logger.info(`${message} from RetweetController.undoRetweets.try. ID ${uniqueIdentifier}`);
+      logger.info(
+        `${message} from RetweetController.undoRetweets.try. ID ${uniqueIdentifier}`
+      );
 
-      return response.status(204)
-        .json({ message: message });
+      return response.status(204).json({ message: message });
     } catch (error: any) {
       const message = `There was an error on trying undo retweet.
       Reason: ${error.message}`;
-      logger.error(`${message} at RetweetController.undoRetweets.catch. ID ${uniqueIdentifier}`);
+      logger.error(
+        `${message} at RetweetController.undoRetweets.catch. ID ${uniqueIdentifier}`
+      );
 
-      return response.status(500)
-        .json({ message: message });
+      return response.status(500).json({ message: message });
     }
   }
 }

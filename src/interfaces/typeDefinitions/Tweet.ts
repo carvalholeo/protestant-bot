@@ -13,7 +13,7 @@ interface Tweet {
   text: string;
   user: {
     screen_name: string;
-  }
+  };
 }
 
 export default Tweet;

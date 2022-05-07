@@ -16,7 +16,6 @@ export {
   UserRepository,
 };
 
-
 export default {
   BlocklistRepository: BlocklistRepository,
   ConfigurationRepository: ConfigurationRepository,
