@@ -8,3 +8,4 @@ src/db/seeders/
 src/logs/
 *.md
 tsconfig.json
+coverage
