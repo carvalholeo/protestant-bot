@@ -24,7 +24,7 @@
     "lint:fix": "eslint . --fix",
     "prepare": "husky install",
     "start": "node ./dist/src/server.js --use-strict",
-    "test": "jest --detectOpenHandles"
+    "test": "jest"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
