@@ -12,6 +12,7 @@ import httpLogger from './utils/logs/httpLogger';
 import logUniqueIdentifier from './middlewares/logUniqueIdentifier';
 import createError404 from './middlewares/createError404';
 import errorHandlerMiddleware from './middlewares/errorHandlerMiddleware';
+import bouncerLimiter from './middlewares/bouncerLimiter';
 
 const origin = process.env.FRONTEND_URL ?? 'http://localhost:3000';
 const corsOptions: CorsOptions = {
@@ -27,6 +28,7 @@ const COOKIE_OPTIONS: CookieParseOptions | CookieOptions = {
 const app = express();
 const corsExecution = cors(corsOptions);
 
+app.use(bouncerLimiter);
 app.use(logUniqueIdentifier);
 app.use(httpLogger);
 app.use(helmet());
