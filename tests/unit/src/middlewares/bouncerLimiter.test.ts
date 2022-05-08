@@ -24,7 +24,7 @@ describe('Express Bouncer Limiter', () => {
     const message =
       'ENHANCE YOUR CALM: Too many recent requests to this resource, please try again later';
 
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 1500; i++) {
       bouncerLimiter(req, res, next);
     }
 
