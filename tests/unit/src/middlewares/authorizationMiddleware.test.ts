@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { describe, test, jest, expect, beforeEach } from '@jest/globals';
 import { Request, Response, NextFunction } from 'express';
 
@@ -28,7 +29,6 @@ describe('Authorization Middleware - JWT', () => {
   });
 
   test('Reject when any token is sent', () => {
-    // eslint-disable-next-line max-len
     req.headers.authorization = '';
 
     authorizationMiddleware(req, res, next);
@@ -41,7 +41,6 @@ describe('Authorization Middleware - JWT', () => {
   });
 
   test('Reject token when something is sent instead Bearer', () => {
-    // eslint-disable-next-line max-len
     req.headers.authorization =
       'token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIzfQ.RPq4-rXX3McIc71DAuOkTSybVKco09VnnwBss1aWIcY';
 
@@ -55,7 +54,6 @@ describe('Authorization Middleware - JWT', () => {
   });
 
   test('Reject token when neither Bearer nor nothing else is sent', () => {
-    // eslint-disable-next-line max-len
     req.headers.authorization =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIzfQ.RPq4-rXX3McIc71DAuOkTSybVKco09VnnwBss1aWIcY';
 
@@ -69,7 +67,6 @@ describe('Authorization Middleware - JWT', () => {
   });
 
   test('Reject when a invalid token is sent', () => {
-    // eslint-disable-next-line max-len
     req.headers.authorization =
       'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIzfQ.RPq4-rXX3McIc71DAuOkTSybVKco09VnnwBss1aWIc';
 
@@ -83,7 +80,6 @@ describe('Authorization Middleware - JWT', () => {
   });
 
   test('Accept token when everything is OK', () => {
-    // eslint-disable-next-line max-len
     req.headers.authorization =
       'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIzfQ.RPq4-rXX3McIc71DAuOkTSybVKco09VnnwBss1aWIcY';
 
