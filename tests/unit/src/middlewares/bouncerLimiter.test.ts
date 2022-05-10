@@ -50,7 +50,7 @@ describe('Express Bouncer Limiter', () => {
 
     const next: NextFunction = jest.fn();
 
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 1500; i++) {
       bouncerLimiter(req, res, next);
     }
 
