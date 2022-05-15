@@ -3,7 +3,6 @@ import { Router } from 'express';
 import validatorMiddleware from '../middlewares/validatorMiddleware';
 import TweetsController from '../controllers/TweetsController';
 
-import verifyLogoutMiddleware from '../middlewares/verifyLogoutMiddleware';
 import authorizationMiddleware from '../middlewares/authorizationMiddleware';
 import tokenValidator from '../validators/privateApi/tokenValidator';
 
@@ -15,8 +14,7 @@ const tweets = Router();
 tweets
   .use(tokenValidator)
   .use(validatorMiddleware)
-  .use(authorizationMiddleware)
-  .use(verifyLogoutMiddleware);
+  .use(authorizationMiddleware);
 
 tweets
   .get(

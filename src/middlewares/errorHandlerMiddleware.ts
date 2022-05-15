@@ -11,7 +11,7 @@ function errorHandlerMiddleware(err: Error, req: Request, res: Response) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  logger.crit(
+  logger.error(
     `An error has occurred on requesting ${req.path}, resulting into error ${
       err.status
     }. ID: ${req.app.get('uniqueIdentifier')}`

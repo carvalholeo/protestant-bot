@@ -1,32 +1,31 @@
-import { Request, Response, NextFunction } from 'express';
-import expressBouncer from 'express-bouncer';
-const bouncerLimiter = expressBouncer(1000, 900000, 5);
+import { Bouncer, bounce } from 'express-limit-bouncer';
 
-bouncerLimiter.whitelist.push(
-  '127.0.0.1',
-  'localhost',
-  '::1',
-  '::ffff:127.0.0.1'
-);
-
-/**
- * Function to handle with rate limiting and API throttling in the app.
- * @param {Request} req Object with the Request
- * @param {Response} res Object to handle with response
- * @param {NextFunction} next Callback to be called if no errors occured.
- * @param {number} remaining Time, in miliseconds, to next rate limit reset.
- * @return {Response} Returns with response object if a error were found.
- */
-bouncerLimiter.blocked = function (
-  _req: Request,
-  res: Response,
-  _next: NextFunction,
-  remaining: number
-): Response {
-  return res.status(429).json({
-    message: `Too many requests have been made.
-Please wait ${remaining / 1000} seconds.`,
-  });
+const bouncerConfigObject = {
+  blackList: [],
+  blackListMessage:
+    'ACCESS DENIED: This IP address is denylisted from this resource',
+  limitMessage:
+    'ENHANCE YOUR CALM: Too many recent requests to this resource, please try again later',
+  limitStatus: 420,
+  logger: false,
+  reqLimit: 1000,
+  saveAddressLists: {
+    blackList: false,
+    whiteList: false,
+  },
+  windowDur: 1000 * 60 * 15,
+  whitelist: ['127.0.0.1', 'localhost', '::1', '::ffff:127.0.0.1'],
 };
+
+if (process.env.NODE_ENV === 'test') {
+  bouncerConfigObject.blackList = [
+    // @ts-expect-error
+    '192.168.0.1',
+  ];
+}
+
+const bouncerConfiguration = new Bouncer(bouncerConfigObject);
+
+const bouncerLimiter = bounce(bouncerConfiguration);
 
 export default bouncerLimiter;

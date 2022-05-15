@@ -3,3 +3,4 @@
 
 npm run lint:fix
 npx lint-staged
+npm test

@@ -104,8 +104,8 @@ class UsersController {
     try {
       const { authorization } = request.headers;
 
-      // @ts-ignore
-      const hasTokenCache = request.map.has(authorization);
+      // Swap auth variable for logic to logout
+      const hasTokenCache = authorization;
 
       if (!hasTokenCache) {
         const message = 'User is not logged in';
@@ -115,9 +115,6 @@ class UsersController {
 
         return response.status(401).json({ message });
       }
-
-      // @ts-ignore
-      request.map.set(authorization, null);
 
       const message = 'User logout successfully from UsersController';
       logger.info(
