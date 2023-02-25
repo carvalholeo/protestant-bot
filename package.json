@@ -99,7 +99,7 @@
     "mysql2": "^2.3.3",
     "nodemailer": "^6.7.2",
     "rotating-file-stream": "^3.0.3",
-    "sequelize": "^6.17.0",
+    "sequelize": "^6.29.0",
     "twitter-lite": "^1.1.0",
     "twitter-v2": "https://github.com/gardentree/twitter-v2.git",
     "uuid": "^8.3.2",
