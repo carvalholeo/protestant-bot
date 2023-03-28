@@ -1,5 +1,9 @@
 # Protestant Bot
 
+# Archiving notice
+
+This project and its Twitter account would were be restarted before next Easter. But, with recent updates on Twitter API and new limitations, including (but not limited to) paying for read tweets and do a retweet by an external bot, this program is being abandoned. No new Pull Requests will be merged neither issues will be answered. Thank you all for using this bot, it was a fun time. All data available on the database will be destroyed in a couple of days.
+
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=carvalholeo_protestant-bot&metric=coverage)](https://sonarcloud.io/summary/new_code?id=carvalholeo_protestant-bot)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=carvalholeo_protestant-bot&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=carvalholeo_protestant-bot)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=carvalholeo_protestant-bot&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=carvalholeo_protestant-bot)
